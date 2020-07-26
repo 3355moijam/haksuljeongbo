@@ -1,0 +1,4 @@
+﻿  cGame.cpp
+C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\GalsPanic\cGame.cpp(35,26): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\GalsPanic\cGame.cpp(67,28): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GalsPanic.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\x64\Debug\GalsPanic.exe

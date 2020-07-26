@@ -13,3 +13,6 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+
+#include "FunctionLibrary.h"
+#include "cGame.h"

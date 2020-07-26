@@ -27,9 +27,21 @@
     <ClInclude Include="GalsPanic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="cGame.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionLibrary.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GalsPanic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cGame.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionLibrary.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
