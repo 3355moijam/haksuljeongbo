@@ -1,0 +1,9 @@
+﻿  system.c
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\room escape\room escape\system.c(26): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: see declaration of 'wcscpy'
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\room escape\room escape\system.c(35): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: see declaration of 'wcscpy'
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\room escape\room escape\system.c(36): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: see declaration of 'wcscpy'
+  Room Escape.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\Room Escape\Debug\Room Escape.exe
+  Room Escape.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\Room Escape\Debug\Room Escape.pdb (Full PDB)
