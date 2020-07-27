@@ -15,6 +15,7 @@ public:
 	cArea();
 	void show(HDC hdc);
 	void update();
+	HRGN get_region() { return region; }
 };
 
 class cPlayer
@@ -24,6 +25,8 @@ private:
 	int speed;
 	int from;
 	int to;
+	int before_direct;
+	int current_direct;
 	vector<POINT> path;
 public:
 	POINT center;

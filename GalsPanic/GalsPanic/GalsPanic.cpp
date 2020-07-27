@@ -99,7 +99,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-	  CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	   750, 200, 1296, 779, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -148,6 +148,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		break;
+	case WM_KEYDOWN:
+		game->move(wParam);
+		InvalidateRect(hWnd, NULL, false);
+		break;
 	case WM_PAINT:
 		{
 		HDC hdc, hMemDC;
@@ -159,6 +163,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
 		PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
 
+		DrawGrid(hMemDC, 0, 0, view.right, view.bottom, 20);
 		game->show(hMemDC);
 
 		BitBlt(hdc, 0, 0, view.right, view.bottom, hMemDC, 0, 0, SRCCOPY);
@@ -168,6 +173,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_DESTROY:
+		if (game != nullptr)
+			delete game;
 		PostQuitMessage(0);
 		break;
 	default:

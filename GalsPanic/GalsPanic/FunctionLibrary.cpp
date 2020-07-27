@@ -39,3 +39,73 @@ BOOL LineTo(HDC hdc, POINT to)
 {
 	return LineTo(hdc, to.x, to.y);
 }
+
+bool IsBetweenPt(POINT target, POINT p1, POINT p2, int mode)
+{
+	if (mode == 0)
+	{
+		if (p1.x == p2.x)
+		{
+			if (target.x != p1.x)
+				return false;
+
+			if (target.y >= p1.y && target.y <= p2.y)
+				return true;
+			else if (target.y <= p1.y && target.y >= p2.y)
+				return true;
+			else
+				return false;
+		}
+		else if (p1.y == p2.y)
+		{
+			if (target.y != p1.y)
+				return false;
+
+			if (target.x >= p1.x && target.x <= p2.x)
+				return true;
+			else if (target.x <= p1.x && target.x >= p2.x)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+	else
+	{
+		if (p1.x == p2.x)
+		{
+			if (target.x != p1.x)
+				return false;
+
+			if (target.x > p1.x && target.x < p2.x)
+				return true;
+			else if (target.x < p1.x && target.x > p2.x)
+				return true;
+			else
+				return false;
+		}
+		else if (p1.y == p2.y)
+		{
+			if (target.y != p1.y)
+				return false;
+
+			if (target.y > p1.y && target.y < p2.y)
+				return true;
+			else if (target.y < p1.y && target.y > p2.y)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+}
+
+bool operator==(const POINT& lhs, const POINT& rhs)
+{
+	if ((lhs.x == rhs.x) && (lhs.y == rhs.y))
+		return true;
+
+	return false;
+}

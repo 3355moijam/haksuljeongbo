@@ -41,13 +41,13 @@ void cArea::update()
 	region = CreatePolygonRgn(temp, length, WINDING);
 }
 
-cPlayer::cPlayer() :radius(10), speed(10), from(0), to(-1), path()
+cPlayer::cPlayer() :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0)
 {
 	center.x = 100;
 	center.y = 100;
 }
 
-cPlayer::cPlayer(int _x, int _y) :radius(10), speed(10), from(0), to(-1), path()
+cPlayer::cPlayer(int _x, int _y) :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0)
 {
 	center.x = _x;
 	center.y = _y;
@@ -91,6 +91,80 @@ bool cPlayer::move(WPARAM wParam, cArea* area)
 	default:
 		return false;
 	}
+	if (before_direct == 0)
+	{
+		before_direct = wParam;
+	}
+	else
+		before_direct = current_direct;
+	current_direct = wParam;
+	
+
+	int ntemp1, ntemp2;
+	ntemp1 = from == 0 ? area->vertex.size() - 1 : from - 1;
+	ntemp2 = (from + 1) == area->vertex.size() ? 0 : from + 1;
+	
+
+	// >> 선따라 이동 판정
+	if (path.size() == 0)
+	{
+		if (to != -1)
+		{
+			if (IsBetweenPt(temp, area->vertex[from], area->vertex[to]))
+			{
+				center = temp;
+
+				if (temp == area->vertex[from])
+					to = -1;
+				else if (temp == area->vertex[to])
+				{
+					from = to;
+					to = -1;
+				}
+				return false;
+			}
+		}
+		else // to == -1
+		{
+			if (IsBetweenPt(temp, area->vertex[from], area->vertex[ntemp1]))
+			{
+				center = temp;
+				if (temp == area->vertex[ntemp1])
+					from = ntemp1;
+				else
+					to = ntemp1;
+				return false;
+			}
+			else if (IsBetweenPt(temp, area->vertex[from], area->vertex[ntemp2]))
+			{
+				center = temp;
+				if (temp == area->vertex[ntemp2])
+					from = ntemp2;
+				else
+					to = ntemp2;
+				return false;
+			}
+		}
+	}
+	// <<
+	/*
+	if (PtInRegion(area->get_region(), temp.x, temp.y))
+	{
+	}
+	else
+	{
+		if (GetKeyState('A') & 0x8000)
+		{
+			if (path.size() == 0)
+			{
+				path.push_back(center);
+
+			}
+
+		}
+	}
+	*/
+	
 	return false;
 }
 
