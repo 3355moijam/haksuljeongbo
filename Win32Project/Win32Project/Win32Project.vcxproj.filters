@@ -50,7 +50,7 @@
     <ClCompile Include="cShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="0723.1 dialog.cpp">
+    <ClCompile Include="0728.1 motherless window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

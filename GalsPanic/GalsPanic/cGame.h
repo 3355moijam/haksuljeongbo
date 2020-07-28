@@ -16,6 +16,7 @@ public:
 	void show(HDC hdc);
 	void update();
 	HRGN get_region() { return region; }
+	int PtOnArea(POINT &target);
 };
 
 class cPlayer
@@ -33,10 +34,13 @@ public:
 	cPlayer();
 	cPlayer(int _x, int _y);
 	void show(HDC hdc);
-	bool move(WPARAM wParam, cArea* area);
+	bool move(WPARAM wParam, cArea & area);
 	int get_from() { return from; }
 	int get_to() { return to; }
-	int set_to();
+	void path_rewind();
+	bool PtOnPath(POINT & target);
+	
+	
 
 };
 

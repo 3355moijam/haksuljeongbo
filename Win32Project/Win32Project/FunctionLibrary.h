@@ -18,17 +18,19 @@ void PointRotate(int centerX, int centerY, int degree, POINT & point);
 
 void OutFromFile(TCHAR filename[], HWND hWnd);
 
-void CreateBitmap();
+void DrawStar(HDC hdc, POINT * center, int radius);
 
-void DrawBitmap(HWND hWnd, HDC hdc);
-
-void DeleteBitmap();
-
-void UpdateFrame(HWND hWnd);
-
-void DrawRectText(HDC hdc, int xPos);
-
-void DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc);
+//void CreateBitmap();
+//
+//void DrawBitmap(HWND hWnd, HDC hdc);
+//
+//void DeleteBitmap();
+//
+//void UpdateFrame(HWND hWnd);
+//
+//void DrawRectText(HDC hdc, int xPos);
+//
+//void DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc);
 
 void setStar(POINT *center, int radius, POINT *star);
 

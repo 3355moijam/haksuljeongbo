@@ -7,46 +7,32 @@
 #include <iostream>
 
 using namespace std;
-
-struct dot
+class test
 {
-	int a;
-	int b;
+public:
+	test() { cout << "»ı¼º" << endl; }
 };
-
-dot swap(dot x)
-{
-	int temp = x.a;
-	x.a = x.b;
-	x.b = temp;
-
-	return x;
-}
 #include <iomanip>
 
 int main()
 {
-	char str1[] = "abcdefghi";
-	char str2[] = "efg";
-	str_len2(str1, str2);
-	cout << str1 << endl;
+	test a[5];
+	
+
 	return 0;
 }
 
-int str_len1(char * src, char * tar)
-{
 
-}
-
-int str_len2(char src[], char tar[])
-{
-	int k = str_len1(src, tar);
-	if (k == -1)
-		return -1;
-
-	for (int i = 0; i < strlen(tar); i++)
-	{
-		src[k + i] = '*';
-	}
-	return 0;
-}
+//
+//int str_len2(char src[], char tar[])
+//{
+//	int k = str_len1(src, tar);
+//	if (k == -1)
+//		return -1;
+//
+//	for (int i = 0; i < strlen(tar); i++)
+//	{
+//		src[k + i] = '*';
+//	}
+//	return 0;
+//}

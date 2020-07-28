@@ -165,6 +165,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		DrawGrid(hMemDC, 0, 0, view.right, view.bottom, 20);
 		game->show(hMemDC);
+		
 
 		BitBlt(hdc, 0, 0, view.right, view.bottom, hMemDC, 0, 0, SRCCOPY);
 		SelectObject(hMemDC, OldBit);
