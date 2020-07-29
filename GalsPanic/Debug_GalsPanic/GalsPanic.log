@@ -1,6 +1,10 @@
-﻿  GalsPanic.cpp
-c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\galspanic.cpp(157): warning C4101: 'OldBit2' :참조되지 않은 지역 변수입니다.
-c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\galspanic.cpp(157): warning C4101: 'Back2' :참조되지 않은 지역 변수입니다.
-c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\galspanic.cpp(156): warning C4101: 'hMemDC2' :참조되지 않은 지역 변수입니다.
-  GalsPanic.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.exe
-  GalsPanic.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.pdb (Full PDB)
+﻿  cGame.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cgame.cpp(107): warning C4018: '<': signed/unsigned mismatch
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cgame.cpp(167): warning C4018: '<': signed/unsigned mismatch
+  GalsPanic.cpp
+  FunctionLibrary.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(119): warning C4018: '<': signed/unsigned mismatch
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(159): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.exe
+  GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.pdb (Full PDB)

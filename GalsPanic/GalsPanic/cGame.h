@@ -3,7 +3,7 @@
 #include <vector>
 using std::vector;
 
-//class cPlayer;
+class cPlayer;
 //class cArea;
 
 class cArea
@@ -13,10 +13,12 @@ private:
 public:
 	vector<POINT> vertex;
 	cArea();
+	~cArea();
 	void show(HDC hdc);
 	void update();
 	HRGN get_region() { return region; }
-	int PtOnArea(POINT &target);
+	double PtOnArea(POINT &target);
+	void set_new_area(cPlayer &player, vector<POINT> &path, double start, double end);
 };
 
 class cPlayer
@@ -29,6 +31,7 @@ private:
 	int before_direct;
 	int current_direct;
 	vector<POINT> path;
+	bool check_comeback(cArea &area);
 public:
 	POINT center;
 	cPlayer();

@@ -10,6 +10,16 @@ BOOL MoveToEx(HDC hdc, POINT to);
 
 BOOL LineTo(HDC hdc, POINT to);
 
-bool IsBetweenPt(POINT target, POINT p1, POINT p2, int mode = 0);
+bool IsBetweenPt(POINT& target, POINT& p1, POINT& p2, int mode = 0);
 
 bool operator==(const POINT& lhs, const POINT& rhs);
+
+bool operator!=(const POINT& lhs, const POINT& rhs);
+
+HRGN CreatePolyVectorRgn(vector<POINT> poly, int iMode = WINDING);
+
+BOOL PtInRegion(HRGN hrgn, POINT target);
+
+bool PtOnPoly(vector<POINT>& poly, POINT & target);
+
+int PtDistance(const POINT & p1, const POINT & p2);

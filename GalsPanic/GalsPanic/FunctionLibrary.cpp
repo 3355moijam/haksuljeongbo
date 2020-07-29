@@ -40,7 +40,7 @@ BOOL LineTo(HDC hdc, POINT to)
 	return LineTo(hdc, to.x, to.y);
 }
 
-bool IsBetweenPt(POINT target, POINT p1, POINT p2, int mode)
+bool IsBetweenPt(POINT& target, POINT& p1, POINT& p2, int mode)
 {
 	if (mode == 0)
 	{
@@ -104,8 +104,57 @@ bool IsBetweenPt(POINT target, POINT p1, POINT p2, int mode)
 
 bool operator==(const POINT& lhs, const POINT& rhs)
 {
-	if ((lhs.x == rhs.x) && (lhs.y == rhs.y))
-		return true;
+		return (lhs.x == rhs.x) && (lhs.y == rhs.y);
+}
 
-	return false;
+bool operator!=(const POINT& lhs, const POINT& rhs)
+{
+	return (lhs.x != rhs.x) || (lhs.y != rhs.y);
+}
+
+HRGN CreatePolyVectorRgn(vector<POINT> poly, int iMode)
+{
+	int length = poly.size();
+	POINT * temp = new POINT[length];
+	for (size_t i = 0; i < length; i++)
+		temp[i] = poly[i];
+
+	HRGN rgn = CreatePolygonRgn(temp, length, iMode);
+	delete[] temp;
+
+	return rgn;
+}
+
+BOOL PtInRegion(HRGN hrgn, POINT target)
+{
+	return PtInRegion(hrgn, target.x, target.y);
+}
+
+bool PtOnPoly(vector<POINT> &poly, POINT &target)
+{
+	bool position = false;
+	int length = poly.size();
+	for (int i = 0; i < length; i++)
+	{
+		int temp = i + 1;
+		if (temp == length)
+			temp = 0;
+
+		if (target == poly[i])
+		{
+			position = true;
+			break;
+		}
+		else if (IsBetweenPt(target, poly[i], poly[temp]))
+		{
+			position = true;
+			break;
+		}
+	}
+	return position;
+}
+
+int PtDistance(const POINT &p1, const POINT &p2)
+{
+	return pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2);
 }

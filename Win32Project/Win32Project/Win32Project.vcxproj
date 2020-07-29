@@ -149,7 +149,7 @@
     <ClInclude Include="Win32Project.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="0728.1 motherless window.cpp" />
+    <ClCompile Include="0729.2 notepad.cpp" />
     <ClCompile Include="cShape.cpp" />
     <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="stdafx.cpp">

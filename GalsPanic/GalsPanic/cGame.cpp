@@ -1,4 +1,5 @@
 #include "cGame.h"
+#include <algorithm>
 
 extern RECT view;
 
@@ -10,12 +11,13 @@ cArea::cArea() :vertex(4)
 	vertex[2] = { 400, 400 };
 	vertex[3] = { 100, 400 };
 
-	int length = vertex.size();
-	POINT* temp = new POINT[length];
-	for (size_t i = 0; i < length; i++)
-		temp[i] = vertex[i];
+	region = CreatePolyVectorRgn(vertex);
+	
+}
 
-	region = CreatePolygonRgn(temp, length, WINDING);
+cArea::~cArea()
+{
+	DeleteObject(region);
 }
 
 void cArea::show(HDC hdc)
@@ -31,19 +33,14 @@ void cArea::show(HDC hdc)
 
 void cArea::update()
 {
-	DeleteObject(region);
+	//DeleteObject(region);
 
-	int length = vertex.size();
-	POINT* temp = new POINT[length];
-	for (size_t i = 0; i < length; i++)
-		temp[i] = vertex[i];
-
-	region = CreatePolygonRgn(temp, length, WINDING);
+	//region = CreatePolyVectorRgn(vertex);
 }
 
-int cArea::PtOnArea(POINT & target)
+double cArea::PtOnArea(POINT & target)
 {
-	int position = -1;
+	double position = -1;
 	int length = vertex.size();
 	for (int i = 0; i < length; i++)
 	{
@@ -58,11 +55,95 @@ int cArea::PtOnArea(POINT & target)
 		}
 		else if (IsBetweenPt(target, vertex[i], vertex[temp]))
 		{
-			position = i;
+			position = i + 0.5;
 			break;
 		}
 	}
 	return position;
+}
+
+void cArea::set_new_area(cPlayer &player, vector<POINT>& path, double start, double end)
+{
+	vector<POINT> vecTemp1(path);
+	vector<POINT> vecTemp2(path);
+	POINT tempBack = path.back();
+	//(start, end]
+	int length = vertex.size();
+	int tempEnd = static_cast<int> (end + 1) % length;
+	int tempStart = static_cast<int> (start + 1) % length;
+	if ((tempEnd == tempStart) && (PtDistance(path.back(), vertex[tempEnd]) < PtDistance(path[0], vertex[tempEnd])))
+	{
+		std::reverse(vecTemp1.begin(), vecTemp1.end());
+		std::reverse(vecTemp2.begin(), vecTemp2.end());
+		tempBack = vecTemp1.back();
+	}
+	while (tempEnd != tempStart)
+	{
+		//if (vertex[tempEnd] != tempBack)
+			vecTemp1.push_back(vertex[tempEnd]);
+		tempEnd++;
+		if (tempEnd >= length)
+			tempEnd %= length;
+	} 
+
+	tempEnd = (static_cast<int> (end - 0.5) + length) % length;
+	while (tempEnd != tempStart)
+	{
+		if (vertex[tempEnd] != tempBack)
+			vecTemp2.push_back(vertex[tempEnd]);
+		tempEnd--;
+		if (tempEnd < 0)
+		{
+			tempEnd += length;
+			tempEnd %= length;
+		}
+	} 
+	if(vecTemp2[0] != vertex[tempEnd])
+		vecTemp2.push_back(vertex[tempEnd]);
+
+	// 넓이 비교
+	HRGN tempRgn1 = CreatePolyVectorRgn(vecTemp1);
+	bool isInner = true;
+	for (int i = 0; i < vecTemp2.size(); i++)
+	{
+		if (!PtInRegion(tempRgn1, vecTemp2[i]) && !PtOnPoly(vecTemp1, vecTemp2[i]))
+		{
+			isInner = false;
+			break;
+		}
+	}
+	
+	DeleteObject(region);
+	DeleteObject(tempRgn1);
+	vertex.clear();
+	if (isInner) // temp1이 큼
+		vertex.assign(vecTemp1.begin(), vecTemp1.end());
+	
+	else // temp2가 큼
+		vertex.assign(vecTemp2.begin(), vecTemp2.end());
+	
+	region = CreatePolyVectorRgn(vertex);
+	
+}
+
+bool cPlayer::check_comeback(cArea & area)
+{
+	double start, end;
+	if ((end = area.PtOnArea(center)) != -1)
+	{
+		start = area.PtOnArea(path[0]);
+		to = -1;
+		area.set_new_area((*this), path, start, end);
+		if (path[0] != area.vertex[0])
+			from = 0;
+		else
+			from = path.size() - 1;
+
+		path.clear();
+		return true;
+	}
+	else
+		return false;
 }
 
 cPlayer::cPlayer() :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0)
@@ -180,6 +261,8 @@ bool cPlayer::move(WPARAM wParam, cArea & area)
 				path.push_back(center);
 				center = temp;
 				path.push_back(center);
+
+				check_comeback(area);
 			}
 		}
 
@@ -192,10 +275,10 @@ bool cPlayer::move(WPARAM wParam, cArea & area)
 		// >> 이동 부분
 		if (GetKeyState('A') & 0x8000)
 		{
-			if (PtOnPath(temp))
+			if (PtOnPath(temp) && !IsBetweenPt(temp, path.back(), path[path.size()-2]))
 				return false;
 
-			if (before_direct == current_direct)
+			if (before_direct == current_direct) // || IsBetweenPt(temp, path.back(), path[path.size() - 2]))
 			{
 				path.pop_back();
 				center = temp;
@@ -203,8 +286,15 @@ bool cPlayer::move(WPARAM wParam, cArea & area)
 			}
 			else
 			{
-				center = temp;
-				path.push_back(center);
+				if (IsBetweenPt(temp, path.back(), path[path.size() - 2]))
+				{
+					path_rewind();
+				}
+				else
+				{
+					center = temp;
+					path.push_back(center);
+				}
 			}
 
 		}
@@ -215,13 +305,7 @@ bool cPlayer::move(WPARAM wParam, cArea & area)
 		// <<
 
 		// >> 다시 도형으로 돌아왔는가
-		int start, end;
-		if ((end = area.PtOnArea(center)) != -1)
-		{
-			start = area.PtOnArea(path[0]);
-
-			//(start, end]
-		}
+		check_comeback(area);
 		// <<
 	}
 	

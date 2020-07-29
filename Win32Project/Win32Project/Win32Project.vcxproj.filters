@@ -50,7 +50,7 @@
     <ClCompile Include="cShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="0728.1 motherless window.cpp">
+    <ClCompile Include="0729.2 notepad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

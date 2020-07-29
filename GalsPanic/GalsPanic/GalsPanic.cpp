@@ -163,7 +163,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
 		PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
 
-		DrawGrid(hMemDC, 0, 0, view.right, view.bottom, 20);
+		//DrawGrid(hMemDC, 0, 0, view.right, view.bottom, 20);
 		game->show(hMemDC);
 		
 
