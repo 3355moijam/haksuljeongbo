@@ -78,9 +78,9 @@ bool IsBetweenPt(POINT& target, POINT& p1, POINT& p2, int mode)
 			if (target.x != p1.x)
 				return false;
 
-			if (target.x > p1.x && target.x < p2.x)
+			if (target.y > p1.y && target.y < p2.y)
 				return true;
-			else if (target.x < p1.x && target.x > p2.x)
+			else if (target.y < p1.y && target.y > p2.y)
 				return true;
 			else
 				return false;
@@ -90,9 +90,9 @@ bool IsBetweenPt(POINT& target, POINT& p1, POINT& p2, int mode)
 			if (target.y != p1.y)
 				return false;
 
-			if (target.y > p1.y && target.y < p2.y)
+			if (target.x > p1.x && target.x < p2.x)
 				return true;
-			else if (target.y < p1.y && target.y > p2.y)
+			else if (target.x < p1.x && target.x > p2.x)
 				return true;
 			else
 				return false;

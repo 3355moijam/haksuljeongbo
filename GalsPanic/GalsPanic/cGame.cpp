@@ -1,10 +1,11 @@
 #include "cGame.h"
 #include <algorithm>
+#pragma comment(lib, "msimg32.lib")
 
 extern RECT view;
 
 
-cArea::cArea() :vertex(4)
+cArea::cArea() :vertex(4), MaskRegion(NULL)
 {
 	vertex[0] = { 100, 100 };
 	vertex[1] = { 400, 100 };
@@ -13,21 +14,43 @@ cArea::cArea() :vertex(4)
 
 	region = CreatePolyVectorRgn(vertex);
 	
+	img = (HBITMAP)LoadImage(NULL, TEXT("src/img1.bmp"),
+		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+	GetObject(img, sizeof(BITMAP), &imgData);
+	
+	OriginRegion = CreateRectRgn(0, 0, imgData.bmWidth, imgData.bmHeight);
+	MaskRegion = CreateRectRgn(0, 0, 1, 1);
+	CombineRgn(MaskRegion, OriginRegion, region, RGN_DIFF);
 }
 
 cArea::~cArea()
 {
 	DeleteObject(region);
+	DeleteObject(OriginRegion);
+	DeleteObject(MaskRegion);
+	DeleteObject(img);
 }
 
 void cArea::show(HDC hdc)
 {
+	HDC hImgMemDC = CreateCompatibleDC(hdc);
+	
+	HBITMAP hOldBitmap = (HBITMAP)SelectObject(hImgMemDC, img);
+	int bx = imgData.bmWidth;
+	int by = imgData.bmHeight;
+	BitBlt(hdc, 0, 0, bx, by, hImgMemDC, 0, 0, SRCCOPY);
+	SelectObject(hImgMemDC, hOldBitmap);
 
-	HBRUSH hBrush = CreateSolidBrush(RGB(0, 255, 100));
+
+	HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
 	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
-	FillRgn(hdc, region, hBrush);
-	PaintRgn(hdc, region);
-	DeleteObject((HBRUSH)SelectObject(hdc, hOldBrush));
+	
+	FillRgn(hdc, MaskRegion, hBrush);
+	PaintRgn(hdc, MaskRegion);
+	//FrameRgn 테두리 칠하기
+
+
+	DeleteObject(SelectObject(hdc, hOldBrush));
 
 }
 
@@ -53,7 +76,7 @@ double cArea::PtOnArea(POINT & target)
 			position = i;
 			break;
 		}
-		else if (IsBetweenPt(target, vertex[i], vertex[temp]))
+		else if (IsBetweenPt(target, vertex[i], vertex[temp], 1))
 		{
 			position = i + 0.5;
 			break;
@@ -62,7 +85,7 @@ double cArea::PtOnArea(POINT & target)
 	return position;
 }
 
-void cArea::set_new_area(cPlayer &player, vector<POINT>& path, double start, double end)
+void cArea::set_new_area(vector<POINT>& path, double start, double end)
 {
 	vector<POINT> vecTemp1(path);
 	vector<POINT> vecTemp2(path);
@@ -114,6 +137,7 @@ void cArea::set_new_area(cPlayer &player, vector<POINT>& path, double start, dou
 	}
 	
 	DeleteObject(region);
+	//DeleteObject(DrawingRegion);
 	DeleteObject(tempRgn1);
 	vertex.clear();
 	if (isInner) // temp1이 큼
@@ -123,6 +147,8 @@ void cArea::set_new_area(cPlayer &player, vector<POINT>& path, double start, dou
 		vertex.assign(vecTemp2.begin(), vecTemp2.end());
 	
 	region = CreatePolyVectorRgn(vertex);
+	//DrawingRegion = CreateRectRgn(0, 0, imgData.bmWidth, imgData.bmHeight);
+	CombineRgn(MaskRegion, OriginRegion, region, RGN_DIFF);
 	
 }
 
@@ -133,7 +159,7 @@ bool cPlayer::check_comeback(cArea & area)
 	{
 		start = area.PtOnArea(path[0]);
 		to = -1;
-		area.set_new_area((*this), path, start, end);
+		area.set_new_area(path, start, end);
 		if (path[0] != area.vertex[0])
 			from = 0;
 		else

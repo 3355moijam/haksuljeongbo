@@ -10,6 +10,10 @@ class cArea
 {
 private:
 	HRGN region;
+	HRGN OriginRegion;
+	HRGN MaskRegion;
+	HBITMAP img;
+	BITMAP imgData;
 public:
 	vector<POINT> vertex;
 	cArea();
@@ -18,7 +22,7 @@ public:
 	void update();
 	HRGN get_region() { return region; }
 	double PtOnArea(POINT &target);
-	void set_new_area(cPlayer &player, vector<POINT> &path, double start, double end);
+	void set_new_area(vector<POINT> &path, double start, double end);
 };
 
 class cPlayer
