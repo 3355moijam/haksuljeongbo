@@ -16,14 +16,14 @@ private:
 	BITMAP imgData;
 
 public:
-	vector<POINT> vertex;
+	polygon vertex;
 	cArea();
 	~cArea();
 	void show(HDC hdc);
 	void update();
 	HRGN get_region() { return region; }
 	double PtOnArea(POINT &target);
-	void set_new_area(vector<POINT> &path, double start, double end);
+	void set_new_area(polygon &path, double start, double end);
 };
 
 class cPlayer
@@ -35,7 +35,7 @@ private:
 	int to;
 	int before_direct;
 	int current_direct;
-	vector<POINT> path;
+	polygon path;
 	void setDirect(const POINT &temp);
 	void setDirect();
 	bool check_comeback(cArea &area);

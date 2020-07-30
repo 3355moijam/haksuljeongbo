@@ -117,7 +117,7 @@ POINT operator-(const POINT& lhs, const POINT& rhs)
 	return{ lhs.x - rhs.x,lhs.y - rhs.y };
 }
 
-HRGN CreatePolyVectorRgn(vector<POINT> &poly, int iMode)
+HRGN CreatePolyVectorRgn(polygon &poly, int iMode)
 {
 	int length = poly.size();
 	POINT * temp = new POINT[length];
@@ -135,7 +135,7 @@ BOOL PtInRegion(HRGN &hrgn, POINT &target)
 	return PtInRegion(hrgn, target.x, target.y);
 }
 
-bool PtOnPoly(vector<POINT> &poly, POINT &target)
+bool PtOnPoly(polygon &poly, POINT &target)
 {
 	bool position = false;
 	int length = poly.size();
@@ -164,9 +164,8 @@ int PtDistance(const POINT &p1, const POINT &p2)
 	return pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2);
 }
 
-bool PtInPoly(const vector<POINT> & poly, POINT & target) 
+bool PtInPoly(const polygon & poly, POINT & target) 
 {
-	
 	int crosses = 0;
 	for (int i = 0; i < poly.size(); i++)
 	{
@@ -182,4 +181,17 @@ bool PtInPoly(const vector<POINT> & poly, POINT & target)
 		}
 	}
 	return crosses % 2 > 0;
+}
+
+double getPolyArea(const polygon& poly)
+{
+	double sum = 0, diff = 0, area = 0;
+	int length = poly.size();
+	for (int i = 0; i < length; i++)
+	{
+		sum += poly[i].x * poly[(i + 1) % length].y;
+		diff += poly[i].y * poly[(i + 1) % length].x;
+	}
+	area = abs(sum - diff) / 2;
+	return area;
 }

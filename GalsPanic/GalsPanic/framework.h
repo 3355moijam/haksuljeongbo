@@ -15,6 +15,7 @@
 #include <tchar.h>
 #include <vector>
 using std::vector;
+typedef vector<POINT> polygon;
 
 #include "FunctionLibrary.h"
 #include "cGame.h"

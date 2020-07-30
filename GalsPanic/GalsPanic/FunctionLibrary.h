@@ -20,12 +20,15 @@ bool operator!=(const POINT& lhs, const POINT& rhs);
 
 POINT operator-(const POINT& lhs, const POINT& rhs);
 
-HRGN CreatePolyVectorRgn(vector<POINT> &poly, int iMode = WINDING);
+HRGN CreatePolyVectorRgn(polygon &poly, int iMode = WINDING);
 
 BOOL PtInRegion(HRGN &hrgn, POINT &target);
 
-bool PtOnPoly(vector<POINT>& poly, POINT & target);
+bool PtOnPoly(polygon& poly, POINT & target);
 
 int PtDistance(const POINT & p1, const POINT & p2);
 
-bool PtInPoly(const vector<POINT>& poly, POINT & target);
+bool PtInPoly(const polygon& poly, POINT & target);
+
+double getPolyArea(const polygon& poly);
+

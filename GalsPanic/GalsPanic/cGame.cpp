@@ -89,10 +89,10 @@ double cArea::PtOnArea(POINT & target)
 	return position;
 }
 
-void cArea::set_new_area(vector<POINT>& path, double start, double end)
+void cArea::set_new_area(polygon& path, double start, double end)
 {
-	vector<POINT> vecTemp1(path);
-	vector<POINT> vecTemp2(path);
+	polygon vecTemp1(path);
+	polygon vecTemp2(path);
 	
 	int length = vertex.size();
 	
@@ -149,32 +149,19 @@ void cArea::set_new_area(vector<POINT>& path, double start, double end)
 
 
 	// 넓이 비교
-	HRGN tempRgn1 = CreatePolyVectorRgn(vecTemp1);
-	bool isInner = true;
-	for (int i = 0; i < vecTemp2.size(); i++)
-	{
-		//if (!PtInPoly(vecTemp1, vecTemp2[i]) && !PtOnPoly(vecTemp1, vecTemp2[i]))
-		if (!PtInRegion(tempRgn1, vecTemp2[i]) && !PtOnPoly(vecTemp1, vecTemp2[i]))
-		{
-			isInner = false;
-			break;
-		}
-	}
-	
+	double t1 = getPolyArea(vecTemp1);
+	double t2 = getPolyArea(vecTemp2);
+
 	DeleteObject(region);
-	//DeleteObject(DrawingRegion);
-	DeleteObject(tempRgn1);
 	vertex.clear();
-	if (isInner) // temp1이 큼
+	if (t1 > t2) // temp1이 큼
 		vertex.assign(vecTemp1.begin(), vecTemp1.end());
 	
 	else // temp2가 큼
 		vertex.assign(vecTemp2.begin(), vecTemp2.end());
 	
 	region = CreatePolyVectorRgn(vertex);
-	//DrawingRegion = CreateRectRgn(0, 0, imgData.bmWidth, imgData.bmHeight);
 	CombineRgn(MaskRegion, OriginRegion, region, RGN_DIFF);
-	
 }
 
 // 0:x+, 1:y+, 2:x-, 3:y-, -1:error
