@@ -99,7 +99,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-	   750, 200, 1296, 779, nullptr, nullptr, hInstance, nullptr);
+	   1920 / 2 - 1296 / 2, 1080 / 2 - 940 / 2, 1296, 939, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -130,6 +130,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		GetClientRect(hWnd, &view);
 		game = new cGame();
+		SetTimer(hWnd, 1, 17, NULL);
 		break;
 	case WM_COMMAND:
 		{
@@ -149,7 +150,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_KEYDOWN:
-		game->move(wParam);
+		//game->move(wParam);
+		break;
+	case WM_TIMER:
+		game->update();
 		InvalidateRect(hWnd, NULL, false);
 		break;
 	case WM_PAINT:
@@ -161,14 +165,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hMemDC = CreateCompatibleDC(hdc);
 		BackBit = CreateCompatibleBitmap(hdc, view.right, view.bottom);
 		OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
-		PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
+		//PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
 
 		//DrawGrid(hMemDC, 0, 0, view.right, view.bottom, 20);
 		game->show(hMemDC);
 		
 
 		BitBlt(hdc, 0, 0, view.right, view.bottom, hMemDC, 0, 0, SRCCOPY);
-		SelectObject(hMemDC, OldBit);
+		DeleteObject(SelectObject(hMemDC, OldBit));
 		DeleteDC(hMemDC);
 		EndPaint(hWnd, &ps);
 		}

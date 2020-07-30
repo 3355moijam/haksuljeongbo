@@ -1,5 +1,7 @@
 #pragma once
 
+#define SWAP(a,b,temp) {temp = a, a = b, b = temp;}
+
 void DrawGrid(HDC hdc, int x1, int y1, int x2, int y2, int interval);
 
 void DrawCircle(HDC hdc, int centerX, int centerY, int radius);
@@ -16,10 +18,14 @@ bool operator==(const POINT& lhs, const POINT& rhs);
 
 bool operator!=(const POINT& lhs, const POINT& rhs);
 
-HRGN CreatePolyVectorRgn(vector<POINT> poly, int iMode = WINDING);
+POINT operator-(const POINT& lhs, const POINT& rhs);
 
-BOOL PtInRegion(HRGN hrgn, POINT target);
+HRGN CreatePolyVectorRgn(vector<POINT> &poly, int iMode = WINDING);
+
+BOOL PtInRegion(HRGN &hrgn, POINT &target);
 
 bool PtOnPoly(vector<POINT>& poly, POINT & target);
 
 int PtDistance(const POINT & p1, const POINT & p2);
+
+bool PtInPoly(const vector<POINT>& poly, POINT & target);

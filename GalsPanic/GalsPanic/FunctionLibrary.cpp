@@ -112,7 +112,12 @@ bool operator!=(const POINT& lhs, const POINT& rhs)
 	return (lhs.x != rhs.x) || (lhs.y != rhs.y);
 }
 
-HRGN CreatePolyVectorRgn(vector<POINT> poly, int iMode)
+POINT operator-(const POINT& lhs, const POINT& rhs)
+{
+	return{ lhs.x - rhs.x,lhs.y - rhs.y };
+}
+
+HRGN CreatePolyVectorRgn(vector<POINT> &poly, int iMode)
 {
 	int length = poly.size();
 	POINT * temp = new POINT[length];
@@ -125,7 +130,7 @@ HRGN CreatePolyVectorRgn(vector<POINT> poly, int iMode)
 	return rgn;
 }
 
-BOOL PtInRegion(HRGN hrgn, POINT target)
+BOOL PtInRegion(HRGN &hrgn, POINT &target)
 {
 	return PtInRegion(hrgn, target.x, target.y);
 }
@@ -157,4 +162,24 @@ bool PtOnPoly(vector<POINT> &poly, POINT &target)
 int PtDistance(const POINT &p1, const POINT &p2)
 {
 	return pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2);
+}
+
+bool PtInPoly(const vector<POINT> & poly, POINT & target) 
+{
+	
+	int crosses = 0;
+	for (int i = 0; i < poly.size(); i++)
+	{
+		int j = (i + 1) % poly.size();
+		
+		if ((poly[i].y > target.y) != (poly[j].y > target.y)) 
+		{
+			
+			double atX = (poly[j].x - poly[i].x)*(target.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x;
+			
+			if (target.x < atX)
+				crosses++;
+		}
+	}
+	return crosses % 2 > 0;
 }

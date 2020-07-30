@@ -14,6 +14,7 @@ private:
 	HRGN MaskRegion;
 	HBITMAP img;
 	BITMAP imgData;
+
 public:
 	vector<POINT> vertex;
 	cArea();
@@ -35,17 +36,20 @@ private:
 	int before_direct;
 	int current_direct;
 	vector<POINT> path;
+	void setDirect(const POINT &temp);
+	void setDirect();
 	bool check_comeback(cArea &area);
 public:
 	POINT center;
 	cPlayer();
 	cPlayer(int _x, int _y);
 	void show(HDC hdc);
-	bool move(WPARAM wParam, cArea & area);
+	bool move(cArea & area);
 	int get_from() { return from; }
 	int get_to() { return to; }
 	void path_rewind();
 	bool PtOnPath(POINT & target);
+	void update();
 	
 	
 
@@ -61,4 +65,5 @@ public:
 	~cGame();
 	void show(HDC hdc);
 	void move(WPARAM wParam);
+	void update();
 };
