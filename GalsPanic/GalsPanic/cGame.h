@@ -14,7 +14,8 @@ private:
 	HRGN MaskRegion;
 	HBITMAP img;
 	BITMAP imgData;
-
+	double imgSize;
+	double areaSize;
 public:
 	polygon vertex;
 	cArea();
@@ -24,6 +25,7 @@ public:
 	HRGN get_region() { return region; }
 	double PtOnArea(POINT &target);
 	void set_new_area(polygon &path, double start, double end);
+	void setSize() { areaSize = getPolyArea(vertex); }
 };
 
 class cPlayer
@@ -50,9 +52,6 @@ public:
 	void path_rewind();
 	bool PtOnPath(POINT & target);
 	void update();
-	
-	
-
 };
 
 class cGame

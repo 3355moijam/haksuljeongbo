@@ -13,11 +13,14 @@ cArea::cArea() :vertex(4), MaskRegion(NULL)
 	vertex[3] = { 100, 400 };
 
 	region = CreatePolyVectorRgn(vertex);
+	setSize();
 	
 	img = (HBITMAP)LoadImage(NULL, TEXT("src/img1.bmp"),
 		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
 	GetObject(img, sizeof(BITMAP), &imgData);
 	
+	imgSize = (imgData.bmWidth - 20) * (imgData.bmHeight - 20);
+
 	OriginRegion = CreateRectRgn(-10, -10, imgData.bmWidth + 10, imgData.bmHeight + 10);
 	MaskRegion = CreateRectRgn(0, 0, 1, 1);
 	CombineRgn(MaskRegion, OriginRegion, region, RGN_DIFF);
@@ -42,13 +45,13 @@ void cArea::show(HDC hdc)
 	SelectObject(hImgMemDC, hOldBitmap);
 
 
-	HBRUSH hBrush = CreateSolidBrush(RGB(0, 255, 100));
+	HBRUSH hBrush = CreateSolidBrush(RGB(0, 200, 200));
 	HBRUSH hBrush2 = CreateSolidBrush(RGB(255, 255, 255));
 	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush2);
 	FillRgn(hdc, MaskRegion, hBrush2);
 
 	SelectObject(hdc, hBrush);
-	FrameRgn(hdc, MaskRegion, hBrush, 3, 3);
+	FrameRgn(hdc, MaskRegion, hBrush, 4, 4);
 	//PaintRgn(hdc, MaskRegion);
 
 
@@ -121,7 +124,6 @@ void cArea::set_new_area(polygon& path, double start, double end)
 				tempEnd %= length;
 		} while (tempEnd != tempStart);
 	}
-
 	else
 	{
 		while (tempEnd != tempStart)
@@ -147,20 +149,18 @@ void cArea::set_new_area(polygon& path, double start, double end)
 		}
 	}
 
-
 	// 넓이 비교
 	double t1 = getPolyArea(vecTemp1);
 	double t2 = getPolyArea(vecTemp2);
 
 	DeleteObject(region);
 	vertex.clear();
-	if (t1 > t2) // temp1이 큼
-		vertex.assign(vecTemp1.begin(), vecTemp1.end());
-	
-	else // temp2가 큼
-		vertex.assign(vecTemp2.begin(), vecTemp2.end());
+
+	if (t1 > t2)	vertex.assign(vecTemp1.begin(), vecTemp1.end());
+	else			vertex.assign(vecTemp2.begin(), vecTemp2.end());
 	
 	region = CreatePolyVectorRgn(vertex);
+	setSize();
 	CombineRgn(MaskRegion, OriginRegion, region, RGN_DIFF);
 }
 
