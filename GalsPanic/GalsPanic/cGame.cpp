@@ -105,7 +105,7 @@ void cArea::set_new_area(vector<POINT>& path, double start, double end)
 		// 폴리곤 꼬이는 경우 경로뒤집기
 		if (PtDistance(path.back(), vertex[tempEnd]) > PtDistance(path[0], vertex[tempEnd]))
 		{
-			std::reverse(vecTemp1.begin(), vecTemp1.end());
+			std::reverse(vecTemp2.begin(), vecTemp2.end());
 
 			double dtemp;
 			SWAP(start, end, dtemp);
@@ -115,7 +115,7 @@ void cArea::set_new_area(vector<POINT>& path, double start, double end)
 		
 		do
 		{
-			vecTemp1.push_back(vertex[tempEnd]);
+			vecTemp2.push_back(vertex[tempEnd]);
 			tempEnd++;
 			if (tempEnd >= length)
 				tempEnd %= length;
