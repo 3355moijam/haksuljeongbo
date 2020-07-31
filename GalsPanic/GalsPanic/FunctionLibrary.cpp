@@ -119,7 +119,7 @@ POINT operator-(const POINT& lhs, const POINT& rhs)
 
 HRGN CreatePolyVectorRgn(polygon &poly, int iMode)
 {
-	int length = poly.size();
+	unsigned int length = poly.size();
 	POINT * temp = new POINT[length];
 	for (size_t i = 0; i < length; i++)
 		temp[i] = poly[i];
@@ -167,7 +167,8 @@ int PtDistance(const POINT &p1, const POINT &p2)
 bool PtInPoly(const polygon & poly, POINT & target) 
 {
 	int crosses = 0;
-	for (int i = 0; i < poly.size(); i++)
+	unsigned int length = poly.size();
+	for (size_t i = 0; i < length; i++)
 	{
 		int j = (i + 1) % poly.size();
 		

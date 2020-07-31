@@ -1,7 +1,7 @@
 #pragma once
 #include "framework.h"
-#include <vector>
-using std::vector;
+//#include <vector>
+//using std::vector;
 
 class cPlayer;
 //class cArea;

@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "GalsPanic.h"
+//#include "cGameContainer.h"
 
 #define MAX_LOADSTRING 100
 
@@ -11,6 +12,7 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 RECT view;
+HWND hWnd;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -98,7 +100,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 	   1920 / 2 - 1296 / 2, 1080 / 2 - 940 / 2, 1296, 939, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
@@ -122,42 +124,44 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
-cGame *game;
+cGameContainer *container = new cGameContainer();
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	//static HWND hEdit;
 	switch (message)
 	{
 	case WM_CREATE:
 		GetClientRect(hWnd, &view);
-		game = new cGame();
-		SetTimer(hWnd, 1, 17, NULL);
+		//container->set_state(mode::GameState);
 		break;
 	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		// 메뉴 선택을 구문 분석합니다:
+		switch (wmId)
 		{
-			int wmId = LOWORD(wParam);
-			// 메뉴 선택을 구문 분석합니다:
-			switch (wmId)
-			{
-			case IDM_ABOUT:
-				DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-				break;
-			case IDM_EXIT:
-				DestroyWindow(hWnd);
-				break;
-			default:
-				return DefWindowProc(hWnd, message, wParam, lParam);
-			}
+		case IDM_ABOUT:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+			break;
+		case IDM_EXIT:
+			DestroyWindow(hWnd);
+			break;
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
-		break;
+	}
+	break;
 	case WM_KEYDOWN:
-		//game->move(wParam);
+		if (container->get_state() != mode::GameState)
+			container->set_state(mode::GameState);
+		//InvalidateRect(hWnd, NULL, false);
 		break;
 	case WM_TIMER:
-		game->update();
-		InvalidateRect(hWnd, NULL, false);
+		container->update();
+		InvalidateRect(hWnd, NULL,false);
 		break;
 	case WM_PAINT:
-		{
+	{
 		HDC hdc, hMemDC;
 		HBITMAP BackBit, OldBit;
 		PAINTSTRUCT ps;
@@ -165,26 +169,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hMemDC = CreateCompatibleDC(hdc);
 		BackBit = CreateCompatibleBitmap(hdc, view.right, view.bottom);
 		OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
-		//PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
+		PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
 
-		//DrawGrid(hMemDC, 0, 0, view.right, view.bottom, 20);
-		game->show(hMemDC);
-		
+
+		container->draw(hMemDC);
+
 
 		BitBlt(hdc, 0, 0, view.right, view.bottom, hMemDC, 0, 0, SRCCOPY);
 		DeleteObject(SelectObject(hMemDC, OldBit));
 		DeleteDC(hMemDC);
 		EndPaint(hWnd, &ps);
-		}
-		break;
+	}
+	break;
 	case WM_DESTROY:
-		if (game != nullptr)
-			delete game;
+		if (container != nullptr)
+			delete container;
 		PostQuitMessage(0);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
+	//switch (container->get_state())
+	//{
+	//case mode::MainState:
+	//
+	//	break;
+	//case mode::GameState:
+	//	break;
+	//case mode::EndState:
+	//	break;
+	//default:
+	//	break;
+	//}
 	return 0;
 }
 

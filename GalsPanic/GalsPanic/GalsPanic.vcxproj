@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cGame.h" />
+    <ClInclude Include="cGameContainer.h" />
+    <ClInclude Include="cUI.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FunctionLibrary.h" />
     <ClInclude Include="GalsPanic.h" />
@@ -149,6 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cGame.cpp" />
+    <ClCompile Include="cGameContainer.cpp" />
+    <ClCompile Include="cUI.cpp" />
     <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="GalsPanic.cpp" />
   </ItemGroup>

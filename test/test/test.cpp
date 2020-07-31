@@ -11,12 +11,12 @@ class test
 {
 public:
 	test() { cout << "생성" << endl; }
+	~test() { cout << "삭제" << endl; }
 };
 #include <iomanip>
 
 int main()
 {
-	test a[5];
 	
 
 	return 0;

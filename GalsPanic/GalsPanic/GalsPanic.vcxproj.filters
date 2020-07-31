@@ -33,6 +33,12 @@
     <ClInclude Include="FunctionLibrary.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="cUI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameContainer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GalsPanic.cpp">
@@ -42,6 +48,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="FunctionLibrary.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameContainer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

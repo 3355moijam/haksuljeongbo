@@ -1,4 +1,9 @@
-﻿  cGame.cpp
-c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cgame.cpp(267): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  GalsPanic.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.exe
-  GalsPanic.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.pdb (Full PDB)
+﻿  cUI.cpp
+  cGameContainer.cpp
+  cGame.cpp
+  GalsPanic.cpp
+  FunctionLibrary.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(164): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.exe
+  GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.pdb (Full PDB)

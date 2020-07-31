@@ -260,7 +260,7 @@ cPlayer::cPlayer(int _x, int _y) :radius(10), speed(10), from(0), to(-1), path()
 
 void cPlayer::show(HDC hdc)
 {
-	int length = path.size();
+	unsigned int length = path.size();
 	if (length)
 	{
 		MoveToEx(hdc, path[0]);
