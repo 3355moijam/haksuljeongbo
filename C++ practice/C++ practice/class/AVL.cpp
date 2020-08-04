@@ -285,6 +285,33 @@ void AVL::print(node * target)
 
 }
 
+void AVL::printTree()
+{
+	printTree(root);
+}
+
+void AVL::printTree(node * target)
+{
+	if (target == nullptr)
+	{
+		cout << "트리가 비어있습니다." << endl;
+		return;
+	}
+
+	if (target->left != nullptr)
+		printTree(target->left);
+
+	int depth = get_depth(target);
+	for (int i = 0; i < depth; i++)
+	{
+		cout << "\t";
+	}
+	cout << target->no << endl;
+
+	if (target->right != nullptr)
+		printTree(target->right);
+}
+
 int AVL::get_height(node * target)
 {
 	int height, left, right;
@@ -302,6 +329,18 @@ int AVL::get_height(node * target)
 	height = left > right ? left : right;
 	height += 1;
 	return height;
+}
+
+int AVL::get_depth(node * target)
+{
+	node* temp = target;
+	int depth = 0;
+	while (temp != root)
+	{
+		depth++;
+		temp = temp->parent;
+	}
+	return depth;
 }
 
 int AVL::get_bias(node * target)
@@ -329,12 +368,17 @@ void AVL::rebalance(node * target)
 		int LeftSonBias = get_bias(temp->left);
 		if (LeftSonBias > 0)
 		{
+			//printTree(root);
 			right_rotate(temp);
+			//printTree(root);
 		}
 		else
 		{
+			//printTree(root);
 			left_rotate(temp->left);
+			//printTree(root);
 			right_rotate(temp);
+			//printTree(root);
 		}
 	}
 	else if (bias == -2)
@@ -342,12 +386,17 @@ void AVL::rebalance(node * target)
 		int RightSonBias = get_bias(temp->right);
 		if (RightSonBias < 0)
 		{
+			//printTree(root);
 			left_rotate(temp);
+			//printTree(root);
 		}
 		else
 		{
+			//printTree(root);
 			right_rotate(temp->right);
+			//printTree(root);
 			left_rotate(temp);
+			//printTree(root);
 		}
 	}
 	else

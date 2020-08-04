@@ -36,7 +36,10 @@ public:
 	node* find(int no);
 	void print();
 	void print(node* target);
+	void printTree();
+	void printTree(node* target);
 	int get_height(node* target);
+	int get_depth(node* target);
 	int get_bias(node* target);
 	void rebalance(node* target);
 };

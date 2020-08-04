@@ -8,6 +8,7 @@ private:
 
 public:
 	cUI();
+	static HFONT hFontNanum;
 	virtual ~cUI();
 	virtual void draw(HDC hdc) = 0;
 };

@@ -172,7 +172,8 @@ bool PtInPoly(const polygon & poly, POINT & target)
 	{
 		int j = (i + 1) % poly.size();
 		
-		if ((poly[i].y > target.y) != (poly[j].y > target.y)) 
+		//if (((poly[i].y >= target.y) && (poly[j].y < target.y)) || ((poly[i].y <= target.y) && (poly[j].y > target.y)))
+		if((poly[i].y > target.y) != (poly[j].y > target.y))
 		{
 			
 			double atX = (poly[j].x - poly[i].x)*(target.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x;

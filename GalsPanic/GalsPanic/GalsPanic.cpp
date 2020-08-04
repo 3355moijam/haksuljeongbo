@@ -12,6 +12,7 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 RECT view;
+POINT center;
 HWND hWnd;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -132,6 +133,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 		GetClientRect(hWnd, &view);
+		center = { view.right / 2, view.bottom / 2 };
 		//container->set_state(mode::GameState);
 		break;
 	case WM_COMMAND:
@@ -152,7 +154,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_KEYDOWN:
-		if (container->get_state() != mode::GameState)
+		if (container->get_state() == mode::MainState)
 			container->set_state(mode::GameState);
 		//InvalidateRect(hWnd, NULL, false);
 		break;
