@@ -4,14 +4,13 @@
 
 extern RECT view;
 
-
 cArea::cArea() :vertex(4), MaskRegion(NULL)
 {
 	vertex[0] = { 100, 100 };
 	vertex[1] = { 400, 100 };
 	vertex[2] = { 400, 400 };
 	vertex[3] = { 100, 400 };
-
+	
 	region = CreatePolyVectorRgn(vertex);
 	setSize();
 	
@@ -150,8 +149,8 @@ void cArea::set_new_area(polygon& path, double start, double end)
 	}
 
 	// ≥–¿Ã ∫Ò±≥
-	double t1 = getPolyArea(vecTemp1);
-	double t2 = getPolyArea(vecTemp2);
+	long t1 = getPolyArea(vecTemp1);
+	long t2 = getPolyArea(vecTemp2);
 
 	DeleteObject(region);
 	vertex.clear();

@@ -17,7 +17,9 @@ public:
 
 int main()
 {
-	
+	long num = -180240;
+	num = num >> 5;
+	cout << num << endl;
 
 	return 0;
 }

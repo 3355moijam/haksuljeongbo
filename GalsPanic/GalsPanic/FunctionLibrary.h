@@ -30,5 +30,5 @@ int PtDistance(const POINT & p1, const POINT & p2);
 
 bool PtInPoly(const polygon& poly, POINT & target);
 
-double getPolyArea(const polygon& poly);
+long getPolyArea(const polygon& poly);
 

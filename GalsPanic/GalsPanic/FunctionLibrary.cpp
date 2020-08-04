@@ -184,15 +184,15 @@ bool PtInPoly(const polygon & poly, POINT & target)
 	return crosses % 2 > 0;
 }
 
-double getPolyArea(const polygon& poly)
+long getPolyArea(const polygon& poly)
 {
-	double sum = 0, diff = 0, area = 0;
+	long sum = 0, diff = 0, area = 0;
 	int length = poly.size();
 	for (int i = 0; i < length; i++)
 	{
 		sum += poly[i].x * poly[(i + 1) % length].y;
 		diff += poly[i].y * poly[(i + 1) % length].x;
 	}
-	area = abs(sum - diff) / 2;
+	area = abs(sum - diff) >> 1;
 	return area;
 }
