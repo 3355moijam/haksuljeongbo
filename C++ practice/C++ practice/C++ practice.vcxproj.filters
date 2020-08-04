@@ -54,6 +54,9 @@
     <ClInclude Include="class\biTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="class\AVL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -86,10 +89,13 @@
     <ClCompile Include="class\List.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="0722.1 binary tree.cpp">
+    <ClCompile Include="class\biTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="class\biTree.cpp">
+    <ClCompile Include="class\AVL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="0804.1 AVL tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

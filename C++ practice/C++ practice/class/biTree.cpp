@@ -240,6 +240,34 @@ void biTree::print(node * target)
 
 }
 
+int biTree::get_height(node * target)
+{
+	int height, left, right;
+
+	if (target->left != nullptr)
+		left = get_height(target->left);
+	else
+		left = 0;
+
+	if (target->right != nullptr)
+		right = get_height(target->right);
+	else
+		right = 0;
+	
+	height = left > right ? left : right;
+	height += 1;
+	return height;
+}
+
+int biTree::get_bias(node * target)
+{
+	int bias, left, right;
+	left = target->left != nullptr ? get_height(target->left) : 0;
+	right = target->right != nullptr ? get_height(target->right) : 0;
+	bias = left - right;
+	return bias;
+}
+
 
 biTree::~biTree()
 {

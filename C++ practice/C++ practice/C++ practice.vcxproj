@@ -145,6 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="class\AVL.h" />
     <ClInclude Include="class\biTree.h" />
     <ClInclude Include="class\GeometricObject\Circle.h" />
     <ClInclude Include="class\GeometricObject\GeometricObject.h" />
@@ -159,7 +160,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="0722.1 binary tree.cpp" />
+    <ClCompile Include="0804.1 AVL tree.cpp" />
+    <ClCompile Include="class\AVL.cpp" />
     <ClCompile Include="class\biTree.cpp" />
     <ClCompile Include="class\GeometricObject\Circle.cpp" />
     <ClCompile Include="class\GeometricObject\GeometricObject.cpp" />
