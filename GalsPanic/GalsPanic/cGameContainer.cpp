@@ -1,6 +1,6 @@
 #include "cGameContainer.h"
 
-extern HWND hWnd;
+extern HWND g_hWnd;
 
 cGameContainer::cGameContainer() : scene_state(mode::MainState), game(nullptr), ui_main(), ui_game(), ui_end()
 {
@@ -15,7 +15,7 @@ cGameContainer::~cGameContainer()
 {
 	if (game != nullptr)
 		delete game;
-	KillTimer(hWnd, 100);
+	KillTimer(g_hWnd, 100);
 }
 
 mode cGameContainer::set_state(mode scene)
@@ -28,7 +28,7 @@ mode cGameContainer::set_state(mode scene)
 	case GameState:
 		if (game != nullptr)
 			delete game;
-		KillTimer(hWnd, 100);
+		KillTimer(g_hWnd, 100);
 		break;
 	case EndState:
 		break;
@@ -44,7 +44,7 @@ mode cGameContainer::set_state(mode scene)
 		break;
 	case GameState:
 		game = new cGame();
-		SetTimer(hWnd, 100, 17, NULL);
+		SetTimer(g_hWnd, 100, 17, NULL);
 		break;
 	case EndState:
 		break;

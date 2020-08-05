@@ -31,6 +31,25 @@ public:
 class cPlayer
 {
 private:
+	class cCircularEffect
+	{
+	private:
+		POINT poly[4];
+		POINT center;
+		int effect_radius;
+		int particle_radius;
+		double rotate_speed;
+		double direct;
+	public:
+		cCircularEffect();
+		void set_center(const POINT &pt) { center = pt; }
+		void set_effect_radius(int radius);
+		void set_poly();
+		void set_rotate(int mode);
+		void rotate(){ direct += rotate_speed; }
+		void draw(HDC hdc);
+		void update(const POINT &pt);
+	};
 	int radius;
 	int speed;
 	int from;
@@ -38,6 +57,7 @@ private:
 	int before_direct;
 	int current_direct;
 	polygon path;
+	cCircularEffect effect;
 	void setDirect(const POINT &temp);
 	void setDirect();
 	bool check_comeback(cArea &area);
@@ -45,6 +65,7 @@ public:
 	POINT center;
 	cPlayer();
 	cPlayer(int _x, int _y);
+	void set_center(POINT &cen) { center = cen; }
 	void show(HDC hdc);
 	bool move(cArea & area);
 	int get_from() { return from; }

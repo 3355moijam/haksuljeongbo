@@ -8,12 +8,12 @@
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-HINSTANCE hInst;                                // 현재 인스턴스입니다.
+HINSTANCE g_hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
-RECT view;
-POINT center;
-HWND hWnd;
+RECT g_view;
+POINT g_center;
+HWND g_hWnd;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -99,18 +99,18 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+   g_hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   g_hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 	   1920 / 2 - 1296 / 2, 1080 / 2 - 940 / 2, 1296, 939, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
+   if (!g_hWnd)
    {
 	  return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+   ShowWindow(g_hWnd, nCmdShow);
+   UpdateWindow(g_hWnd);
 
    return TRUE;
 }
@@ -132,8 +132,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_CREATE:
-		GetClientRect(hWnd, &view);
-		center = { view.right / 2, view.bottom / 2 };
+		GetClientRect(hWnd, &g_view);
+		g_center = { g_view.right / 2, g_view.bottom / 2 };
 		//container->set_state(mode::GameState);
 		break;
 	case WM_COMMAND:
@@ -143,7 +143,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+			DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
 		case IDM_EXIT:
 			DestroyWindow(hWnd);
@@ -169,15 +169,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PAINTSTRUCT ps;
 		hdc = BeginPaint(hWnd, &ps);
 		hMemDC = CreateCompatibleDC(hdc);
-		BackBit = CreateCompatibleBitmap(hdc, view.right, view.bottom);
+		BackBit = CreateCompatibleBitmap(hdc, g_view.right, g_view.bottom);
 		OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
-		PatBlt(hMemDC, 0, 0, view.right, view.bottom, WHITENESS);
+		PatBlt(hMemDC, 0, 0, g_view.right, g_view.bottom, WHITENESS);
 
 
 		container->draw(hMemDC);
 
 
-		BitBlt(hdc, 0, 0, view.right, view.bottom, hMemDC, 0, 0, SRCCOPY);
+		BitBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, 0, 0, SRCCOPY);
 		DeleteObject(SelectObject(hMemDC, OldBit));
 		DeleteDC(hMemDC);
 		EndPaint(hWnd, &ps);

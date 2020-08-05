@@ -1,15 +1,14 @@
+#define _USE_MATH_DEFINES
 #include "cGame.h"
+#include <cmath>
 #include <algorithm>
 #pragma comment(lib, "msimg32.lib")
 
-extern RECT view;
+extern RECT g_view;
 
-cArea::cArea() :vertex(4), MaskRegion(NULL)
+cArea::cArea() :vertex(), MaskRegion(NULL)
 {
-	vertex[0] = { 100, 100 };
-	vertex[1] = { 400, 100 };
-	vertex[2] = { 400, 400 };
-	vertex[3] = { 100, 400 };
+	makeRect(vertex);
 	
 	region = CreatePolyVectorRgn(vertex);
 	setSize();
@@ -82,7 +81,7 @@ double cArea::PtOnArea(POINT & target)
 			position = i;
 			break;
 		}
-		else if (IsBetweenPt(target, vertex[i], vertex[temp], 1))
+		else if (isBetweenPt(target, vertex[i], vertex[temp], 1))
 		{
 			position = i + 0.5;
 			break;
@@ -245,13 +244,14 @@ bool cPlayer::check_comeback(cArea & area)
 		return false;
 }
 
-cPlayer::cPlayer() :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0)
+cPlayer::cPlayer() :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0), effect()
 {
 	center.x = 100;
 	center.y = 100;
+	effect.set_effect_radius(radius + 7);
 }
 
-cPlayer::cPlayer(int _x, int _y) :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0)
+cPlayer::cPlayer(int _x, int _y) :radius(10), speed(10), from(0), to(-1), path(), before_direct(0), current_direct(0), effect()
 {
 	center.x = _x;
 	center.y = _y;
@@ -268,8 +268,12 @@ void cPlayer::show(HDC hdc)
 			LineTo(hdc, path[i]);
 		}
 	}
-
-	HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));
+	effect.draw(hdc);
+	HBRUSH hBrush;
+	if(path.size())
+		hBrush = CreateSolidBrush(RGB(0, 0, 255));
+	else
+		hBrush = CreateSolidBrush(RGB(255, 0, 0));
 	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 	DrawCircle(hdc, center, radius);
 	DeleteObject(SelectObject(hdc, hOldBrush));
@@ -303,7 +307,7 @@ bool cPlayer::move(cArea & area)
 	else
 		return false;
 
-	if (temp.x <= 0 || temp.x >= view.right || temp.y <= 0 || temp.y >= view.bottom)
+	if (temp.x <= 0 || temp.x >= g_view.right || temp.y <= 0 || temp.y >= g_view.bottom)
 		return false;
 	
 	if (path.size())
@@ -320,7 +324,7 @@ bool cPlayer::move(cArea & area)
 		// >>> 선따라 움직이기
 		if (to != -1)
 		{
-			if (IsBetweenPt(temp, area.vertex[from], area.vertex[to]))
+			if (isBetweenPt(temp, area.vertex[from], area.vertex[to]))
 			{
 				center = temp;
 
@@ -336,7 +340,7 @@ bool cPlayer::move(cArea & area)
 		}
 		else // to == -1
 		{
-			if (IsBetweenPt(temp, area.vertex[from], area.vertex[ntemp1]))
+			if (isBetweenPt(temp, area.vertex[from], area.vertex[ntemp1]))
 			{
 				center = temp;
 				if (temp == area.vertex[ntemp1])
@@ -345,7 +349,7 @@ bool cPlayer::move(cArea & area)
 					to = ntemp1;
 				return false;
 			}
-			else if (IsBetweenPt(temp, area.vertex[from], area.vertex[ntemp2]))
+			else if (isBetweenPt(temp, area.vertex[from], area.vertex[ntemp2]))
 			{
 				center = temp;
 				if (temp == area.vertex[ntemp2])
@@ -379,7 +383,7 @@ bool cPlayer::move(cArea & area)
 		// >> 이동 부분
 		if (GetKeyState('A') & 0x8000)
 		{
-			if (PtOnPath(temp) && !IsBetweenPt(temp, path.back(), path[path.size()-2]))
+			if (PtOnPath(temp) && !isBetweenPt(temp, path.back(), path[path.size()-2]))
 				return false;
 
 			if (before_direct == current_direct)
@@ -390,7 +394,7 @@ bool cPlayer::move(cArea & area)
 			}
 			else
 			{
-				if (IsBetweenPt(temp, path.back(), path[path.size() - 2]))
+				if (isBetweenPt(temp, path.back(), path[path.size() - 2]))
 				{
 					path_rewind();
 					return true;
@@ -450,7 +454,7 @@ bool cPlayer::PtOnPath(POINT & target)
 	int length = path.size();
 	for (int i = 0; i < length - 1; i++)
 	{
-		if (IsBetweenPt(target, path[i], path[i + 1]))
+		if (isBetweenPt(target, path[i], path[i + 1]))
 			return true;
 	}
 	return false;
@@ -458,8 +462,10 @@ bool cPlayer::PtOnPath(POINT & target)
 
 void cPlayer::update()
 {
-	if(path.size() && !(GetKeyState('A') & 0x8000))
+	if (path.size() && !(GetKeyState('A') & 0x8000))
 		path_rewind();
+	effect.set_rotate(path.size() && (GetKeyState('A') & 0x8000));
+	effect.update(center);
 }
 
 
@@ -467,7 +473,7 @@ void cPlayer::update()
 
 cGame::cGame() :area(), player()
 {
-
+	player.set_center(area.vertex[0]);
 }
 
 cGame::~cGame()
@@ -492,5 +498,52 @@ void cGame::update()
 {
 	player.move(area);
 	player.update();
+	
 	//area.update();
 }
+
+cPlayer::cCircularEffect::cCircularEffect() : effect_radius(0), rotate_speed(M_PI_4 / 8), direct(0), particle_radius(5)
+{
+}
+
+void cPlayer::cCircularEffect::set_effect_radius(int radius)
+{
+	effect_radius = radius;
+}
+
+void cPlayer::cCircularEffect::set_poly()
+{
+	poly[0] = { center.x + effect_radius, center.y };
+	poly[1] = { center.x , center.y + effect_radius };
+	poly[2] = { center.x - effect_radius, center.y };
+	poly[3] = { center.x , center.y - effect_radius };
+}
+
+void cPlayer::cCircularEffect::set_rotate(int mode)
+{
+	if (mode)
+		rotate_speed = M_PI_4 / 2;
+	else
+		rotate_speed = M_PI_4 / 8;
+}
+
+void cPlayer::cCircularEffect::draw(HDC hdc)
+{
+	POINT temp[4];
+	for (size_t i = 0; i < 4; i++)
+	{
+		temp[i] = PointRotate(center.x, center.y, direct, poly[i]);
+		DrawCircle(hdc, temp[i], particle_radius);
+	}
+
+
+}
+
+void cPlayer::cCircularEffect::update(const POINT & pt)
+{
+	set_center(pt);
+	set_poly();
+	
+	rotate();
+}
+

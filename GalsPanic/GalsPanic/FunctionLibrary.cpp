@@ -1,6 +1,53 @@
 #pragma once
+#define _USE_MATH_DEFINES
 #include "framework.h"
+#include <cmath>
 #include "FunctionLibrary.h"
+#include <random>
+
+
+std::random_device rd;
+std::mt19937_64 gen(rd());
+
+
+void randomArr(int * arr, int size, int from, int to)
+{
+	std::uniform_int_distribution<int> dis(from, to); // 원하는 범위의 숫자
+
+	for (size_t i = 0; i < size; i++)
+		arr[i] = dis(gen);
+}
+
+int randomInt(int from, int to)
+{
+	std::uniform_int_distribution<int> dis(from, to);
+
+	return dis(gen);
+}
+
+double DegreeToRadian(int arcDegree)
+{
+	return arcDegree * (M_PI / 180);
+}
+
+POINT PointRotate(int centerX, int centerY, int degree, const POINT &point)
+{
+	double rad = DegreeToRadian(degree);
+
+	double tempX = cos(rad) * (point.x - centerX) - sin(rad) * (point.y - centerY);
+	double tempY = sin(rad) * (point.x - centerX) + cos(rad) * (point.y - centerY);
+
+	POINT temp = { centerX + tempX, centerY + tempY };
+	return temp;
+}
+
+POINT PointRotate(int centerX, int centerY, double rad, const POINT &point)
+{
+	double tempX = cos(rad) * (point.x - centerX) - sin(rad) * (point.y - centerY);
+	double tempY = sin(rad) * (point.x - centerX) + cos(rad) * (point.y - centerY);
+	POINT temp = { centerX + tempX, centerY + tempY };
+	return temp;
+}
 
 void DrawGrid(HDC hdc, int x1, int y1, int x2, int y2, int interval)
 {
@@ -40,7 +87,7 @@ BOOL LineTo(HDC hdc, POINT to)
 	return LineTo(hdc, to.x, to.y);
 }
 
-bool IsBetweenPt(POINT& target, POINT& p1, POINT& p2, int mode)
+bool isBetweenPt(POINT& target, POINT& p1, POINT& p2, int mode)
 {
 	if (mode == 0)
 	{
@@ -150,7 +197,7 @@ bool PtOnPoly(polygon &poly, POINT &target)
 			position = true;
 			break;
 		}
-		else if (IsBetweenPt(target, poly[i], poly[temp]))
+		else if (isBetweenPt(target, poly[i], poly[temp]))
 		{
 			position = true;
 			break;
@@ -197,3 +244,18 @@ long getPolyArea(const polygon& poly)
 	area = abs(sum - diff) >> 1;
 	return area;
 }
+
+void makeRect(polygon &poly)
+{
+	int x, y, width, height;
+	x = randomInt(10, 50) * 10;
+	y = randomInt(10, 50) * 10;
+	width = randomInt(1, 20) * 10;
+	height = randomInt(1, 20) * 10;
+
+	poly.push_back({ x, y });
+	poly.push_back({ x + width, y });
+	poly.push_back({ x + width, y + height });
+	poly.push_back({ x, y + height });
+}
+

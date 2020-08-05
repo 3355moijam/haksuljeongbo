@@ -17,10 +17,14 @@ public:
 
 int main()
 {
-	long num = -180240;
-	num = num >> 5;
-	cout << num << endl;
+	for (size_t i = 0; i < 5; i++)
+	{
+		if (i == 3)
+			break;
 
+		cout << i << endl;
+		
+	}
 	return 0;
 }
 
@@ -38,3 +42,20 @@ int main()
 //	}
 //	return 0;
 //}
+
+bool isBetweenPt(POINT target, POINT p1, POINT p2)
+{
+	int distance1 = PtDistance(target, p1);
+	int distance2 = PtDistance(target, p2);
+	int distance3 = PtDistance(p1, p2);
+
+	if (distance1 + distance2 == distance3)
+		return true;
+	else
+		return false;
+}
+
+int PtDistance(POINT p1, POINT p2)
+{
+	return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+}
