@@ -47,7 +47,7 @@ private:
 		void set_poly();
 		void set_rotate(int mode);
 		void rotate(){ direct += rotate_speed; }
-		void draw(HDC hdc);
+		void show(HDC hdc);
 		void update(const POINT &pt);
 	};
 	int radius;
@@ -72,6 +72,7 @@ public:
 	int get_to() { return to; }
 	void path_rewind();
 	bool PtOnPath(POINT & target);
+
 	void update();
 };
 

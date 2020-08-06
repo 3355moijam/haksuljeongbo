@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cEnemy.h" />
     <ClInclude Include="cGame.h" />
     <ClInclude Include="cGameContainer.h" />
     <ClInclude Include="cUI.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cEnemy.cpp" />
     <ClCompile Include="cGame.cpp" />
     <ClCompile Include="cGameContainer.cpp" />
     <ClCompile Include="cUI.cpp" />

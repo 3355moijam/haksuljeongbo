@@ -268,7 +268,7 @@ void cPlayer::show(HDC hdc)
 			LineTo(hdc, path[i]);
 		}
 	}
-	effect.draw(hdc);
+	effect.show(hdc);
 	HBRUSH hBrush;
 	if(path.size())
 		hBrush = CreateSolidBrush(RGB(0, 0, 255));
@@ -527,7 +527,7 @@ void cPlayer::cCircularEffect::set_rotate(int mode)
 		rotate_speed = M_PI_4 / 8;
 }
 
-void cPlayer::cCircularEffect::draw(HDC hdc)
+void cPlayer::cCircularEffect::show(HDC hdc)
 {
 	POINT temp[4];
 	for (size_t i = 0; i < 4; i++)
