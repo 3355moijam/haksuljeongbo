@@ -259,3 +259,7 @@ void makeRect(polygon &poly)
 	poly.push_back({ x, y + height });
 }
 
+double directFromTo(const POINT &from, const POINT &to)
+{
+	return atan2(to.y - from.y, to.x - from.x);
+}

@@ -44,3 +44,5 @@ long getPolyArea(const polygon& poly);
 
 void makeRect(polygon & poly);
 
+double directFromTo(const POINT & from, const POINT & to);
+
