@@ -263,3 +263,9 @@ double directFromTo(const POINT &from, const POINT &to)
 {
 	return atan2(to.y - from.y, to.x - from.x);
 }
+
+double setRandomDirect()
+{
+	int arc_degree = randomInt(0, 359);
+	return DegreeToRadian(arc_degree);
+}

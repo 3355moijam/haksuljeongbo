@@ -471,7 +471,7 @@ void cPlayer::update()
 
 
 
-cGame::cGame() :area(), player()
+cGame::cGame() :area(), player(), snake()
 {
 	player.set_center(area.vertex[0]);
 }
@@ -485,9 +485,10 @@ void cGame::show(HDC hdc)
 	//DrawGrid(hdc, 0, 0, view.right, view.left, 10);
 	area.show(hdc);
 	player.show(hdc);
+	snake.show(hdc);
 }
 
-void cGame::move(WPARAM wParam)
+void cGame::move()
 {
 	//player.move(wParam, area);
 	//if(player.move(wParam, area))
@@ -498,7 +499,7 @@ void cGame::update()
 {
 	player.move(area);
 	player.update();
-	
+	snake.update();
 	//area.update();
 }
 

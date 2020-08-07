@@ -46,3 +46,5 @@ void makeRect(polygon & poly);
 
 double directFromTo(const POINT & from, const POINT & to);
 
+double setRandomDirect();
+

@@ -2,7 +2,7 @@
 #include "framework.h"
 //#include <vector>
 //using std::vector;
-
+class cEnemySnake;
 class cPlayer;
 //class cArea;
 
@@ -81,10 +81,11 @@ class cGame
 private:
 	cPlayer player;
 	cArea area;
+	cEnemySnake snake;
 public:
 	cGame();
 	~cGame();
 	void show(HDC hdc);
-	void move(WPARAM wParam);
+	void move();
 	void update();
 };

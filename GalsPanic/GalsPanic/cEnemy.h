@@ -1,53 +1,62 @@
 #pragma once
-class cEnemyBody;
+class cEnemySnakeBody;
 
-class cEnemy
+class cEnemySnake
 {
 private:
-	double direct;
 	//POINT center;
-	vector<cEnemyBody*> body;
+	vector<cEnemySnakeBody*> body_parts;
 	enum class state { idle, move, shoot };
 	state current_state;
+
 
 	void anim_idle();
 	void anim_move();
 	void anim_shoot();
 
+	int idle_count;
+	int move_count;
+	double direct;
+	//POINT move_destination;
+	
 public:
-	cEnemy();
-	~cEnemy();
+	cEnemySnake();
+	~cEnemySnake();
 	void show(HDC hdc);
 	void update();
 };
 
 
-class cEnemyBody
+class cEnemySnakeBody
 {
 protected:
 	POINT center;
 	int radius;
 	double direct;
-	vector<cEnemyBody*> *vecBody;
+	vector<cEnemySnakeBody*> *vecBody;
+	static int move_speed;
 public:
-	cEnemyBody(POINT cen, vector<cEnemyBody*> *vec);
+	cEnemySnakeBody(POINT cen, vector<cEnemySnakeBody*> *vec);
 	int get_index();
 	int get_radius() { return radius; }
 	POINT get_center() { return center; }
 	void set_direct(const POINT &target) { direct = directFromTo(center, target); }
-	virtual ~cEnemyBody();
+	void set_direct(double dir) { direct = dir; }
+	virtual void move();
+	virtual ~cEnemySnakeBody();
 	virtual void show(HDC hdc);
 	//virtual void update();
 };
 
-class cEnemyHead : public cEnemyBody
+class cEnemySnakeHead : public cEnemySnakeBody
 {
 private:
-	POINT poly[3];
+	POINT poly[4];
 public:
-	cEnemyHead(POINT cen, vector<cEnemyBody*> *vec) :cEnemyBody(cen, vec) {};
-	~cEnemyHead();
+	cEnemySnakeHead(POINT cen, vector<cEnemySnakeBody*> *vec) :cEnemySnakeBody(cen, vec) { radius = 20; }
+	~cEnemySnakeHead();
 	void show(HDC hdc);
+	void move();
 	//void update();
 };
 

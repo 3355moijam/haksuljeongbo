@@ -18,7 +18,7 @@ using std::vector;
 typedef vector<POINT> polygon;
 
 #include "FunctionLibrary.h"
-#include "cGame.h"
 #include "cEnemy.h"
+#include "cGame.h"
 #include "cUI.h"
 #include "cGameContainer.h"

@@ -1,3 +1,10 @@
-﻿  cGame.cpp
+﻿  cEnemy.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(83): warning C4018: '<': signed/unsigned mismatch
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(150): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(151): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(172): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(173): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(186): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(187): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
   GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.exe
   GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.pdb (Full PDB)
