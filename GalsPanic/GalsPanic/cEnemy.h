@@ -16,6 +16,7 @@ private:
 
 	int idle_count;
 	int move_count;
+	int shoot_count;
 	double direct;
 	//POINT move_destination;
 	

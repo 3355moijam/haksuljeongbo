@@ -9,6 +9,7 @@ const int framerate = 60;
 const int anim_idle_time = 1;
 const int anim_move_time = 3;
 const int anim_shoot_time = 5;
+const int shoot_delay = 10; // 재장전시간은 bullet이 가지고 있다.
 vector<cBullet*> BulletContainer;
 int cEnemySnakeBody::move_speed = 10;
 
