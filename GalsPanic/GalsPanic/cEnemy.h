@@ -35,12 +35,14 @@ protected:
 	double direct;
 	vector<cEnemySnakeBody*> *vecBody;
 	static int move_speed;
+	POINT move_destination;
+	int body_index;
 public:
-	cEnemySnakeBody(POINT cen, vector<cEnemySnakeBody*> *vec);
+	cEnemySnakeBody(vector<cEnemySnakeBody*> *vec);
 	int get_index();
 	int get_radius() { return radius; }
 	POINT get_center() { return center; }
-	void set_direct(const POINT &target) { direct = directFromTo(center, target); }
+	void set_direct();
 	void set_direct(double dir) { direct = dir; }
 	virtual void move();
 	virtual ~cEnemySnakeBody();
@@ -53,7 +55,7 @@ class cEnemySnakeHead : public cEnemySnakeBody
 private:
 	POINT poly[4];
 public:
-	cEnemySnakeHead(POINT cen, vector<cEnemySnakeBody*> *vec) :cEnemySnakeBody(cen, vec) { radius = 20; }
+	cEnemySnakeHead(POINT cen, vector<cEnemySnakeBody*> *vec) : cEnemySnakeBody(vec) { radius = 20; center = cen; }
 	~cEnemySnakeHead();
 	void show(HDC hdc);
 	void move();

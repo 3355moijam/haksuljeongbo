@@ -6,8 +6,8 @@
 extern RECT g_view;
 
 const int framerate = 60;
-const int anim_idle_time = 3;
-const int anim_move_time = 5;
+const int anim_idle_time = 1;
+const int anim_move_time = 3;
 const int anim_shoot_time = 5;
 vector<cBullet*> BulletContainer;
 int cEnemySnakeBody::move_speed = 10;
@@ -34,11 +34,12 @@ void cEnemySnake::anim_move()
 	// >> 이동 전 몸통 방향 초기화
 	for (size_t i = 1; i < body_parts.size(); i++)
 	{
-		body_parts[i]->set_direct(body_parts[i - 1]->get_center());
+		body_parts[i]->set_direct();
 	}
 	// <<
 	// >> 이동하기
-	for (int i = body_parts.size() - 1; i >= 0; i--)
+	//for (int i = body_parts.size() - 1; i >= 0; i--)
+	for (size_t i = 0; i < body_parts.size(); i++)
 	{
 		body_parts[i]->move();
 	}
@@ -62,11 +63,11 @@ cEnemySnake::cEnemySnake() : direct(-M_PI_2), current_state(cEnemySnake::state::
 							move_count(anim_move_time * framerate)
 {
 	new cEnemySnakeHead({ g_view.right - 100, g_view.bottom - 100 }, &body_parts);
-	for (size_t i = 0; i < 5; i++)
+	for (size_t i = 0; i < 10; i++)
 	{
-		POINT temp = body_parts[i]->get_center();
-		temp.y += body_parts[i]->get_radius() + 10;
-		new cEnemySnakeBody(temp, &body_parts);
+		//POINT temp = body_parts[i]->get_center();
+		//temp.y += body_parts[i]->get_radius() + 10;
+		new cEnemySnakeBody(&body_parts);
 	}
 }
 
@@ -131,9 +132,17 @@ void cBullet::update()
 		delete this;
 }
 
-cEnemySnakeBody::cEnemySnakeBody(POINT cen, vector<cEnemySnakeBody*>* vec) : center(cen), vecBody(vec), radius(10), direct(-M_PI_2)
+cEnemySnakeBody::cEnemySnakeBody(vector<cEnemySnakeBody*>* vec) : vecBody(vec), radius(10), direct(-M_PI_2)
 {
+	body_index = vecBody->size();
 	vecBody->push_back(this);
+	if (body_index != 0)
+	{
+		center = (*vecBody)[body_index - 1]->center;
+		center.y += radius + (*vecBody)[body_index - 1]->radius;
+		move_destination = (*vecBody)[body_index - 1]->center;
+		direct = directFromTo(center, move_destination);
+	}
 }
 
 int cEnemySnakeBody::get_index()
@@ -145,10 +154,22 @@ int cEnemySnakeBody::get_index()
 	}
 }
 
+void cEnemySnakeBody::set_direct()
+{
+	//if (body_index != 0 && sqrt(PtDistance(center, move_destination)) <= (move_speed >> 1))
+	//{
+		move_destination = (*vecBody)[body_index - 1]->center;
+		direct = directFromTo(center, move_destination);
+	//}
+}
+
 void cEnemySnakeBody::move()
 {
-	center.x += cos(direct) * move_speed;
-	center.y += sin(direct) * move_speed;
+	POINT temp = center;
+	temp.x += cos(direct) * move_speed;
+	temp.y += sin(direct) * move_speed;
+	if (PtDistance(temp, (*vecBody)[body_index - 1]->center) >= pow(radius + (*vecBody)[body_index - 1]->radius,2))
+		center = temp;
 }
 
 cEnemySnakeBody::~cEnemySnakeBody()
