@@ -1,0 +1,4 @@
+﻿  server.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\socketprograming\server\server.cpp(38): warning C4101: 'i': unreferenced local variable
+  server.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\socketprograming\Debug\server.exe
+  server.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\socketprograming\Debug\server.pdb (Full PDB)

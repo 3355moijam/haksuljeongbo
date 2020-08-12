@@ -1,5 +1,8 @@
 #pragma once
+#include "framework.h"
 class cEnemySnakeBody;
+class cArea;
+class cPlayer;
 
 class cEnemySnake
 {
@@ -11,8 +14,8 @@ private:
 
 
 	void anim_idle();
-	void anim_move();
-	void anim_shoot();
+	void anim_move(cArea &area);
+	void anim_shoot(cPlayer &player);
 
 	int idle_count;
 	int move_count;
@@ -24,7 +27,7 @@ public:
 	cEnemySnake();
 	~cEnemySnake();
 	void show(HDC hdc);
-	void update();
+	void update(cPlayer &player, cArea &area);
 };
 
 
@@ -44,8 +47,9 @@ public:
 	int get_radius() { return radius; }
 	POINT get_center() { return center; }
 	void set_direct();
+	void set_direct(POINT& target) { direct = directFromTo(center, target); }
 	void set_direct(double dir) { direct = dir; }
-	virtual void move();
+	virtual void move(cArea &area);
 	virtual ~cEnemySnakeBody();
 	virtual void show(HDC hdc);
 	//virtual void update();
@@ -59,7 +63,7 @@ public:
 	cEnemySnakeHead(POINT cen, vector<cEnemySnakeBody*> *vec) : cEnemySnakeBody(vec) { radius = 20; center = cen; }
 	~cEnemySnakeHead();
 	void show(HDC hdc);
-	void move();
+	void move(cArea& area);
 	//void update();
 };
 
@@ -70,15 +74,29 @@ public:
 
 class cBullet
 {
-private:
+protected:
 	int lifetime;
 	double direct;
 	POINT center;
+	int bullet_speed;
 public:
 	cBullet(double dir, const POINT &cen);
 	virtual ~cBullet();
 	int get_index();
 	virtual void show(HDC hdc) = 0;
 	virtual void move() = 0;
+	virtual bool isCollide(cPlayer& player) = 0;
 	void update();
+};
+
+class cSpeedBullet : public cBullet
+{
+private:
+	static int delay;
+	int bullet_length;
+public:
+	cSpeedBullet(double dir, const POINT &cen);
+	void show(HDC hdc);
+	void move();
+	bool isCollide(cPlayer& player);
 };

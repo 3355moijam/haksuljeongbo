@@ -1,10 +1,27 @@
-﻿  cEnemy.cpp
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(84): warning C4018: '<': signed/unsigned mismatch
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(169): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(170): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(193): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(194): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(207): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(208): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+﻿  cUI.cpp
+  cGameContainer.cpp
+  cGame.cpp
+  cEnemy.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(94): warning C4018: '<': signed/unsigned mismatch
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(179): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(180): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(203): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(204): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(217): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(218): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(236): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(237): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(245): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(246): warning C4244: '+=': conversion from 'double' to 'LONG', possible loss of data
+  GalsPanic.cpp
+  FunctionLibrary.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(17): warning C4018: '<': signed/unsigned mismatch
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(40): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(40): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(48): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(48): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\functionlibrary.cpp(211): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\galspanic\galspanic\cenemy.cpp(263): warning C4715: 'cSpeedBullet::isCollide': not all control paths return a value
   GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.exe
   GalsPanic.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\GalsPanic\Debug\GalsPanic.pdb (Full PDB)

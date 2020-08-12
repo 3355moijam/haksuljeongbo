@@ -61,15 +61,17 @@ private:
 	void setDirect(const POINT &temp);
 	void setDirect();
 	bool check_comeback(cArea &area);
-public:
 	POINT center;
+public:
 	cPlayer();
 	cPlayer(int _x, int _y);
 	void set_center(POINT &cen) { center = cen; }
 	void show(HDC hdc);
 	bool move(cArea & area);
+	POINT& get_center() { return center; }
 	int get_from() { return from; }
 	int get_to() { return to; }
+	const polygon& get_path() { return path; }
 	void path_rewind();
 	bool PtOnPath(POINT & target);
 

@@ -499,7 +499,7 @@ void cGame::update()
 {
 	player.move(area);
 	player.update();
-	snake.update();
+	snake.update(player, area);
 	//area.update();
 }
 

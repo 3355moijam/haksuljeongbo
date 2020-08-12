@@ -4,12 +4,12 @@
 #include "cEnemy.h"
 #include <cmath>
 extern RECT g_view;
-
+//class cPlayer;
 const int framerate = 60;
 const int anim_idle_time = 1;
 const int anim_move_time = 3;
-const int anim_shoot_time = 5;
-const int shoot_delay = 10; // 재장전시간은 bullet이 가지고 있다.
+const int anim_shoot_time = 3;
+//const int shoot_delay = 10; // 재장전시간은 bullet이 가지고 있다.
 vector<cBullet*> BulletContainer;
 int cEnemySnakeBody::move_speed = 10;
 
@@ -23,7 +23,7 @@ void cEnemySnake::anim_idle()
 	}
 }
 
-void cEnemySnake::anim_move()
+void cEnemySnake::anim_move(cArea& area)
 {
 	// >> 방향 설정하기
 	if (move_count == anim_move_time * framerate)
@@ -42,26 +42,35 @@ void cEnemySnake::anim_move()
 	//for (int i = body_parts.size() - 1; i >= 0; i--)
 	for (size_t i = 0; i < body_parts.size(); i++)
 	{
-		body_parts[i]->move();
+		body_parts[i]->move(area);
 	}
 	if (move_count == 0)
 	{
 		move_count = anim_move_time * framerate;
-		current_state = cEnemySnake::state::idle;
+		current_state = cEnemySnake::state::shoot;
 	}
 	// <<
 }
 
-void cEnemySnake::anim_shoot()
+void cEnemySnake::anim_shoot(cPlayer& player)
 {
+	if (shoot_count)
+	{
 	// >> 3초간 캐릭터 추적
+		shoot_count--;
+		body_parts[0]->set_direct(player.get_center());
 	// <<
+	}
+	else
+	{
 	// >> 슈팅 딜레이를 두고 총알 발사
+		current_state = cEnemySnake::state::idle;
 	// << 
+	}
 }
 
 cEnemySnake::cEnemySnake() : direct(-M_PI_2), current_state(cEnemySnake::state::idle), idle_count(anim_idle_time * framerate),
-							move_count(anim_move_time * framerate)
+							move_count(anim_move_time * framerate), shoot_count(anim_shoot_time * framerate)
 {
 	new cEnemySnakeHead({ g_view.right - 100, g_view.bottom - 100 }, &body_parts);
 	for (size_t i = 0; i < 10; i++)
@@ -88,7 +97,7 @@ void cEnemySnake::show(HDC hdc)
 	}
 }
 
-void cEnemySnake::update()
+void cEnemySnake::update(cPlayer& player, cArea& area)
 {
 	switch (current_state)
 	{
@@ -96,10 +105,10 @@ void cEnemySnake::update()
 		anim_idle();
 		break;
 	case cEnemySnake::state::move:
-		anim_move();
+		anim_move(area);
 		break;
 	case cEnemySnake::state::shoot:
-		anim_shoot();
+		anim_shoot(player);
 		break;
 	default:
 		break;
@@ -164,7 +173,7 @@ void cEnemySnakeBody::set_direct()
 	//}
 }
 
-void cEnemySnakeBody::move()
+void cEnemySnakeBody::move(cArea& area)
 {
 	POINT temp = center;
 	temp.x += cos(direct) * move_speed;
@@ -202,14 +211,53 @@ void cEnemySnakeHead::show(HDC hdc)
 	Polygon(hdc, poly, 4);
 }
 
-void cEnemySnakeHead::move()
+void cEnemySnakeHead::move(cArea& area)
 {
 	POINT temp = center;
 	temp.x += cos(direct) * move_speed;
 	temp.y += sin(direct) * move_speed;
 
-	if (PtInRect(&g_view, temp))
+	if (PtInRect(&g_view, temp) && !PtInPoly(area.vertex,temp))
 		center = temp;
 	else
 		direct = setRandomDirect();
+}
+
+int cSpeedBullet::delay = 3;
+cSpeedBullet::cSpeedBullet(double dir, const POINT& cen) : cBullet(dir, cen), bullet_length(30)
+{
+	bullet_speed = 25;
+}
+
+
+void cSpeedBullet::show(HDC hdc)
+{
+	POINT temp = center;
+	temp.x += cos(direct) * bullet_length;
+	temp.y += sin(direct) * bullet_length;
+	MoveToEx(hdc, center);
+	LineTo(hdc, temp);
+	
+}
+
+void cSpeedBullet::move()
+{
+	center.x += cos(direct) * bullet_speed;
+	center.y += sin(direct) * bullet_speed;
+
+	if (!PtInRect(&g_view, center))
+		delete this;
+}
+
+bool cSpeedBullet::isCollide(cPlayer& player)
+{
+	if (player.get_path().size())
+	{
+		// 플레이어 판정
+		// 코사인(각도차) * 거리 = 원과 직선사이의 거리
+		// 경로 판정
+		// 
+	}
+	else
+		return false;
 }
