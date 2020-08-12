@@ -3,6 +3,9 @@
 #include "stdafx.h"
 #include "Win32Server.h"
 #include <WinSock2.h>
+#include <vector>
+using std::vector;
+using std::wstring;
 #pragma comment(lib, "ws2_32.lib")
 
 #define WM_ASYNC	WM_USER+2
@@ -14,7 +17,7 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-void addLog(TCHAR **chatLog, TCHAR *chat);
+void addLog(vector<wstring> &chatLog, wstring chat);
 int WinServer(WSADATA &wsadata, SOCKET &s, SOCKET &cs, TCHAR *message, SOCKADDR_IN &addr, SOCKADDR_IN &c_addr);
 
 // Forward declarations of functions included in this code module:
@@ -156,17 +159,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int size, msgLen;
 	char buffer[100];
 	static RECT typeWrite = { 0, 600, 200, 620 };
-	static TCHAR **chatLog;
-	static TCHAR inputmsg[100];
+	static vector<wstring>chatLog;
+	static wstring inputmsg;
     switch (message)
     {
 	case WM_CREATE:
 		//WinServer(wsadata, s, cs, msg, addr, c_addr);
-		chatLog = new TCHAR*[10];
-		for (size_t i = 0; i < 10; i++)
-		{
-			chatLog[i] = new TCHAR[100]();
-		}
+		
 		WSAStartup(MAKEWORD(2, 2), &wsadata);
 		s = socket(AF_INET, SOCK_STREAM, 0);
 		addr.sin_family = AF_INET;
@@ -247,22 +246,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // TODO: Add any drawing code that uses hdc here...
 			if (_tcscmp(msg, _T("")))
 			{
-				addLog(chatLog, msg);
+				wstring msgTemp = msg;
+				addLog(chatLog, msgTemp);
 				//TextOut(hdc, 0, cur_line, msg, (int)_tcslen(msg));
 				//cur_line += 30;
 				memset(msg, 0, _tcslen(msg));
 			}
-			if (_tcscmp(inputmsg, _T("")))
+			if (inputmsg != _T(""))
 			{
 				addLog(chatLog, inputmsg);
 				//TextOut(hdc, 0, cur_line, inputmsg, (int)_tcslen(inputmsg));
 				//cur_line += 30;
-				memset(inputmsg, 0, _tcslen(inputmsg));
+				inputmsg = _T("");
 			}
 			//TextOut(hdc, 0, 600, str, _tcslen(str));
-			for (int i = 0, cur_line = 0 ; i < 10; i++, cur_line += 30)
+			for (int i = 0, cur_line = 0 ; i < chatLog.size(); i++, cur_line += 30)
 			{
-				TextOut(hdc, 0, cur_line, chatLog[i], (int)_tcslen(chatLog[i]));
+				TextOut(hdc, 0, cur_line, chatLog[i].c_str(), (int)_tcslen(chatLog[i].c_str()));
 			}
 			DrawText(hdc, str, _tcslen(str), &typeWrite, DT_LEFT);
             EndPaint(hWnd, &ps);
@@ -284,7 +284,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				count = 0;
 				//return 0;
 
-				memcpy(inputmsg, str, sizeof(TCHAR) * 100);
+				inputmsg = str;
 			}
 			str[0] = NULL;
 		}
@@ -298,11 +298,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
 		closesocket(s);
 		WSACleanup();
-		for (size_t i = 0; i < 10; i++)
-		{
-			delete[] chatLog[i];
-		}
-		delete[] chatLog;
         PostQuitMessage(0);
         break;
     default:
@@ -331,11 +326,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-void addLog(TCHAR **chatLog, TCHAR *chat)
+void addLog(vector<wstring> &chatLog, wstring chat)
 {
-	for (size_t i = 1; i < 10; i++)
-	{
-		memcpy(chatLog[i - 1], chatLog[i], sizeof(TCHAR) * 100);
-	}
-	memcpy(chatLog[9], chat, sizeof(TCHAR) * 100);
+	if (chatLog.size() == 10)
+		chatLog.erase(chatLog.begin());
+	chatLog.push_back(chat);
 }
