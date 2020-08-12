@@ -6,13 +6,16 @@
 #include <WinSock2.h>
 #pragma comment(lib, "ws2_32.lib")
 
+#define WM_ASYNC	WM_USER+2
+
+
 #define MAX_LOADSTRING 100
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-
+void addLog(TCHAR **chatLog, TCHAR *chat);
 int WinClient();
 
 // Forward declarations of functions included in this code module:
@@ -68,6 +71,7 @@ int WinClient()
 	WSADATA wsadata;
 	SOCKET s;
 	SOCKADDR_IN addr = { 0 };
+	
 	
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
 	s = socket(AF_INET, SOCK_STREAM, 0);
@@ -167,10 +171,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	static WSADATA wsadata;
 	static SOCKET s;
 	static SOCKADDR_IN addr = { 0 };
+	static TCHAR msg[100], str[100];
+	static char buffer[100];
+	static int count;
+	int msgLen;
+	static RECT typeWrite = { 0, 600, 200, 620 };
+	static TCHAR **chatLog;
+	static TCHAR inputmsg[100];
 
     switch (message)
     {
 	case WM_CREATE:
+		chatLog = new TCHAR*[10];
+		for (size_t i = 0; i < 10; i++)
+		{
+			chatLog[i] = new TCHAR[100]();
+		}
 		WSAStartup(MAKEWORD(2, 2), &wsadata);
 		s = socket(AF_INET, SOCK_STREAM, 0);
 		if (s == INVALID_SOCKET)
@@ -186,14 +202,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		addr.sin_family = AF_INET;
 		addr.sin_port = 20;
 		addr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
-
-		if (connect(s, (LPSOCKADDR)&addr, sizeof(addr)) == SOCKET_ERROR)
-		{
-			MessageBox(NULL, _T("connect failed"), _T("Error"), MB_OK);
-			return 0;
-		}
-		else
-			MessageBox(NULL, _T("connect success"), _T("Success"), MB_OK);
+		WSAAsyncSelect(s, hWnd, WM_ASYNC, FD_READ);
+		connect(s, (LPSOCKADDR)&addr, sizeof(addr)); // 비동기일 경우엔 체크안해도 됨.
 		break;
     case WM_COMMAND:
         {
@@ -212,20 +222,90 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-	case WM_KEYDOWN:
-		send(s, "안녕하세요 Server!", 19, 0);
+	case WM_CHAR:
+		if (wParam == VK_RETURN)
+		{
+			if (s == INVALID_SOCKET)
+				return 0;
+			else
+			{
+#ifdef _UNICODE
+				msgLen = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
+				WideCharToMultiByte(CP_ACP, 0, str, -1, buffer, msgLen, NULL, NULL);
+#else
+				strcpy_s(buffer, str);
+#endif
+				send(s, (LPSTR)buffer, strlen(buffer) + 1, 0);
+				count = 0;
+				//return 0;
+				memcpy(inputmsg, str, sizeof(TCHAR) * 100);
+			}
+			str[0] = NULL;
+		}
+		else
+		{
+			str[count++] = wParam;
+			str[count] = NULL;
+		}
+		InvalidateRect(hWnd, NULL, true);
 		break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hWnd, &ps);
+
+			// TODO: Add any drawing code that uses hdc here...
+			if (_tcscmp(msg, _T("")))
+			{
+				addLog(chatLog, msg);
+				//TextOut(hdc, 0, cur_line, msg, (int)_tcslen(msg));
+				//cur_line += 30;
+				memset(msg, 0, _tcslen(msg));
+			}
+			if (_tcscmp(inputmsg, _T("")))
+			{
+				addLog(chatLog, inputmsg);
+				//TextOut(hdc, 0, cur_line, inputmsg, (int)_tcslen(inputmsg));
+				//cur_line += 30;
+				memset(inputmsg, 0, _tcslen(inputmsg));
+			}
+			//TextOut(hdc, 0, 600, str, _tcslen(str));
+			for (int i = 0, cur_line = 0; i < 10; i++, cur_line += 30)
+			{
+				TextOut(hdc, 0, cur_line, chatLog[i], (int)_tcslen(chatLog[i]));
+			}
+			DrawText(hdc, str, _tcslen(str), &typeWrite, DT_LEFT);
+			EndPaint(hWnd, &ps);
         }
         break;
+	case WM_ASYNC:
+		switch (lParam)
+		{
+		case FD_READ:
+			msgLen = recv(s, buffer, 100, 0);
+			buffer[msgLen] = NULL;
+
+#ifdef _UNICODE
+			msgLen = MultiByteToWideChar(CP_ACP, 0, buffer, strlen(buffer), NULL, NULL);
+			MultiByteToWideChar(CP_ACP, 0, buffer, strlen(buffer), msg, msgLen);
+			msg[msgLen] = NULL;
+#else
+			strcpy_s(msg, buffer);
+#endif
+			InvalidateRect(hWnd, NULL, true);
+			break;
+		default:
+			break;
+		}
+		break;
     case WM_DESTROY:
 		closesocket(s);
 		WSACleanup();
+		for (size_t i = 0; i < 10; i++)
+		{
+			delete[] chatLog[i];
+		}
+		delete[] chatLog;
         PostQuitMessage(0);
         break;
     default:
@@ -252,4 +332,13 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void addLog(TCHAR **chatLog, TCHAR *chat)
+{
+	for (size_t i = 1; i < 10; i++)
+	{
+		memcpy(chatLog[i - 1], chatLog[i], sizeof(TCHAR) * 100);
+	}
+	memcpy(chatLog[9], chat, sizeof(TCHAR) * 100);
 }
