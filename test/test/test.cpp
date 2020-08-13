@@ -14,17 +14,10 @@ public:
 	~test() { cout << "»èÁ¦" << endl; }
 };
 #include <iomanip>
-
+#include <vector>
+#include <string>
 int main()
 {
-	for (size_t i = 0; i < 5; i++)
-	{
-		if (i == 3)
-			break;
-
-		cout << i << endl;
-		
-	}
 	return 0;
 }
 

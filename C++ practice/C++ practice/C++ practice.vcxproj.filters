@@ -95,7 +95,7 @@
     <ClCompile Include="class\AVL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="0804.1 AVL tree.cpp">
+    <ClCompile Include="0813.1 thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
