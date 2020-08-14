@@ -1,3 +1,5 @@
-﻿  0813.1 thread.cpp
+﻿  0814.1 Dijkstra.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\c++ practice\c++ practice\0814.1 dijkstra.cpp(142): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\c++ practice\c++ practice\0814.1 dijkstra.cpp(151): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   C++ practice.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\C++ practice\x64\Debug\C++ practice.exe
   C++ practice.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\C++ practice\x64\Debug\C++ practice.pdb (Full PDB)

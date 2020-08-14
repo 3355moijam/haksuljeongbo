@@ -8,3 +8,6 @@
 /test
 /windtest
 *.opendb
+*.pch
+*.db
+*.ipch
