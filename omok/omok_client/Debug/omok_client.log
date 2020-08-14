@@ -1,0 +1,14 @@
+﻿  stdafx.cpp
+  omok_client.cpp
+  cGame_omok_client.cpp
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(112): warning C4838: 'unsigned int'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(113): warning C4800: 'BOOL': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(120): warning C4838: 'unsigned int'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(125): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(126): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(135): warning C4244: '+=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\omok\omok_client\cgame_omok_client.cpp(136): warning C4244: '+=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  FunctionLibrary.cpp
+  코드를 생성하고 있습니다...
+  omok_client.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\omok\Debug\omok_client.exe
+  omok_client.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\omok\Debug\omok_client.pdb (Full PDB)
