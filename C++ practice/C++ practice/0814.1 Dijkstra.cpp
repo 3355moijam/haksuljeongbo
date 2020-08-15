@@ -28,13 +28,22 @@ int arrEdgeCost2[NUM_NODE][NUM_NODE] =
 };
 vector<int> path;
 int Dijkstra(int start, int end);
-void arrangePath();
 void printPath();
 int main()
 {
-	int startNode = 0;
-	int endNode = 7;
-	
+	int startNode;
+	cout << "시작 노드 : ";
+	cin >> startNode;
+	cin.ignore();
+	startNode--;
+
+	int endNode;
+	cout << "도착 노드 : ";
+	cin >> endNode;
+	cin.ignore();
+	endNode--;
+
+
 	cout << "최단 거리 : " << Dijkstra(startNode, endNode) << endl;
 	cout << "최단 경로 : ";
 	printPath();
@@ -104,6 +113,7 @@ int Dijkstra(int start, int end)
 		}
 		
 	}
+
 	path.push_back(end);
 	int temp = BeforeNode[end];
 	while (true)
@@ -118,15 +128,6 @@ int Dijkstra(int start, int end)
 
 	return CurrentEdgeCost[end];
 
-}
-
-void arrangePath()
-{
-	for (int i  = path.size() - 1; i > 0; i-- )
-	{
-		if (arrEdgeCost[i][(i - 1)] == I)
-			path.erase(path.begin() + i++ - 1);
-	}
 }
 
 void printPath()
