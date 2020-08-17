@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "omok_server.h"
 
+
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -133,10 +134,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	// 타이핑
 	static TCHAR str[BUFSIZ];
 	static SOCKADDR_IN addr = { 0 }, c_addr;
-	static int count;// , cur_line = 0;
 	int size, msgLen;
 	char buffer[BUFSIZ];
-	
+	static int playerID = 0;
+
+	cGame_omok& omok = cGame_omok::GetInstance();
     switch (message)
     {
 	case WM_CREATE:
@@ -164,14 +166,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (lParam)
 		{
 		case FD_ACCEPT:
+		{
 			size = sizeof(c_addr);
 			//MessageBox(NULL, _T("fdread ready"), _T("fdread"), MB_OK);
-			cs.push_back(accept(s, (LPSOCKADDR)& c_addr, &size));
+			cs.push_back(accept(s, (LPSOCKADDR)&c_addr, &size));
 			WSAAsyncSelect(cs.back(), hWnd, WM_ASYNC, FD_READ);
+			//cs.back()한테 init보내기
+
+			omok_initialize init;
+			init.player_id = ++playerID;
+			if (playerID > 2)
+				init.player_type = WATCH;
+			else
+				init.player_type = playerID;
+			init.player_turn = omok.getTurn();
+
+			memset(buffer, 0, BUFSIZ);
+			memcpy_s(buffer, BUFSIZ, "0\0", 2);
+			memcpy_s(buffer + 2, BUFSIZ - 2, (char*)&init, sizeof(omok_initialize));
+			send(cs.back(), (LPSTR)buffer, BUFSIZ, 0);
+			//playerID++;
+		}
 			break;
 		case FD_READ:
 			msgLen = recv(wParam, buffer, BUFSIZ, 0);
-			buffer[msgLen] = NULL;
+			//buffer[msgLen] = NULL;
 #ifdef _UNICODE
 			msgLen = MultiByteToWideChar(CP_ACP, 0, buffer, strlen(buffer), NULL, NULL);
 			MultiByteToWideChar(CP_ACP, 0, buffer, strlen(buffer), msg, msgLen);
@@ -179,6 +198,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 #else
 			strcpy_s(msg, buffer);
 #endif
+			if (buffer[0] == '1')
+			{
+				omok_playlog playlog;
+				memcpy(&playlog, buffer + 2, sizeof(omok_playlog));
+				if (playlog.player_turn == omok.getTurn())
+				{
+					playlog.player_turn = playlog.player_turn == BLACK ? WHITE : BLACK;
+					omok.setPlayLog(playlog);
+					memcpy(buffer + 2, (char*)&playlog, sizeof(omok_playlog));
+
+
+					if (omok.CheckGameEnd(playlog.index, playlog.player_type))
+					{
+						omok_gameend end = { playlog.player_type, playlog.index };
+						memset(buffer, 0, BUFSIZ);
+						memcpy_s(buffer, BUFSIZ, "3\0", 2);
+						memcpy_s(buffer + 2, BUFSIZ - 2, (char*)&end, sizeof(omok_gameend));
+						for (size_t i = 0; i < cs.size(); i++)
+							send(cs[i], (LPSTR)buffer, BUFSIZ, 0);
+						DestroyWindow(hWnd);
+					}
+					else
+					{
+						for (size_t i = 0; i < cs.size(); i++)
+							send(cs[i], (LPSTR)buffer, BUFSIZ, 0);
+					}
+				}
+			}
 			InvalidateRect(hWnd, NULL, true);
 			break;
 		case FD_CLOSE:

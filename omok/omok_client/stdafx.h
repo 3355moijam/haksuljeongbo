@@ -21,8 +21,10 @@
 using std::vector;
 using std::wstring;
 #pragma comment(lib, "ws2_32.lib")
-#include "FunctionLibrary.h"
 
 #define WM_ASYNC WM_USER + 2
-#include "cGame_omok_client.h"
+#pragma comment (lib, "omok_dll.lib")
+#include "omok_framework.h"
+//#include "FunctionLibrary.h"
+//#include "omok_dll.h"
 // TODO: reference additional headers your program requires here

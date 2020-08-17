@@ -2,7 +2,9 @@
 //
 
 #include "stdafx.h"
+
 #include "omok_client.h"
+
 
 #define MAX_LOADSTRING 100
 
@@ -121,13 +123,40 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
+
+WSADATA wsadata;
+SOCKET s;
+vector<wstring>chatLog;
+wstring inputmsg;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static TCHAR msg[BUFSIZ];
+    // 타이핑
+    static TCHAR str[BUFSIZ];
+    static SOCKADDR_IN addr = { 0 }, c_addr;
+    int size, msgLen;
+    char buffer[BUFSIZ];
+    cGame_omok& omok = cGame_omok::GetInstance();
     switch (message)
     {
 	case WM_CREATE:
-		cGame_omok_client::GetInstance();
 		GetClientRect(hWnd, &g_view);
+
+        WSAStartup(MAKEWORD(2, 2), &wsadata);
+        s = socket(AF_INET, SOCK_STREAM, 0);
+        if (s == INVALID_SOCKET)
+        {
+            MessageBox(NULL, _T("socket failed"), _T("Error"), MB_OK);
+            return 0;
+        }
+
+
+        addr.sin_family = AF_INET;
+        addr.sin_port = 20;
+        addr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+        WSAAsyncSelect(s, hWnd, WM_ASYNC, FD_READ);
+        connect(s, (LPSOCKADDR)&addr, sizeof(addr)); // 비동기일 경우엔 체크안해도 됨.
+
 		break;
     case WM_COMMAND:
         {
@@ -158,7 +187,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PatBlt(hMemDC, 0, 0, g_view.right, g_view.bottom, WHITENESS);
 
 
-		cGame_omok_client::GetInstance().show(hMemDC);
+		cGame_omok::GetInstance().show(hMemDC);
 
 
 		BitBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, 0, 0, SRCCOPY);
@@ -171,8 +200,66 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		GetClientRect(hWnd, &g_view);
 		break;
     case WM_LBUTTONDOWN:
-        cGame_omok_client::GetInstance().PutStone(LOWORD(lParam), HIWORD(lParam), BLACK);
+        if (omok.PutStone(LOWORD(lParam), HIWORD(lParam), omok.getType()))
+        {
+            if (s == INVALID_SOCKET)
+                return 0;
+            else
+            {
+                omok_playlog playlog = omok.getPlayLog(LOWORD(lParam), HIWORD(lParam));
+                // 서버에 메시지 보내기
+                memset(buffer, 0, BUFSIZ);
+                memcpy_s(buffer, BUFSIZ, "1\0", 2);
+                memcpy_s(buffer + 2, BUFSIZ - 2, (char*)&playlog, sizeof(playlog));
+                send(s, (LPSTR)buffer, BUFSIZ, 0);
+            }
+            InvalidateRect(hWnd, NULL, false);
+        }
+        break;
+    case WM_ASYNC:
+        switch (lParam)
+        {
+        case FD_READ:
+        {
+            msgLen = recv(wParam, buffer, BUFSIZ, 0);
+            //buffer[msgLen] = NULL;
+#ifdef _UNICODE
+            msgLen = MultiByteToWideChar(CP_ACP, 0, buffer, strlen(buffer), NULL, NULL);
+            MultiByteToWideChar(CP_ACP, 0, buffer, strlen(buffer), msg, msgLen);
+            msg[msgLen] = NULL;
+#else
+            strcpy_s(msg, buffer);
+#endif
+            if (buffer[0] == '0')
+            {
+                omok_initialize init;
+                memcpy(&init, buffer + 2, sizeof(omok_initialize));
+                omok.setInit(init);
+            }
+            else if (buffer[0] == '1')
+            {
+                omok_playlog playlog;
+                memcpy(&playlog, buffer + 2, sizeof(omok_playlog));
+                omok.setPlayLog(playlog);
+            }
+            else if (buffer[0] == '2')
+            {
+
+            }
+            else if (buffer[0] == '3')
+            {
+                omok_gameend end;
+                memcpy(&end, buffer + 2, sizeof(omok_gameend));
+                omok.PutStone(end.index, end.winner);
+                if (omok.GameOver(end.winner) == IDOK)
+                    DestroyWindow(hWnd);
+            }
+        }
         InvalidateRect(hWnd, NULL, false);
+            break;
+        default:
+            break;
+        }
         break;
     case WM_DESTROY:
         PostQuitMessage(0);

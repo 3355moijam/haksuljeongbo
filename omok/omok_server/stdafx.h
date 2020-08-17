@@ -23,7 +23,6 @@ using std::wstring;
 #pragma comment(lib, "ws2_32.lib")
 
 #define WM_ASYNC WM_USER + 2
-
-#include "cGame_omok_server.h"
-
+#pragma comment (lib, "omok_dll.lib")
+#include "omok_framework.h"
 // TODO: reference additional headers your program requires here

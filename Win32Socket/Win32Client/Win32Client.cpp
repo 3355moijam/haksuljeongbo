@@ -224,8 +224,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CHAR:
 		if (wParam == VK_RETURN)
 		{
-			if (s == INVALID_SOCKET)
-				return 0;
+		
 			else
 			{
 #ifdef _UNICODE
