@@ -10,4 +10,8 @@
 *.opendb
 *.pch
 *.db
+<<<<<<< HEAD
 *.ipch
+=======
+*.ipch
+>>>>>>> 오목

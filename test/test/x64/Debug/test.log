@@ -1,3 +1,4 @@
 ﻿  test.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\test\test\test.cpp(24): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
   test.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\test\x64\Debug\test.exe
   test.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\test\x64\Debug\test.pdb (Full PDB)

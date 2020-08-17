@@ -18,6 +18,20 @@ public:
 #include <string>
 int main()
 {
+	vector<int> v;
+	for (size_t i = 0; i < 10; i++)
+	{
+		v.push_back(i);
+	}
+
+	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		if (*it == 5)
+		{
+			v.erase(it);
+			break;
+		}
+	}
 	return 0;
 }
 
@@ -36,19 +50,19 @@ int main()
 //	return 0;
 //}
 
-bool isBetweenPt(POINT target, POINT p1, POINT p2)
-{
-	int distance1 = PtDistance(target, p1);
-	int distance2 = PtDistance(target, p2);
-	int distance3 = PtDistance(p1, p2);
-
-	if (distance1 + distance2 == distance3)
-		return true;
-	else
-		return false;
-}
-
-int PtDistance(POINT p1, POINT p2)
-{
-	return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
-}
+//bool isBetweenPt(POINT target, POINT p1, POINT p2)
+//{
+//	int distance1 = PtDistance(target, p1);
+//	int distance2 = PtDistance(target, p2);
+//	int distance3 = PtDistance(p1, p2);
+//
+//	if (distance1 + distance2 == distance3)
+//		return true;
+//	else
+//		return false;
+//}
+//
+//int PtDistance(POINT p1, POINT p2)
+//{
+//	return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+//}
