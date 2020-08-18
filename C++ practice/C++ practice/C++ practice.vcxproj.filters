@@ -95,7 +95,7 @@
     <ClCompile Include="class\AVL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="0814.1 Dijkstra.cpp">
+    <ClCompile Include="0818.1 A star.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
