@@ -23,26 +23,27 @@ private:
 	Point start;
 	Point end;
 	Point current;
-	static node routeMap[MAPSIZE][MAPSIZE];
-	static int Map[MAPSIZE][MAPSIZE];
+	node routeMap[MAPSIZE][MAPSIZE];
+	int Map[MAPSIZE][MAPSIZE];
 	vector<Point> vecSearch;
-public:
 	cAstar();
+
+public:
 	~cAstar();
 
-	//static cAstar* GetInstance() { 
-	//	static cAstar *pathfinder = new cAstar(); 
-	//	return pathfinder; }
-	bool Astar();
+	static cAstar* GetInstance() { 
+		static cAstar pathfinder; 
+		return &pathfinder; }
+	bool path_find();
 	void setH(Point target, Point *tempPoint);
 	void setG(Point src, Point *tempPoint);
 	void setF(Point *tempPoint);
 	void initRouteMap();
 	void show(HDC hdc);
 	void setPath();
-	//cAstar(cAstar const&) = delete;
-	//cAstar(cAstar&&) = delete;
-	//cAstar& operator=(cAstar const&) = delete;
-	//cAstar& operator=(cAstar&&) = delete;
+	cAstar(cAstar const&) = delete;
+	cAstar(cAstar&&) = delete;
+	cAstar& operator=(cAstar const&) = delete;
+	cAstar& operator=(cAstar&&) = delete;
 
 };

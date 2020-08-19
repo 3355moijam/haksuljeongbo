@@ -5,20 +5,20 @@
 vector<Point> path_stack;
 
 
-node cAstar::routeMap[MAPSIZE][MAPSIZE] = { 0 };
-int cAstar::Map[MAPSIZE][MAPSIZE] =
-{
-	{ 0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,1,1,1 },
-	{ 0,0,0,0,0,0,0,1,0,0 },
-	{ 0,0,0,0,0,0,0,1,0,0 },
-	{ 0,0,0,0,0,0,0,1,0,0 },
-	{ 0,0,0,1,1,1,1,1,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0 }
-};
+//node cAstar::routeMap[MAPSIZE][MAPSIZE] = { 0 };
+//int cAstar::Map[MAPSIZE][MAPSIZE] =
+//{
+//	{ 0,0,0,0,0,0,0,0,0,0 },
+//	{ 0,0,0,0,0,0,0,0,0,0 },
+//	{ 0,0,0,0,0,0,0,0,0,0 },
+//	{ 0,0,0,0,0,0,0,1,1,1 },
+//	{ 0,0,0,0,0,0,0,1,0,0 },
+//	{ 0,0,0,0,0,0,0,1,0,0 },
+//	{ 0,0,0,0,0,0,0,1,0,0 },
+//	{ 0,0,0,1,1,1,1,1,0,0 },
+//	{ 0,0,0,0,0,0,0,0,0,0 },
+//	{ 0,0,0,0,0,0,0,0,0,0 }
+//};
 bool operator==(Point& left, Point& right) { return (left.x == right.x) && (left.y == right.y); }
 
 cAstar::cAstar() : start(), end(), current(), vecSearch()
@@ -26,6 +26,22 @@ cAstar::cAstar() : start(), end(), current(), vecSearch()
 	start = { 0,0 };
 	end = { 9,9 };
 	current = start;
+
+	//memset(routeMap, 0, sizeof(routeMap));
+	int tempMap[MAPSIZE][MAPSIZE] =
+	{
+		{ 0,0,0,0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0,0,0,0 },
+		{ 1,1,1,0,0,0,0,1,1,0 },
+		{ 0,0,1,1,0,0,0,1,0,0 },
+		{ 0,0,0,1,1,0,0,1,0,0 },
+		{ 0,0,0,0,1,1,0,1,0,0 },
+		{ 0,0,0,1,1,1,1,1,0,0 },
+		{ 0,0,0,0,0,0,0,0,0,0 },
+		{ 0,0,0,0,0,0,0,0,0,0 }
+	};
+	memcpy(Map, tempMap, sizeof(tempMap));
 
 	initRouteMap();
 	Map[start.y][start.x] = START;
@@ -39,7 +55,7 @@ cAstar::~cAstar()
 }
 
 
-bool cAstar::Astar()
+bool cAstar::path_find()
 {
 	if (current == end)
 		return true;
@@ -96,21 +112,27 @@ bool cAstar::Astar()
 	setG(current, tempPoint);
 	setF(tempPoint);
 	// 2. f가 가장 작은 노드를 current로 재귀
-	Point tempIndex = vecSearch[0];
-	for (size_t i = 1; i < vecSearch.size(); i++)
+	Point tempIndex;
+	if (vecSearch.size())
 	{
-		//if (routeMap[tempIndex.y][tempIndex.x].h_value > routeMap[vecSearch[i].y][vecSearch[i].x].h_value)
-		//	tempIndex = vecSearch[i];
-		//else if (routeMap[tempIndex.y][tempIndex.x].h_value == routeMap[vecSearch[i].y][vecSearch[i].x].h_value)
-		//	if (routeMap[tempIndex.y][tempIndex.x].f_value > routeMap[vecSearch[i].y][vecSearch[i].x].f_value)
-		//		tempIndex = vecSearch[i];
+		tempIndex = vecSearch[0];
+		for (size_t i = 1; i < vecSearch.size(); i++)
+		{
+			//if (routeMap[tempIndex.y][tempIndex.x].f_value > routeMap[vecSearch[i].y][vecSearch[i].x].f_value)
+			//	tempIndex = vecSearch[i];
 
-		//if (routeMap[tempIndex.y][tempIndex.x].f_value > routeMap[vecSearch[i].y][vecSearch[i].x].f_value)
-		//	tempIndex = vecSearch[i];
+			//if (routeMap[tempIndex.y][tempIndex.x].h_value > routeMap[vecSearch[i].y][vecSearch[i].x].h_value)
+			//	tempIndex = vecSearch[i];
+			//else if (routeMap[tempIndex.y][tempIndex.x].h_value == routeMap[vecSearch[i].y][vecSearch[i].x].h_value)
+			//	if (routeMap[tempIndex.y][tempIndex.x].f_value > routeMap[vecSearch[i].y][vecSearch[i].x].f_value)
+			//		tempIndex = vecSearch[i];
 
-		if (routeMap[tempIndex.y][tempIndex.x].f_value + routeMap[tempIndex.y][tempIndex.x].h_value > routeMap[vecSearch[i].y][vecSearch[i].x].f_value + routeMap[vecSearch[i].y][vecSearch[i].x].h_value)
-			tempIndex = vecSearch[i];
+			if (routeMap[tempIndex.y][tempIndex.x].f_value + routeMap[tempIndex.y][tempIndex.x].h_value > routeMap[vecSearch[i].y][vecSearch[i].x].f_value + routeMap[vecSearch[i].y][vecSearch[i].x].h_value)
+				tempIndex = vecSearch[i];
+		}
 	}
+	else
+		return true; // 길이 막힘
 
 	current = tempIndex;
 	return false;
@@ -165,6 +187,8 @@ void cAstar::setF(Point *tempPoint)
 {
 	for (size_t i = 1; i < 9; i++)
 	{
+		if (tempPoint[i].x < 0 || tempPoint[i].x >= MAPSIZE || tempPoint[i].y < 0 || tempPoint[i].y >= MAPSIZE)
+			continue;
 		routeMap[tempPoint[i].y][tempPoint[i].x].f_value = routeMap[tempPoint[i].y][tempPoint[i].x].g_value + routeMap[tempPoint[i].y][tempPoint[i].x].h_value;
 	}
 }

@@ -121,10 +121,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
-cAstar pathfinder;
+//cAstar pathfinder;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    //cAstar* pathfinder = cAstar::GetInstance();
+    cAstar* pathfinder = cAstar::GetInstance();
     switch (message)
     {
 	case WM_CREATE:
@@ -151,7 +151,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-			pathfinder.show(hdc);
+			pathfinder->show(hdc);
             EndPaint(hWnd, &ps);
         }
         break;
@@ -159,7 +159,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 1:
-            if (pathfinder.Astar())
+            if (pathfinder->path_find())
                 KillTimer(hWnd, 1);
 			InvalidateRect(hWnd, NULL, true);
 			break;
