@@ -31,9 +31,9 @@ private:
 public:
 	~cAstar();
 
-	static cAstar* GetInstance() { 
+	static cAstar& GetInstance() { 
 		static cAstar pathfinder; 
-		return &pathfinder; }
+		return pathfinder; }
 	bool path_find();
 	void setH(Point target, Point *tempPoint);
 	void setG(Point src, Point *tempPoint);
