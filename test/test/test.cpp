@@ -5,33 +5,56 @@
 #include <Windows.h>
 #include <locale.h>
 #include <iostream>
+#include <string>
+#include "rapidjson\document.h"
+#include "rapidjson\filereadstream.h"
+using namespace rapidjson;
 
 using namespace std;
-class test
-{
-public:
-	test() { cout << "생성" << endl; }
-	~test() { cout << "삭제" << endl; }
-};
-#include <iomanip>
-#include <vector>
-#include <string>
+
+#include <typeinfo>
+
+
 int main()
 {
-	vector<int> v;
-	for (size_t i = 0; i < 10; i++)
+	//string json = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[[1, 2, 3, 4],[5, 6, 7, 8]] } ";
+	//Document doc;
+	//doc.Parse(json.c_str());
+	//const rapidjson::Value& valueInfo = doc["a"];
+
+	//for (SizeType i = 0; i < valueInfo.Size(); i++)
+	//{
+
+	//	for (SizeType j = 0; j < valueInfo[i].Size(); j++)
+	//	{
+	//		cout << valueInfo[i][j].GetInt() << " ";
+	//	}
+	//	cout << '\n';
+	//}
+	FILE *fp = fopen("sample.json", "rb");
+
+	char buffer[65536];
+	FileReadStream is(fp, buffer, sizeof(buffer));
+	Document doc;
+	doc.ParseStream(is);
+	int nArrTemp[2][4];
+	const rapidjson::Value& valueInfo = doc["a"];
+	memcpy(nArrTemp, &valueInfo.GetArray(), sizeof(int) * 2 * 4);
+	//cout << typeid(valueInfo.GetArray()).name() << endl;
+	for (SizeType i = 0; i < valueInfo.Size(); i++)
 	{
-		v.push_back(i);
+		cout << typeid(valueInfo).name() << endl;
+		cout << typeid(valueInfo[i]).name() << endl;
+		for (SizeType j = 0; j < valueInfo[i].Size(); j++)
+		{
+			cout << typeid(valueInfo[i][j]).name() << endl;
+			cout << valueInfo[i][j].GetInt() << " ";
+		}
+		cout << '\n';
 	}
 
-	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
-	{
-		if (*it == 5)
-		{
-			v.erase(it);
-			break;
-		}
-	}
+	fclose(fp);
+
 	return 0;
 }
 

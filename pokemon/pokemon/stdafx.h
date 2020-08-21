@@ -16,6 +16,13 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <vector>
+#include <string>
+using std::vector;
+using std::wstring;
 
+#include "cContainer.h"
+#include "cCharacter.h"
+#include "cMap.h"
 
 // TODO: reference additional headers your program requires here

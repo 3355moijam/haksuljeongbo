@@ -141,12 +141,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cCharacter.h" />
+    <ClInclude Include="cContainer.h" />
+    <ClInclude Include="cGameManager.h" />
+    <ClInclude Include="cMap.h" />
     <ClInclude Include="pokemon.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cCharacter.cpp" />
+    <ClCompile Include="cContainer.cpp" />
+    <ClCompile Include="cGameManager.cpp" />
+    <ClCompile Include="cMap.cpp" />
     <ClCompile Include="pokemon.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

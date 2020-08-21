@@ -30,12 +30,36 @@
     <ClInclude Include="pokemon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCharacter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pokemon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cCharacter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
