@@ -37,21 +37,15 @@ int main()
 	FileReadStream is(fp, buffer, sizeof(buffer));
 	Document doc;
 	doc.ParseStream(is);
-	int nArrTemp[2][4];
 	const rapidjson::Value& valueInfo = doc["a"];
-	memcpy(nArrTemp, &valueInfo.GetArray(), sizeof(int) * 2 * 4);
 	//cout << typeid(valueInfo.GetArray()).name() << endl;
-	for (SizeType i = 0; i < valueInfo.Size(); i++)
-	{
-		cout << typeid(valueInfo).name() << endl;
-		cout << typeid(valueInfo[i]).name() << endl;
-		for (SizeType j = 0; j < valueInfo[i].Size(); j++)
-		{
-			cout << typeid(valueInfo[i][j]).name() << endl;
-			cout << valueInfo[i][j].GetInt() << " ";
-		}
-		cout << '\n';
-	}
+	//for (SizeType i = 0; i < valueInfo.Size(); i++)
+	//{
+	//	for (SizeType j = 0; j < valueInfo[i].Size(); j++)
+	//	{
+	//	}
+	//	cout << '\n';
+	//}
 
 	fclose(fp);
 
