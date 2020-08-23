@@ -5,33 +5,73 @@
 #include <Windows.h>
 #include <locale.h>
 #include <iostream>
-
-using namespace std;
-class test
-{
-public:
-	test() { cout << "생성" << endl; }
-	~test() { cout << "삭제" << endl; }
-};
-#include <iomanip>
 #include <vector>
 #include <string>
-int main()
+using namespace std;
+
+class Creature
 {
-	vector<int> v;
-	for (size_t i = 0; i < 10; i++)
+public:
+	string name;
+	int attack, defense;
+	Creature(string name, int atk, int def) : name(name), attack(atk), defense(def) {};
+	friend ostream& operator<<(ostream& os, Creature& creat)
 	{
-		v.push_back(i);
+
 	}
 
-	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+};
+
+class CreatureModifier
+{
+	CreatureModifier* next{ nullptr };
+protected:
+	Creature& creature;
+public:
+	explicit CreatureModifier(Creature& creat)
+		:creature(creat) {}
+
+	void add(CreatureModifier* cm)
 	{
-		if (*it == 5)
-		{
-			v.erase(it);
-			break;
-		}
+		if (next) next->add(cm);
+		else next = cm;
 	}
+
+	virtual void handle()
+	{
+		if (next) next->handle();
+	}
+};
+
+class DoubleAttackModifier : public CreatureModifier
+{
+public:
+	explicit DoubleAttackModifier(Creature& creat)
+		: CreatureModifier(creat) {}
+	void handle()
+	{
+		creature.attack *= 2;
+		CreatureModifier::handle();
+	}
+};
+
+class IncreaseDefenseModifier : public CreatureModifier
+{
+public:
+	explicit IncreaseDefenseModifier(Creature& creat)
+		: CreatureModifier(creature) {}
+
+	void handle()
+	{
+		if (creature.attack <= 2)
+			creature.defense += 1;
+		CreatureModifier::handle();
+	}
+};
+
+int main()
+{
+	
 	return 0;
 }
 
