@@ -7,26 +7,27 @@ enum class enumDirect
 	RIGHT,
 	DOWN
 };
-class cCharacter : public cContainer
+class cCharacter : public iActorBase
 {
 protected:
 	wstring name;
 	enumDirect direct;
-	POINT locationIndex;
+	POINT LocationOnMap;
 
 public:
 	cCharacter();
 	virtual ~cCharacter();
-	virtual bool move(cMap &map);
+	//virtual bool move(cMap &map);
 };
 
-class cPlayer : public cCharacter
+class cPlayer : public cCharacter, public cController
 {
+private:
 public:
 	cPlayer();
 	void show(HDC hdc);
 	void update();
-	bool move(cMap &map);
+	bool getInput();
 };
 
 class cNPC : public cCharacter
@@ -41,4 +42,5 @@ public:
 	void show(HDC hdc);
 	void update();
 	bool move(cMap &map);
+	void say();
 };

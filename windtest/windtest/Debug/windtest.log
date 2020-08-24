@@ -1,3 +1,4 @@
-﻿  windtest.cpp
-  windtest.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\windtest\Debug\windtest.exe
-  windtest.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\windtest\Debug\windtest.pdb (Full PDB)
+﻿  0714.1 print.cpp
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\windtest\windtest\0714.1 print.cpp(204): warning C4101: 'oldbrush' :참조되지 않은 지역 변수입니다.
+  windtest.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\windtest\Debug\windtest.exe
+  windtest.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\windtest\Debug\windtest.pdb (Full PDB)

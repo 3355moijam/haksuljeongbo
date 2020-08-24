@@ -36,10 +36,13 @@
     <ClInclude Include="cCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cContainer.h">
+    <ClInclude Include="cGameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cGameManager.h">
+    <ClInclude Include="interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,10 +59,13 @@
     <ClCompile Include="cCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cContainer.cpp">
+    <ClCompile Include="cGameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cGameManager.cpp">
+    <ClCompile Include="interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

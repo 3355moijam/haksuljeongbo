@@ -5,10 +5,15 @@ enum class enumMapStatus
 {
 	movable,
 	unmovable,
+	grass,
+	lslope,
+	rslope,
+	uslope,
+	dslope,
 	linkedMap = 20,
 	linkedHouse = 30
 };
-class cMap : public cContainer
+class cMap : public iActorBase
 {
 private:
 	wstring name;
@@ -24,4 +29,20 @@ public:
 	cMap();
 	~cMap();
 	void show(HDC hdc);
+	void update() {}
+};
+
+class cNoticeSign
+{
+
+};
+
+class cCuttableTree
+{
+
+};
+
+class cSea
+{
+
 };

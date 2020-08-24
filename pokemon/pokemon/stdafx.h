@@ -21,7 +21,8 @@
 using std::vector;
 using std::wstring;
 
-#include "cContainer.h"
+#include "cGameManager.h"
+#include "interface.h"
 #include "cCharacter.h"
 #include "cMap.h"
 

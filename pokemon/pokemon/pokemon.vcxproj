@@ -142,7 +142,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cCharacter.h" />
-    <ClInclude Include="cContainer.h" />
+    <ClInclude Include="cUI.h" />
+    <ClInclude Include="interface.h" />
     <ClInclude Include="cGameManager.h" />
     <ClInclude Include="cMap.h" />
     <ClInclude Include="pokemon.h" />
@@ -152,7 +153,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cCharacter.cpp" />
-    <ClCompile Include="cContainer.cpp" />
+    <ClCompile Include="cUI.cpp" />
+    <ClCompile Include="interface.cpp" />
     <ClCompile Include="cGameManager.cpp" />
     <ClCompile Include="cMap.cpp" />
     <ClCompile Include="pokemon.cpp" />
