@@ -1,30 +1,35 @@
 #pragma once
 #include "stdafx.h"
-
+class cWarpzone;
 enum class enumMapStatus
 {
 	movable,
 	unmovable,
 	grass,
-	lslope,
+	sea,
+	notice,
+	cuttableTree,
+	berryTree,
+	item,
+	poke,
+	lslope = 15,
 	rslope,
 	uslope,
 	dslope,
-	linkedMap = 20,
-	linkedHouse = 30
+	linkedMap = 30,
+	door = 31
 };
 class cMap : public iActorBase
 {
 private:
 	wstring name;
-	int *map;
+	short *map;
 	unsigned int width;
 	unsigned int height;
 	HBITMAP hMap;
 	BITMAP bitmapData;
-	vector<wstring> linkedMap;
-	vector<wstring> linkedHouse;
-
+	vector<cWarpzone*> linkedMap; // 이름과 좌표에 대한 정보
+	vector<iSpeakActor*> object;
 public:
 	cMap();
 	~cMap();
@@ -32,17 +37,28 @@ public:
 	void update() {}
 };
 
-class cNoticeSign
+class cWarpzone
 {
-
+	//로드할 맵에 대한 정보, 위치인덱스
+public:
+	wstring mapname;
+	POINT index;
 };
 
-class cCuttableTree
+class cNoticeSign : public iSpeakActor
 {
-
+public:
+	void say();
 };
 
-class cSea
+class cCuttableTree : public iSpeakActor
 {
+public:
+	void say();
+};
 
+class cSea : public iSpeakActor
+{
+public:
+	void say();
 };

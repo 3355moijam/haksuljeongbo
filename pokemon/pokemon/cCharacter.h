@@ -20,7 +20,7 @@ public:
 	//virtual bool move(cMap &map);
 };
 
-class cPlayer : public cCharacter, public cController
+class cPlayer : public cCharacter//, public iController
 {
 private:
 public:
@@ -30,12 +30,9 @@ public:
 	bool getInput();
 };
 
-class cNPC : public cCharacter
+class cNPC : public cCharacter, public iSpeakActor
 {
 private:
-	vector<wstring> dialog;
-	wstring cur_dialog;
-	unsigned int countMeet;
 
 public:
 	cNPC();

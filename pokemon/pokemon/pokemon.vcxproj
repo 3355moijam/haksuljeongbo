@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cCharacter.h" />
+    <ClInclude Include="cJSONParser.h" />
     <ClInclude Include="cUI.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="cGameManager.h" />
@@ -153,7 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cCharacter.cpp" />
+    <ClCompile Include="cJSONParser.cpp" />
     <ClCompile Include="cUI.cpp" />
+    <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="cGameManager.cpp" />
     <ClCompile Include="cMap.cpp" />
@@ -171,6 +174,9 @@
   <ItemGroup>
     <Image Include="pokemon.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

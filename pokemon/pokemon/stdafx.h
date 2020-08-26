@@ -21,6 +21,7 @@
 using std::vector;
 using std::wstring;
 
+#include "cJSONParser.h"
 #include "cGameManager.h"
 #include "interface.h"
 #include "cCharacter.h"

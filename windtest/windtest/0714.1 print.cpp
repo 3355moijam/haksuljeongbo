@@ -212,6 +212,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SelectObject(hdc, hOldFont);
 		DeleteObject(hFont);
 		DeleteObject(hbrush);
+
+
+
 		EndPaint(hWnd, &ps);
 	}
 	break;
