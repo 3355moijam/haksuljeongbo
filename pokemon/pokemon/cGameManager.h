@@ -1,6 +1,11 @@
 #pragma once
 #include "stdafx.h"
 
+#include "cCharacter.h"
+#include "cLoader.h"
+
+class cUI;
+class iActorBase;
 enum class enumGameState
 {
 	Intro = 0,
@@ -8,29 +13,36 @@ enum class enumGameState
 	OnBattle = 20
 };
 
-class cGameManager
+class cGameManager : public iActorBase
 {
 private:
 	cGameManager();
-	GameState cur_state;
+	enumGameState cur_state;
 	cPlayer* _player;
-	cMap* map;
-	vector<cUI*> &activeUI;
-	const unsigned short multiply = 4;
+	cMap* _Map;
+	vector<cUI*> *activeUI;
+	vector<iActorBase*> _actor;
+	cMapLoader mapLoader;
+	const float multiply = 4;
 public:
 	~cGameManager();
-	GameState getState() { return cur_state; }
-	GameState setState(GameState s) { return cur_state = s; }
-	__declspec(property(get = getState, put = setState)) GameState state;
+	enumGameState getState() { return cur_state; }
+	enumGameState setState(enumGameState s) { return cur_state = s; }
+	__declspec(property(get = getState, put = setState)) enumGameState state;
 
 	cPlayer& getPlayer() { return *_player; }
 	__declspec(property(get = getPlayer)) cPlayer& player;
 
-	unsigned short getMultiply() { return multiply; }
-	cGameManager &getInstance()
+	vector<iActorBase*>& getActor() { return _actor; }
+	__declspec(property(get = getActor)) vector<iActorBase*>& actor;
+
+	cMap& getMap() { return *_Map; }
+	__declspec(property(get = getMap)) cMap& Map;
+
+	float getMultiply() { return multiply; }
+	static cGameManager &getInstance()
 	{
 		static cGameManager manager;
-		//manager.state = GameState::OnMap; // 생성자로
 		return manager;
 	}
 
@@ -38,4 +50,7 @@ public:
 	cGameManager(cGameManager &&) = delete;
 	cGameManager &operator=(cGameManager const &) = delete;
 	cGameManager &operator=(cGameManager &&) = delete;
+
+	void show(HDC hdc);
+	void update();
 };

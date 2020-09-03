@@ -45,7 +45,13 @@
     <ClInclude Include="cUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cJSONParser.h">
+    <ClInclude Include="cLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionLibrary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cAnimChar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,7 +80,10 @@
     <ClCompile Include="FunctionLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cJSONParser.cpp">
+    <ClCompile Include="cLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAnimChar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

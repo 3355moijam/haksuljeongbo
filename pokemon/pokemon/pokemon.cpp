@@ -10,7 +10,9 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-
+RECT g_view;
+//template class cAnimation<cCharacter>;
+//template class cAnimCharLoader<cCharacter>;
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -96,9 +98,11 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
-
+   const int width_add = 16;
+   const int height_add = 59;
+   cGameManager & manager = cGameManager::getInstance();
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	   CW_USEDEFAULT, 0, Tile * manager.getMultiply() * 10 + width_add, Tile * manager.getMultiply() * 9 + height_add, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -125,6 +129,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+	case WM_CREATE:
+		SetTimer(hWnd, 100, 34, NULL);
+		GetClientRect(hWnd, &g_view);
+		break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -142,12 +150,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+	case WM_TIMER:
+	{
+		cGameManager::getInstance().update();
+		InvalidateRect(hWnd, NULL, false);
+	}
+		break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
+			cGameManager & manager = cGameManager::getInstance();
+			HDC hdc, hMemDC;
+			HBITMAP BackBit, OldBit;
+			PAINTSTRUCT ps;
+			hdc = BeginPaint(hWnd, &ps);
+			hMemDC = CreateCompatibleDC(hdc);
+			// 맵 사이즈만큼의 비트맵 생성
+			BackBit = CreateCompatibleBitmap(hdc, manager.Map.getWidth() * Tile, manager.Map.getHeight() * Tile);
+			OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
+			PatBlt(hdc, 0, 0, g_view.right, g_view.bottom, BLACKNESS);
+
+
+			manager.show(hMemDC);
+
+			// 플레이어에게 카메라 피벗을 가져와서 그걸 기준으로 hdc에 memdc를 복사
+			//StretchBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, Tile * 75, Tile * 5, Tile * 10, Tile * 9, SRCCOPY);
+			StretchBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, manager.player.getCameraPos().x, manager.player.getCameraPos().y, Tile * 10, Tile * 9, SRCCOPY);
+			//BitBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, 0, 0, SRCCOPY);
+			DeleteObject(SelectObject(hMemDC, OldBit));
+			DeleteDC(hMemDC);
+			EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:

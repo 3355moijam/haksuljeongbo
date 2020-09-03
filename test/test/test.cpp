@@ -6,6 +6,7 @@
 #include <locale.h>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "rapidjson\document.h"
 #include "rapidjson\filereadstream.h"
 using namespace rapidjson;
@@ -13,42 +14,17 @@ using namespace rapidjson;
 using namespace std;
 
 #include <typeinfo>
+#include <map>
+
+
 
 
 int main()
 {
-	//string json = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[[1, 2, 3, 4],[5, 6, 7, 8]] } ";
-	//Document doc;
-	//doc.Parse(json.c_str());
-	//const rapidjson::Value& valueInfo = doc["a"];
-
-	//for (SizeType i = 0; i < valueInfo.Size(); i++)
-	//{
-
-	//	for (SizeType j = 0; j < valueInfo[i].Size(); j++)
-	//	{
-	//		cout << valueInfo[i][j].GetInt() << " ";
-	//	}
-	//	cout << '\n';
-	//}
-	FILE *fp = fopen("sample.json", "rb");
-
-	char buffer[65536];
-	FileReadStream is(fp, buffer, sizeof(buffer));
-	Document doc;
-	doc.ParseStream(is);
-	fclose(fp);
-	const rapidjson::Value& valueInfo = doc["a"];
-	//cout << typeid(valueInfo.GetArray()).name() << endl;
-	for (SizeType i = 0; i < valueInfo.Size(); i++)
-	{
-		for (SizeType j = 0; j < valueInfo[i].Size(); j++)
-		{
-			cout << valueInfo[i][j].GetInt() << " ";
-		}
-		cout << '\n';
-	}
-
+	cPlayer a1, a2, a3;
+	//cout << a1.get() << endl;
+	cout << cSample<cPlayer>::count << endl;
+	cout << cSample<cNPC>::count << endl;
 
 	return 0;
 }

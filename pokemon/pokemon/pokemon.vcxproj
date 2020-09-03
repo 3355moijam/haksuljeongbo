@@ -141,9 +141,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cAnimChar.h" />
     <ClInclude Include="cCharacter.h" />
-    <ClInclude Include="cJSONParser.h" />
+    <ClInclude Include="cLoader.h" />
     <ClInclude Include="cUI.h" />
+    <ClInclude Include="FunctionLibrary.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="cGameManager.h" />
     <ClInclude Include="cMap.h" />
@@ -153,8 +155,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cAnimChar.cpp" />
     <ClCompile Include="cCharacter.cpp" />
-    <ClCompile Include="cJSONParser.cpp" />
+    <ClCompile Include="cLoader.cpp" />
     <ClCompile Include="cUI.cpp" />
     <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="interface.cpp" />

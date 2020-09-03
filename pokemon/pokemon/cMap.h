@@ -1,6 +1,11 @@
 #pragma once
 #include "stdafx.h"
-class cWarpzone;
+#include "data/rapidjson/document.h"
+#include <map>
+using std::map;
+using std::pair;
+using namespace rapidjson;
+
 enum class enumMapStatus
 {
 	movable,
@@ -22,19 +27,22 @@ enum class enumMapStatus
 class cMap : public iActorBase
 {
 private:
-	wstring name;
-	short *map;
+	string name;
+	short **mapData;
 	unsigned int width;
 	unsigned int height;
 	HBITMAP hMap;
 	BITMAP bitmapData;
-	vector<cWarpzone*> linkedMap; // 이름과 좌표에 대한 정보
+	map<Point, string> linkedMap;
+	//vector<cWarpzone*> linkedMap; // 이름과 좌표에 대한 정보. map으로 사용
 	vector<iSpeakActor*> object;
 public:
-	cMap();
+	cMap(const rapidjson::Value &data);
 	~cMap();
 	void show(HDC hdc);
 	void update() {}
+	unsigned int getWidth() { return width; }
+	unsigned int getHeight() { return height; }
 };
 
 class cWarpzone
@@ -56,9 +64,9 @@ class cCuttableTree : public iSpeakActor
 public:
 	void say();
 };
-
-class cSea : public iSpeakActor
-{
-public:
-	void say();
-};
+//
+//class cSea : public iSpeakActor
+//{
+//public:
+//	void say();
+//};

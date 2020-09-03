@@ -20,11 +20,16 @@
 #include <string>
 using std::vector;
 using std::wstring;
+using std::string;
+#define Tile 16
 
-#include "cJSONParser.h"
-#include "cGameManager.h"
+#include "FunctionLibrary.h"
 #include "interface.h"
-#include "cCharacter.h"
-#include "cMap.h"
+//#include "cLoader.h"
+//#include "cAnimation.h"
+//#include "cCharacter.h"
+//#include "cMap.h"
+//#include "cUI.h"
+//#include "cGameManager.h"
 
 // TODO: reference additional headers your program requires here

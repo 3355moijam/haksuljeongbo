@@ -2,11 +2,11 @@
 #include "interface.h"
 
 
-iActorBase::iActorBase()
-{
-}
+//iActorBase::iActorBase()
+//{
+//}
 
 
-iActorBase::~iActorBase()
-{
-}
+//iActorBase::~iActorBase()
+//{
+//}
