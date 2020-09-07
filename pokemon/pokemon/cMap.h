@@ -43,6 +43,7 @@ public:
 	void update() {}
 	unsigned int getWidth() { return width; }
 	unsigned int getHeight() { return height; }
+	short* operator[] (unsigned int num) { return mapData[num]; }
 };
 
 class cWarpzone

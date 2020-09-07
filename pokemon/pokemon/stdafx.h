@@ -23,6 +23,7 @@ using std::wstring;
 using std::string;
 #define Tile 16
 
+#include "Point.h"
 #include "FunctionLibrary.h"
 #include "interface.h"
 //#include "cLoader.h"

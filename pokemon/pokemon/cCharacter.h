@@ -11,15 +11,19 @@ enum class animState
 	MOVE_DOWN,
 	ROT_DOWN,
 	JUMP_DOWN,
+	STOP_DOWN,
 	MOVE_UP,
 	ROT_UP,
 	JUMP_UP,
+	STOP_UP,
 	MOVE_LEFT,
 	ROT_LEFT,
 	JUMP_LEFT,
+	STOP_LEFT,
 	MOVE_RIGHT,
 	ROT_RIGHT,
-	JUMP_RIGHT
+	JUMP_RIGHT,
+	STOP_RIGHT
 };
 enum class spriteState
 {
@@ -67,6 +71,8 @@ public:
 	__declspec(property(put = set_current_sprite)) spriteState CurrentSprite;
 
 	void addPos(const string& dir, short dis);
+
+	bool MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir);
 };
 
 class cPlayer : public cCharacter//, public iController

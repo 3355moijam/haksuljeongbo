@@ -154,6 +154,13 @@
 			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
 		},
 		{
+			"name": "stop_down",
+			"keyframe": [ 0, 4, 1, 8, 0, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
+		},
+		{
 			"name": "move_up",
 			"keyframe": [ 3, 3, 4, 4, 3, 2 ],
 			"moveData": [
@@ -305,6 +312,13 @@
 				}
 			],
 			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "stop_up",
+			"keyframe": [ 3, 4, 4, 8, 3, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
 		},
 		{
 			"name": "move_left",
@@ -460,6 +474,13 @@
 			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
 		},
 		{
+			"name": "stop_left",
+			"keyframe": [ 6, 4, 7, 8, 6, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
+		},
+		{
 			"name": "move_right",
 			"keyframe": [ 8, 3, 9, 4, 8, 2 ],
 			"moveData": [
@@ -611,6 +632,13 @@
 				}
 			],
 			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "stop_right",
+			"keyframe": [ 8, 4, 9, 8, 8, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
 		}
 	]
 }

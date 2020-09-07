@@ -21,10 +21,11 @@ using namespace std;
 
 int main()
 {
-	cPlayer a1, a2, a3;
-	//cout << a1.get() << endl;
-	cout << cSample<cPlayer>::count << endl;
-	cout << cSample<cNPC>::count << endl;
+	while (true)
+	{
+		cout << hex << GetAsyncKeyState(VK_SPACE) << endl;
+		Sleep(17);
+	}
 
 	return 0;
 }

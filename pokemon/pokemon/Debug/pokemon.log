@@ -1,2 +1,12 @@
-﻿  pokemon.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.exe
+﻿  cCharacter.cpp
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\canimchar.h(37): warning C4267: 'return': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  cGameManager.cpp
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\canimchar.h(37): warning C4267: 'return': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  건너뛰고 있습니다... (관련된 변경 내용 없음)
+  pokemon.cpp
+  cAnimChar.cpp
+  pokemon.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.exe
   pokemon.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.pdb (Full PDB)

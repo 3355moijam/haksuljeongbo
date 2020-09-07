@@ -144,6 +144,7 @@
     <ClInclude Include="cAnimChar.h" />
     <ClInclude Include="cCharacter.h" />
     <ClInclude Include="cLoader.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="cUI.h" />
     <ClInclude Include="FunctionLibrary.h" />
     <ClInclude Include="interface.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="cAnimChar.cpp" />
     <ClCompile Include="cCharacter.cpp" />
     <ClCompile Include="cLoader.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="cUI.cpp" />
     <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="interface.cpp" />

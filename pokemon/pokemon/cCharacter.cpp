@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include "cCharacter.h"
+
+#include "cGameManager.h"
 #pragma comment (lib, "Msimg32.lib")
+
+#ifdef _DEBUG
+#include <iostream>
+using std::cout;
+using std::endl;
+#endif
 
 
 void cCharacter::set_current_sprite(spriteState current_sprite)
@@ -14,6 +22,82 @@ void cCharacter::addPos(const string& dir, short dis)
 		DrawPos.x += dis;
 	else if (dir == "y")
 		DrawPos.y += dis;
+}
+
+bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
+{
+	direct_ = dir;
+	switch (static_cast<enumMapStatus>(Map[tempLoc.y][tempLoc.x]))
+	{
+	case enumMapStatus::movable:
+	case enumMapStatus::grass:
+		LocationOnMap = tempLoc;
+		switch (dir)
+		{
+		case enumDirect::LEFT: 
+			anim_.setAnim(animState::MOVE_LEFT);
+			break;
+		case enumDirect::UP: 
+			anim_.setAnim(animState::MOVE_UP);
+			break;
+		case enumDirect::RIGHT: 
+			anim_.setAnim(animState::MOVE_RIGHT);
+			break;
+		case enumDirect::DOWN: 
+			anim_.setAnim(animState::MOVE_DOWN);
+			break;
+		default: break;
+		}
+		return true;
+		break;
+		
+	case enumMapStatus::unmovable: 
+	case enumMapStatus::sea: 
+	case enumMapStatus::notice: 
+	case enumMapStatus::cuttableTree: 
+	case enumMapStatus::berryTree: 
+	case enumMapStatus::item: 
+	case enumMapStatus::poke:
+		{
+			switch (direct_)
+			{
+			case enumDirect::LEFT: 
+				anim_.setAnim(animState::STOP_LEFT);
+				break;
+			case enumDirect::UP: 
+				anim_.setAnim(animState::STOP_UP);
+				break;
+			case enumDirect::RIGHT: 
+				anim_.setAnim(animState::STOP_RIGHT);
+				break;
+			case enumDirect::DOWN: 
+				anim_.setAnim(animState::STOP_DOWN);
+				break;
+			default: break;
+			}
+		}
+		return false;
+		break;
+		
+	case enumMapStatus::lslope: 
+		break;
+	case enumMapStatus::rslope: 
+		break;
+	case enumMapStatus::uslope: 
+		break;
+	case enumMapStatus::dslope: 
+		break;
+		
+	case enumMapStatus::linkedMap: 
+		break;
+		
+	case enumMapStatus::door: 
+		break;
+
+	default:
+		break;
+	}
+	return false;
 }
 
 Point cPlayer::getCameraPos() const
@@ -93,9 +177,11 @@ bool cPlayer::getInput()
 {
 	if (!keyUnlock)
 		return false;
-	
+	Point tempLocation = LocationOnMap;
+	cMap& currentMap = cGameManager::getInstance().Map;
 	if (GetKeyState(VK_LEFT) & 0x8000)
 	{
+		cout << "left" << endl;
 		if (direct_ != enumDirect::LEFT && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_LEFT);
@@ -103,12 +189,24 @@ bool cPlayer::getInput()
 		}
 		else
 		{
-			anim_.setAnim(animState::MOVE_LEFT);
-			LocationOnMap.x--;
+			// ui 열려있는지 확인.
+			// 열렸을 때
+			// 안열렸을 때
+			tempLocation.x--;
+			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			{
+				// 현재 위치가 워프존이면 워프
+				return false;
+			}
+			else
+			{
+				return MoveOnMap(currentMap, tempLocation, enumDirect::LEFT);
+			}
 		}
 	}
 	else if (GetKeyState(VK_UP) & 0x8000)
 	{
+		cout << "up" << endl;
 		if (direct_ != enumDirect::UP && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_UP);
@@ -116,12 +214,24 @@ bool cPlayer::getInput()
 		}
 		else
 		{
-			anim_.setAnim(animState::MOVE_UP);
-			LocationOnMap.y--;
+			// ui 열려있는지 확인.
+			// 열렸을 때
+			// 안열렸을 때
+			tempLocation.y--;
+			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			{
+				// 현재 위치가 워프존이면 워프
+				return false;
+			}
+			else
+			{
+				return MoveOnMap(currentMap, tempLocation, enumDirect::UP);
+			}
 		}
 	}
 	else if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
+		cout << "right" << endl;
 		if (direct_ != enumDirect::RIGHT && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_RIGHT);
@@ -129,12 +239,24 @@ bool cPlayer::getInput()
 		}
 		else
 		{
-			anim_.setAnim(animState::MOVE_RIGHT);
-			LocationOnMap.x++;
+			// ui 열려있는지 확인.
+			// 열렸을 때
+			// 안열렸을 때
+			tempLocation.x++;
+			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			{
+				// 현재 위치가 워프존이면 워프
+				return false;
+			}
+			else
+			{
+				return MoveOnMap(currentMap, tempLocation, enumDirect::RIGHT);
+			}
 		}
 	}
 	else if (GetKeyState(VK_DOWN) & 0x8000)
 	{
+		cout << "down" << endl;
 		if (direct_ != enumDirect::DOWN && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_DOWN);
@@ -142,9 +264,30 @@ bool cPlayer::getInput()
 		}
 		else
 		{
-			anim_.setAnim(animState::MOVE_DOWN);
-			LocationOnMap.y++;
+			tempLocation.y++;
+			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			{
+				// 현재 위치가 워프존이면 워프
+				return false;
+			}
+			else
+			{
+				return MoveOnMap(currentMap, tempLocation, enumDirect::DOWN);
+			}
 		}
+	}
+
+	else if (GetKeyState('z') & 0x8000 || GetKeyState('Z') & 0x8000)
+	{
+		
+	}
+	else if (GetKeyState('x') & 0x8000 || GetKeyState('X') & 0x8000)
+	{
+
+	}
+	else if (GetKeyState(VK_RETURN) & 0x8000)
+	{
+
 	}
 	return false;
 }
