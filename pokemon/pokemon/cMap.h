@@ -2,10 +2,11 @@
 #include "stdafx.h"
 #include "data/rapidjson/document.h"
 #include <map>
+class cPlayer;
 using std::map;
 using std::pair;
 using namespace rapidjson;
-
+class cWarpzone;
 enum class enumMapStatus
 {
 	movable,
@@ -33,8 +34,7 @@ private:
 	unsigned int height;
 	HBITMAP hMap;
 	BITMAP bitmapData;
-	map<Point, string> linkedMap;
-	//vector<cWarpzone*> linkedMap; // 이름과 좌표에 대한 정보. map으로 사용
+	map<Point, cWarpzone> linkedMap;
 	vector<iSpeakActor*> object;
 public:
 	cMap(const rapidjson::Value &data);
@@ -44,15 +44,53 @@ public:
 	unsigned int getWidth() { return width; }
 	unsigned int getHeight() { return height; }
 	short* operator[] (unsigned int num) { return mapData[num]; }
-};
+	const map<Point, cWarpzone>& get_linked_map() 
+	{
+		return linkedMap;
+	}
 
+	__declspec(property(get = get_linked_map)) const map<Point, cWarpzone>& LinkedMap;
+
+	const vector<iSpeakActor*>& get_object()
+	{
+		return object;
+	}
+
+	__declspec(property(get = get_object)) const vector<iSpeakActor*>& Object;
+
+};
 class cWarpzone
 {
 	//로드할 맵에 대한 정보, 위치인덱스
 public:
-	wstring mapname;
-	POINT index;
+	string mapname;
+	Point destination;
+	cWarpzone() : mapname(), destination() {}
+	cWarpzone(string name, int x, int y) : mapname(name), destination(x,y){}
 };
+
+class cWarp: public iActorBase
+{
+private:
+	HBITMAP hBackBit;
+	BITMAP bitData;
+	BLENDFUNCTION alpha;
+	cWarpzone dest;
+	short timer_;
+	cPlayer* player;
+public:
+	cWarp(cPlayer* player);
+	~cWarp();
+	short get_timer() const { return timer_; }
+	void set_timer(short timer = 10) { timer_ = timer; }
+	void set_destination(const cWarpzone& zone) { dest = zone; }
+
+	void show(HDC hdc) override;
+	void update() override;
+
+	void warp();
+};
+
 
 class cNoticeSign : public iSpeakActor
 {

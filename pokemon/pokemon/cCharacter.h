@@ -2,6 +2,8 @@
 #include "stdafx.h"
 //#include "cAnimation.h"
 #include "cAnimChar.h"
+#include "cMap.h"
+//class cWarpzone;
 class cMap;
 //class cCharAnim;
 //class cCharacter;
@@ -72,7 +74,11 @@ public:
 
 	void addPos(const string& dir, short dis);
 
+	cAnimChar& get_anim() { return anim_; }
+	__declspec(property(get = get_anim)) cAnimChar& anim;
+	
 	bool MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir);
+
 };
 
 class cPlayer : public cCharacter//, public iController
@@ -80,6 +86,7 @@ class cPlayer : public cCharacter//, public iController
 private:
 	Point CameraPivot;
 	bool keyUnlock;
+	cWarp warp;
 public:
 	cPlayer();
 	void show(HDC hdc) override;
@@ -88,10 +95,27 @@ public:
 
 	Point getCameraPos() const;
 	void setCameraPos(const Point& camera_pivot);
+	void setCameraPos() { CameraPivot.x = Tile * (LocationOnMap.x - 4); CameraPivot.y = Tile * (LocationOnMap.y - 4); }
 	void addCameraPos(const string& dir, short dis);
 
 	void setKeyUnlock(bool b) { keyUnlock = b; }
 	void setKeyUnlock() { keyUnlock = !keyUnlock; }
+
+	const Point& getLocationOnMap() const { return LocationOnMap; }
+	void setLocationOnMap(const Point& point)
+	{
+		LocationOnMap = point;
+		DrawPos = LocationOnMap * Tile;
+		DrawPos.y -= 4;
+	}
+	void addLocationOnMap(short x, short y)
+	{
+		LocationOnMap.x += x;
+		LocationOnMap.y += y;
+	}
+	// 캐릭터의 이동이 끝났는데(=인풋이 가능해졌는데) 현 위치가 워프존이라면
+	// fade out warp fade in
+	
 };
 
 class cNPC : public cCharacter, public iSpeakActor

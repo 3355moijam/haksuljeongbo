@@ -26,7 +26,7 @@ private:
 public:
 	cMapLoader();
 	~cMapLoader() { UnloadMap(); }
-	cMap* LoadMap(string MapName);
+	cMap** LoadMap(string MapName);
 	void UnloadMap()
 	{
 		delete map;

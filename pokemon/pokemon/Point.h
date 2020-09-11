@@ -39,5 +39,6 @@ public:
 
 	bool operator<(const Point& right) const;
 	bool operator==(const Point& right) const;
-
+	Point operator*(int num) const;
+	Point& operator*=(int num);
 };

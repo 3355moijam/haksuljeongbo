@@ -4,11 +4,11 @@
 #include "cGameManager.h"
 #pragma comment (lib, "Msimg32.lib")
 
-#ifdef _DEBUG
-#include <iostream>
-using std::cout;
-using std::endl;
-#endif
+//#ifdef _DEBUG
+//#include <iostream>
+//using std::cout;
+//using std::endl;
+//#endif
 
 
 void cCharacter::set_current_sprite(spriteState current_sprite)
@@ -88,10 +88,15 @@ bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
 	case enumMapStatus::dslope: 
 		break;
 		
-	case enumMapStatus::linkedMap: 
+	case enumMapStatus::linkedMap:
+		LocationOnMap = tempLoc;
+		anim_.setAnim(animState::MOVE_UP);
 		break;
 		
-	case enumMapStatus::door: 
+	case enumMapStatus::door:
+		// 앞으로 걷기
+		// 걷기 애니메이션 끝난 후 맵 전환
+		// json에 도착xy 추가.
 		break;
 
 	default:
@@ -99,6 +104,7 @@ bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
 	}
 	return false;
 }
+
 
 Point cPlayer::getCameraPos() const
 {
@@ -117,6 +123,8 @@ void cPlayer::addCameraPos(const string& dir, short dis)
 	else if (dir == "y")
 		CameraPivot.y += dis;
 }
+
+
 
 cCharacter::cCharacter()
 	: name("player"),
@@ -148,7 +156,7 @@ void cCharacter::set_direct(enumDirect dir)
 	direct_ = dir;
 }
 
-cPlayer::cPlayer() : cCharacter(), CameraPivot(Tile * (LocationOnMap.x - 4), Tile * (LocationOnMap.y - 4)), keyUnlock(true)
+cPlayer::cPlayer() : cCharacter(), CameraPivot(Tile * (LocationOnMap.x - 4), Tile * (LocationOnMap.y - 4)), keyUnlock(true), warp(this)
 {
 	hImg = static_cast<HBITMAP>(LoadImage(NULL, _T("src/gold_sprite.bmp"),
 	                                      IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION));
@@ -164,13 +172,33 @@ void cPlayer::show(HDC hdc)
 	int by = bitmapData.bmHeight;
 	TransparentBlt(hdc, DrawPos.x, DrawPos.y, 16, 16, hImgMemDC, 16 * static_cast<int>(currentSprite), 0, 16, 16, RGB(255,0,255));
 	SelectObject(hImgMemDC, hOldBitmap);
+	//if(warp.get_timer())
+	//	warp.show(hdc);
 	DeleteDC(hImgMemDC);
 }
 
 void cPlayer::update()
 {
-	getInput();
-	anim_.playAnim(this);
+	cMap& cur_map = cGameManager::getInstance().Map;
+	if(static_cast<enumMapStatus>(cur_map[LocationOnMap.y][LocationOnMap.x]) == enumMapStatus::linkedMap && keyUnlock)
+	{
+		// set fade_out func fade_in
+		map<Point, cWarpzone>::const_iterator it = cur_map.LinkedMap.find(LocationOnMap);
+		warp.set_timer();
+		warp.set_destination(it->second);
+		keyUnlock = false;
+	}
+	if (warp.get_timer() == 0)
+	{
+		_D cout << "x: " << LocationOnMap.x << ", y:" << LocationOnMap.y << endl;;
+		getInput();
+		anim_.playAnim(this);
+	}
+	else
+	{
+		warp.update();
+	}
+	// check warp
 }
 
 bool cPlayer::getInput()
@@ -181,7 +209,6 @@ bool cPlayer::getInput()
 	cMap& currentMap = cGameManager::getInstance().Map;
 	if (GetKeyState(VK_LEFT) & 0x8000)
 	{
-		cout << "left" << endl;
 		if (direct_ != enumDirect::LEFT && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_LEFT);
@@ -200,13 +227,13 @@ bool cPlayer::getInput()
 			}
 			else
 			{
+				// temploc에 npc가 있다면 stop anim;
 				return MoveOnMap(currentMap, tempLocation, enumDirect::LEFT);
 			}
 		}
 	}
 	else if (GetKeyState(VK_UP) & 0x8000)
 	{
-		cout << "up" << endl;
 		if (direct_ != enumDirect::UP && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_UP);
@@ -231,7 +258,6 @@ bool cPlayer::getInput()
 	}
 	else if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
-		cout << "right" << endl;
 		if (direct_ != enumDirect::RIGHT && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_RIGHT);
@@ -256,7 +282,6 @@ bool cPlayer::getInput()
 	}
 	else if (GetKeyState(VK_DOWN) & 0x8000)
 	{
-		cout << "down" << endl;
 		if (direct_ != enumDirect::DOWN && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_DOWN);

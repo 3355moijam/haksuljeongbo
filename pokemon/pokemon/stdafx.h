@@ -23,6 +23,24 @@ using std::wstring;
 using std::string;
 #define Tile 16
 
+#define __SLASH(x) /##x
+#define __DOUBLE_SLASH __SLASH(/)
+#ifdef _DEBUG
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+#include <iostream>
+using std::cout;
+using std::endl;
+#define _D
+#define _R __DOUBLE_SLASH
+#else
+#define _D __DOUBLE_SLASH
+#define _R
+#endif
+
 #include "Point.h"
 #include "FunctionLibrary.h"
 #include "interface.h"

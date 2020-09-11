@@ -19,7 +19,7 @@ private:
 	cGameManager();
 	enumGameState cur_state;
 	cPlayer* _player;
-	cMap* _Map;
+	cMap** _Map;
 	vector<cUI*> *activeUI;
 	vector<iActorBase*> _actor;
 	cMapLoader mapLoader;
@@ -36,7 +36,7 @@ public:
 	vector<iActorBase*>& getActor() { return _actor; }
 	__declspec(property(get = getActor)) vector<iActorBase*>& actor;
 
-	cMap& getMap() { return *_Map; }
+	cMap& getMap() { return **_Map; }
 	__declspec(property(get = getMap)) cMap& Map;
 
 	float getMultiply() { return multiply; }
@@ -51,6 +51,8 @@ public:
 	cGameManager &operator=(cGameManager const &) = delete;
 	cGameManager &operator=(cGameManager &&) = delete;
 
+	void LoadMap(string mapname) { mapLoader.LoadMap(mapname); }
+	
 	void show(HDC hdc);
 	void update();
 };

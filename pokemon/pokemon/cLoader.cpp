@@ -21,8 +21,9 @@ cMapLoader::cMapLoader(): cLoader("data/map.json"), map(nullptr)
 
 }
 
-cMap * cMapLoader::LoadMap(string MapName)
+cMap ** cMapLoader::LoadMap(string MapName)
 {
+	UnloadMap();
 	const rapidjson::Value& mapList = doc["map"];
 	for (auto& d : mapList.GetArray())
 	{
@@ -32,7 +33,7 @@ cMap * cMapLoader::LoadMap(string MapName)
 			break;
 		}
 	}
-	return map;
+	return &map;
 }
 
 

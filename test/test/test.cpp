@@ -21,13 +21,38 @@ using namespace std;
 
 int main()
 {
-	while (true)
-	{
-		cout << hex << GetAsyncKeyState(VK_SPACE) << endl;
-		Sleep(17);
-	}
 
+	ColliderBox.x += 5;
+	if (DigimonCollision())
+		ColliderBox.x -= 5; // >> 현재 상태는 항상 부딛치지 않은 상태
+
+	if (!DigimonCollision())
+		ColliderBox.y += 5;
+
+	void setCollerBox()
+	{
+		
+	}
+	
 	return 0;
+}
+
+class Ground
+{
+	HBITMAP grass;
+	HBITMAP dirt;
+	BITMAP grassData;
+	BITMAP dirtData;
+
+	Ground();
+};
+drawd
+Ground()
+{
+	grass = (HBITMAP)LoadImage(____);
+	dirt = (HBITMAP)LoadImage(____);
+	
+	dirt ->>
 }
 
 

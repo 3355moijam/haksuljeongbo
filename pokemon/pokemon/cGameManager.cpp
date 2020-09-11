@@ -16,10 +16,10 @@ cGameManager::~cGameManager()
 
 void cGameManager::show(HDC hdc)
 {
-	_Map->show(hdc);
-	_player->show(hdc);
+	(*_Map)->show(hdc);
 	for (auto& ac : _actor)
 		ac->show(hdc);
+	_player->show(hdc);
 	//player->show(hdc);
 }
 
