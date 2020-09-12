@@ -207,8 +207,11 @@ bool cPlayer::getInput()
 		return false;
 	Point tempLocation = LocationOnMap;
 	cMap& currentMap = cGameManager::getInstance().Map;
+	enumDirect dir;
+	animState rot;
 	if (GetKeyState(VK_LEFT) & 0x8000)
 	{
+		
 		if (direct_ != enumDirect::LEFT && anim_.getRemainFrame() == 0)
 		{
 			anim_.setAnim(animState::ROT_LEFT);
