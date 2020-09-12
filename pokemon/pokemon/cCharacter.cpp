@@ -207,104 +207,37 @@ bool cPlayer::getInput()
 		return false;
 	Point tempLocation = LocationOnMap;
 	cMap& currentMap = cGameManager::getInstance().Map;
-	enumDirect dir;
-	animState rot;
+	enumDirect dir = (enumDirect)0;
+	animState rot = (animState)0;
+	bool iskeyDownArrow = false;
 	if (GetKeyState(VK_LEFT) & 0x8000)
 	{
-		
-		if (direct_ != enumDirect::LEFT && anim_.getRemainFrame() == 0)
-		{
-			anim_.setAnim(animState::ROT_LEFT);
-			direct_ = enumDirect::LEFT;
-		}
-		else
-		{
-			// ui 열려있는지 확인.
-			// 열렸을 때
-			// 안열렸을 때
-			tempLocation.x--;
-			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
-			{
-				// 현재 위치가 워프존이면 워프
-				return false;
-			}
-			else
-			{
-				// temploc에 npc가 있다면 stop anim;
-				return MoveOnMap(currentMap, tempLocation, enumDirect::LEFT);
-			}
-		}
+		dir = enumDirect::LEFT;
+		rot = animState::ROT_LEFT;
+		tempLocation.x--;
+		iskeyDownArrow = true;
 	}
 	else if (GetKeyState(VK_UP) & 0x8000)
 	{
-		if (direct_ != enumDirect::UP && anim_.getRemainFrame() == 0)
-		{
-			anim_.setAnim(animState::ROT_UP);
-			direct_ = enumDirect::UP;
-		}
-		else
-		{
-			// ui 열려있는지 확인.
-			// 열렸을 때
-			// 안열렸을 때
-			tempLocation.y--;
-			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
-			{
-				// 현재 위치가 워프존이면 워프
-				return false;
-			}
-			else
-			{
-				return MoveOnMap(currentMap, tempLocation, enumDirect::UP);
-			}
-		}
+		dir = enumDirect::UP;
+		rot = animState::ROT_UP;
+		tempLocation.y--;
+		iskeyDownArrow = true;
 	}
 	else if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
-		if (direct_ != enumDirect::RIGHT && anim_.getRemainFrame() == 0)
-		{
-			anim_.setAnim(animState::ROT_RIGHT);
-			direct_ = enumDirect::RIGHT;
-		}
-		else
-		{
-			// ui 열려있는지 확인.
-			// 열렸을 때
-			// 안열렸을 때
-			tempLocation.x++;
-			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
-			{
-				// 현재 위치가 워프존이면 워프
-				return false;
-			}
-			else
-			{
-				return MoveOnMap(currentMap, tempLocation, enumDirect::RIGHT);
-			}
-		}
+		dir = enumDirect::RIGHT;
+		rot = animState::ROT_RIGHT;
+		tempLocation.x++;
+		iskeyDownArrow = true;
 	}
 	else if (GetKeyState(VK_DOWN) & 0x8000)
 	{
-		if (direct_ != enumDirect::DOWN && anim_.getRemainFrame() == 0)
-		{
-			anim_.setAnim(animState::ROT_DOWN);
-			direct_ = enumDirect::DOWN;
-		}
-		else
-		{
-			tempLocation.y++;
-			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
-			{
-				// 현재 위치가 워프존이면 워프
-				return false;
-			}
-			else
-			{
-				return MoveOnMap(currentMap, tempLocation, enumDirect::DOWN);
-			}
-		}
+		dir = enumDirect::DOWN;
+		rot = animState::ROT_DOWN;
+		tempLocation.y++;
+		iskeyDownArrow = true;
 	}
-
 	else if (GetKeyState('z') & 0x8000 || GetKeyState('Z') & 0x8000)
 	{
 		
@@ -317,5 +250,33 @@ bool cPlayer::getInput()
 	{
 
 	}
+
+
+	if (iskeyDownArrow)
+	{
+		if (direct_ != dir && anim_.getRemainFrame() == 0)
+		{
+			anim_.setAnim(rot);
+			direct_ = dir;
+		}
+		else
+		{
+			// ui 열려있는지 확인.
+			// 열렸을 때
+			// 안열렸을 때
+			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			{
+				// 현재 위치가 워프존이면 워프
+				return false;
+			}
+			else
+			{
+				// temploc에 npc가 있다면 stop anim;
+				return MoveOnMap(currentMap, tempLocation, dir);
+			}
+		}
+	}
+
+	
 	return false;
 }

@@ -57,7 +57,8 @@ void cMap::show(HDC hdc)
 	HBITMAP hOldBitmap = (HBITMAP)SelectObject(hImgMemDC, hMap);
 	int bx = bitmapData.bmWidth;
 	int by = bitmapData.bmHeight;
-	BitBlt(hdc, 0, 0, bx, by, hImgMemDC, 0, 0, SRCCOPY);
+	cPlayer& player = cGameManager::getInstance().player;
+	BitBlt(hdc, player.getCameraPos().x, player.getCameraPos().y, Tile * 10, Tile * 9, hImgMemDC, player.getCameraPos().x, player.getCameraPos().y, SRCCOPY);
 	SelectObject(hImgMemDC, hOldBitmap);
 	DeleteDC(hImgMemDC);
 }
