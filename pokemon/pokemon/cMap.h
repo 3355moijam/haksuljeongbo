@@ -67,6 +67,7 @@ public:
 	Point destination;
 	cWarpzone() : mapname(), destination() {}
 	cWarpzone(string name, int x, int y) : mapname(name), destination(x,y){}
+	void clear() { mapname = ""; destination = { 0,0 }; }
 };
 
 class cWarp: public iActorBase

@@ -49,7 +49,6 @@ void cAnimChar::setAnim(animState anim)
 	current_foot = !current_foot;
 	for (short ele : keyUnlock[static_cast<int>(anim)])
 	{
-
 		unlockQ.emplace(ele);
 	}
 	for (const to_dir& ele : moveData[static_cast<int>(anim)])

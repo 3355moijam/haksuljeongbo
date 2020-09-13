@@ -2,7 +2,7 @@
 #include "cMap.h"
 
 #include "cGameManager.h"
-
+extern RECT g_view;
 cMap::cMap(const rapidjson::Value &data):name(data["name"].GetString()), width(data["width"].GetInt()), height(data["height"].GetInt()), hMap(), linkedMap(), object()
 {
 	//name = data["name"].GetString();
@@ -58,15 +58,21 @@ void cMap::show(HDC hdc)
 	int bx = bitmapData.bmWidth;
 	int by = bitmapData.bmHeight;
 	cPlayer& player = cGameManager::getInstance().player;
-	BitBlt(hdc, player.getCameraPos().x, player.getCameraPos().y, Tile * 10, Tile * 9, hImgMemDC, player.getCameraPos().x, player.getCameraPos().y, SRCCOPY);
+	BitBlt(hdc, 0, 0, g_view.right, g_view.bottom, hImgMemDC, player.getCameraPos().x, player.getCameraPos().y, SRCCOPY);
 	SelectObject(hImgMemDC, hOldBitmap);
 	DeleteDC(hImgMemDC);
 }
 
 cWarp::cWarp(cPlayer* player) : timer_(0), dest(), player(player)
 {
-	hBackBit = CreateCompatibleBitmap(NULL, Tile * 10, Tile * 9);
+	hBackBit = CreateBitmap(Tile * 10, Tile * 9, 1, ::GetDeviceCaps(NULL, BITSPIXEL), NULL);
 	GetObject(hBackBit, sizeof(BITMAP), &bitData);
+	HDC temphdc = CreateCompatibleDC(NULL);
+	HBITMAP old = (HBITMAP)SelectObject(temphdc, hBackBit);
+	PatBlt(temphdc, 0, 0, bitData.bmWidth, bitData.bmHeight, WHITENESS);
+	SelectObject(temphdc, old);
+	DeleteDC(temphdc);
+
 	alpha = { AC_SRC_OVER, 0, 0, 0 };
 }
 
@@ -80,8 +86,7 @@ void cWarp::show(HDC hdc)
 	HDC hMemDC = CreateCompatibleDC(hdc);
 	HBITMAP OldBitmap = (HBITMAP)SelectObject(hMemDC, hBackBit);
 
-	
-	GdiAlphaBlend(hdc, player->getCameraPos().x, player->getCameraPos().y, bitData.bmWidth, bitData.bmHeight, hMemDC, 0, 0, bitData.bmWidth, bitData.bmHeight, alpha);
+	GdiAlphaBlend(hdc, 0, 0, bitData.bmWidth, bitData.bmHeight, hMemDC, 0, 0, bitData.bmWidth, bitData.bmHeight, alpha);
 	
 	SelectObject(hMemDC, OldBitmap);
 	DeleteDC(hMemDC);
@@ -103,7 +108,6 @@ void cWarp::update()
 	case 1:
 	{
 		alpha.SourceConstantAlpha = 54;
-		player->setKeyUnlock(true);
 		cMap& cur_map = cGameManager::getInstance().Map;
 		if (static_cast<enumMapStatus>(cur_map[player->getLocationOnMap().y][player->getLocationOnMap().x]) == enumMapStatus::linkedMap)
 		{
@@ -111,6 +115,8 @@ void cWarp::update()
 			player->anim.setAnim(animState::MOVE_DOWN);
 			player->addLocationOnMap(0, 1);
 		}
+		else
+			player->setKeyUnlock(true);
 	}
 		break;
 	case 9:
@@ -142,4 +148,5 @@ void cWarp::warp()
 	cGameManager::getInstance().LoadMap(dest.mapname);
 	player->setLocationOnMap(dest.destination);
 	player->setCameraPos();
+	dest.clear();
 }

@@ -36,9 +36,3 @@ public:
 	void playAnim(cCharacter* target);
 	short getRemainFrame() const { return frameData.size(); }
 };
-
-//vector<vector<short>> cAnimChar::keyFrameData = vector<vector<short>>();
-//vector<vector<to_dir>> cAnimChar::moveData = vector<vector<to_dir>>();
-//vector<vector<to_dir>> cAnimChar::cameraMove = vector<vector<to_dir>>();
-//vector<vector<short>> cAnimChar::keyUnlock = vector<vector<short>>();
-

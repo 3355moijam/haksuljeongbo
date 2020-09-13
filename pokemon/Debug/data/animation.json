@@ -1,0 +1,644 @@
+{
+	"character": [
+		{
+			"name": "move_down",
+			"keyframe": [ 0, 3, 1, 4, 0, 2 ],
+			"moveData": [
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "rot_down",
+			"keyframe": [ 1, 4, 0, 1 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 1, 1, 1 ]
+		},
+		{
+			"name": "jump_down",
+			"keyframe": [ 0, 3, 1, 4, 0, 2 ],
+			"moveData": [
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				},
+				{
+					"dir": "y",
+					"dis": 2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "stop_down",
+			"keyframe": [ 0, 4, 1, 8, 0, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
+		},
+		{
+			"name": "move_up",
+			"keyframe": [ 3, 3, 4, 4, 3, 2 ],
+			"moveData": [
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "rot_up",
+			"keyframe": [ 4, 4, 3, 1 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 1, 1, 1 ]
+		},
+		{
+			"name": "jump_up",
+			"keyframe": [ 3, 3, 4, 4, 3, 2 ],
+			"moveData": [
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				},
+				{
+					"dir": "y",
+					"dis": -2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "stop_up",
+			"keyframe": [ 3, 4, 4, 8, 3, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
+		},
+		{
+			"name": "move_left",
+			"keyframe": [ 6, 3, 7, 4, 6, 2 ],
+			"moveData": [
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "rot_left",
+			"keyframe": [ 7, 4, 6, 1 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 1, 1, 1 ]
+		},
+		{
+			"name": "jump_left",
+			"keyframe": [ 6, 3, 7, 4, 6, 2 ],
+			"moveData": [
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				},
+				{
+					"dir": "x",
+					"dis": -2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "stop_left",
+			"keyframe": [ 6, 4, 7, 8, 6, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
+		},
+		{
+			"name": "move_right",
+			"keyframe": [ 8, 3, 9, 4, 8, 2 ],
+			"moveData": [
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "rot_right",
+			"keyframe": [ 9, 4, 8, 1 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 1, 1, 1 ]
+		},
+		{
+			"name": "jump_right",
+			"keyframe": [ 8, 3, 9, 4, 8, 2 ],
+			"moveData": [
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				}
+			],
+			"cameraMove": [
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				},
+				{
+					"dir": "x",
+					"dis": 2
+				}
+			],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 1, 1 ]
+		},
+		{
+			"name": "stop_right",
+			"keyframe": [ 8, 4, 9, 8, 8, 4 ],
+			"moveData": [],
+			"cameraMove": [],
+			"keyUnlock": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]
+		}
+	]
+}

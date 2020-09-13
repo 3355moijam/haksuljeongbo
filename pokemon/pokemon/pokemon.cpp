@@ -168,7 +168,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			hdc = BeginPaint(hWnd, &ps);
 			hMemDC = CreateCompatibleDC(hdc);
 			// 맵 사이즈만큼의 비트맵 생성
-			BackBit = CreateCompatibleBitmap(hdc, manager.Map.getWidth() * Tile, manager.Map.getHeight() * Tile);
+			BackBit = CreateCompatibleBitmap(hdc, Tile * 10, Tile * 9);
 			OldBit = (HBITMAP)SelectObject(hMemDC, BackBit);
 			PatBlt(hdc, 0, 0, g_view.right, g_view.bottom, BLACKNESS);
 
@@ -177,7 +177,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			// 플레이어에게 카메라 피벗을 가져와서 그걸 기준으로 hdc에 memdc를 복사
 			//StretchBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, Tile * 75, Tile * 5, Tile * 10, Tile * 9, SRCCOPY);
-			StretchBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, manager.player.getCameraPos().x, manager.player.getCameraPos().y, Tile * 10, Tile * 9, SRCCOPY);
+			//StretchBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, manager.player.getCameraPos().x, manager.player.getCameraPos().y, Tile * 10, Tile * 9, SRCCOPY);
+			StretchBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, 0, 0, Tile * 10, Tile * 9, SRCCOPY);
 			//BitBlt(hdc, 0, 0, g_view.right, g_view.bottom, hMemDC, 0, 0, SRCCOPY);
 			DeleteObject(SelectObject(hMemDC, OldBit));
 			DeleteDC(hMemDC);

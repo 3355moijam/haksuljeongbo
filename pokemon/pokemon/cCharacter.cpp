@@ -130,7 +130,7 @@ cCharacter::cCharacter()
 	: name("player"),
 	direct_(enumDirect::DOWN),
 	LocationOnMap(73, 9),
-	DrawPos(LocationOnMap.x * Tile, LocationOnMap.y * Tile - 4)
+	DrawPos(4 * Tile, 4 * Tile - 4)
 	//, animation()
 	,currentSprite(spriteState::DOWN)
 {
@@ -169,11 +169,11 @@ void cPlayer::show(HDC hdc)
 
 	HBITMAP hOldBitmap = static_cast<HBITMAP>(SelectObject(hImgMemDC, hImg));
 	int bx = bitmapData.bmWidth;
-	int by = bitmapData.bmHeight;
+	int by = bitmapData.bmHeight; // DrawPos 
 	TransparentBlt(hdc, DrawPos.x, DrawPos.y, 16, 16, hImgMemDC, 16 * static_cast<int>(currentSprite), 0, 16, 16, RGB(255,0,255));
 	SelectObject(hImgMemDC, hOldBitmap);
-	//if(warp.get_timer())
-	//	warp.show(hdc);
+	if(warp.get_timer())
+		warp.show(hdc);
 	DeleteDC(hImgMemDC);
 }
 
@@ -183,6 +183,7 @@ void cPlayer::update()
 	if(static_cast<enumMapStatus>(cur_map[LocationOnMap.y][LocationOnMap.x]) == enumMapStatus::linkedMap && keyUnlock)
 	{
 		// set fade_out func fade_in
+		anim_.playAnim(this); // 애님큐 비우기
 		map<Point, cWarpzone>::const_iterator it = cur_map.LinkedMap.find(LocationOnMap);
 		warp.set_timer();
 		warp.set_destination(it->second);
@@ -190,7 +191,7 @@ void cPlayer::update()
 	}
 	if (warp.get_timer() == 0)
 	{
-		_D cout << "x: " << LocationOnMap.x << ", y:" << LocationOnMap.y << endl;;
+		//_D cout << "x: " << LocationOnMap.x << ", y:" << LocationOnMap.y << endl;;
 		getInput();
 		anim_.playAnim(this);
 	}

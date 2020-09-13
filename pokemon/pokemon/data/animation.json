@@ -4,38 +4,6 @@
 			"name": "move_down",
 			"keyframe": [ 0, 3, 1, 4, 0, 2 ],
 			"moveData": [
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				}
 			],
 			"cameraMove": [
 				{
@@ -84,38 +52,6 @@
 			"name": "jump_down",
 			"keyframe": [ 0, 3, 1, 4, 0, 2 ],
 			"moveData": [
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				},
-				{
-					"dir": "y",
-					"dis": 2
-				}
 			],
 			"cameraMove": [
 				{
@@ -164,38 +100,7 @@
 			"name": "move_up",
 			"keyframe": [ 3, 3, 4, 4, 3, 2 ],
 			"moveData": [
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				}
+				
 			],
 			"cameraMove": [
 				{
@@ -244,38 +149,7 @@
 			"name": "jump_up",
 			"keyframe": [ 3, 3, 4, 4, 3, 2 ],
 			"moveData": [
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				},
-				{
-					"dir": "y",
-					"dis": -2
-				}
+				
 			],
 			"cameraMove": [
 				{
@@ -324,38 +198,7 @@
 			"name": "move_left",
 			"keyframe": [ 6, 3, 7, 4, 6, 2 ],
 			"moveData": [
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				}
+				
 			],
 			"cameraMove": [
 				{
@@ -404,38 +247,7 @@
 			"name": "jump_left",
 			"keyframe": [ 6, 3, 7, 4, 6, 2 ],
 			"moveData": [
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				},
-				{
-					"dir": "x",
-					"dis": -2
-				}
+				
 			],
 			"cameraMove": [
 				{
@@ -484,38 +296,7 @@
 			"name": "move_right",
 			"keyframe": [ 8, 3, 9, 4, 8, 2 ],
 			"moveData": [
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				}
+				
 			],
 			"cameraMove": [
 				{
@@ -564,38 +345,7 @@
 			"name": "jump_right",
 			"keyframe": [ 8, 3, 9, 4, 8, 2 ],
 			"moveData": [
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				},
-				{
-					"dir": "x",
-					"dis": 2
-				}
+				
 			],
 			"cameraMove": [
 				{

@@ -87,6 +87,7 @@ private:
 	Point CameraPivot;
 	bool keyUnlock;
 	cWarp warp;
+	
 public:
 	cPlayer();
 	void show(HDC hdc) override;
@@ -105,8 +106,6 @@ public:
 	void setLocationOnMap(const Point& point)
 	{
 		LocationOnMap = point;
-		DrawPos = LocationOnMap * Tile;
-		DrawPos.y -= 4;
 	}
 	void addLocationOnMap(short x, short y)
 	{
