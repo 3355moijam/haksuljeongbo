@@ -2,7 +2,10 @@
 #include "stdafx.h"
 #include "data/rapidjson/document.h"
 #include <map>
+
+#include "cLoader.h"
 class cPlayer;
+class cNPC;
 using std::map;
 using std::pair;
 using namespace rapidjson;
@@ -35,7 +38,9 @@ private:
 	HBITMAP hMap;
 	BITMAP bitmapData;
 	map<Point, cWarpzone> linkedMap;
-	vector<iSpeakActor*> object;
+	map<Point, iSpeakActor*> speakers;
+	vector<cNPC*> npcList;
+	cNPCLoader npcLoader;
 public:
 	cMap(const rapidjson::Value &data);
 	~cMap();
@@ -44,6 +49,8 @@ public:
 	unsigned int getWidth() { return width; }
 	unsigned int getHeight() { return height; }
 	short* operator[] (unsigned int num) { return mapData[num]; }
+	short operator[] (const Point& loc) { return mapData[loc.y][loc.x]; }
+	bool isOnMap(const Point& p);
 	const map<Point, cWarpzone>& get_linked_map() 
 	{
 		return linkedMap;
@@ -51,12 +58,13 @@ public:
 
 	__declspec(property(get = get_linked_map)) const map<Point, cWarpzone>& LinkedMap;
 
-	const vector<iSpeakActor*>& get_object()
+	map<Point, iSpeakActor*>& get_speakers()
 	{
-		return object;
+		return speakers;
 	}
+	__declspec(property(get = get_speakers)) map<Point, iSpeakActor*>& Speaker;
 
-	__declspec(property(get = get_object)) const vector<iSpeakActor*>& Object;
+	vector<cNPC*>& get_npcList() { return npcList; }
 
 };
 class cWarpzone

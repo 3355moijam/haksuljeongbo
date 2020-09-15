@@ -3,6 +3,7 @@
 
 #include "cGameManager.h"
 #pragma comment (lib, "Msimg32.lib")
+#include <algorithm>
 
 //#ifdef _DEBUG
 //#include <iostream>
@@ -31,6 +32,7 @@ bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
 	{
 	case enumMapStatus::movable:
 	case enumMapStatus::grass:
+	case enumMapStatus::door:
 		LocationOnMap = tempLoc;
 		switch (dir)
 		{
@@ -79,13 +81,89 @@ bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
 		return false;
 		break;
 		
-	case enumMapStatus::lslope: 
+	case enumMapStatus::lslope:
+	{
+		switch (direct_)
+		{
+		case enumDirect::LEFT:
+			LocationOnMap = tempLoc;
+			LocationOnMap.x--;
+			anim_.setAnim(animState::JUMP_LEFT);
+			break;
+		case enumDirect::UP:
+			anim_.setAnim(animState::STOP_UP);
+			break;
+		case enumDirect::RIGHT:
+			anim_.setAnim(animState::STOP_RIGHT);
+			break;
+		case enumDirect::DOWN:
+			anim_.setAnim(animState::STOP_DOWN);
+			break;
+		}
+	}
 		break;
-	case enumMapStatus::rslope: 
+	case enumMapStatus::rslope:
+	{
+		switch (direct_)
+		{
+		case enumDirect::LEFT:
+			anim_.setAnim(animState::STOP_LEFT);
+			break;
+		case enumDirect::UP:
+			anim_.setAnim(animState::STOP_UP);
+			break;
+		case enumDirect::RIGHT:
+			LocationOnMap = tempLoc;
+			LocationOnMap.x++;
+			anim_.setAnim(animState::JUMP_RIGHT);
+			break;
+		case enumDirect::DOWN:
+			anim_.setAnim(animState::STOP_DOWN);
+			break;
+		}
+	}
 		break;
-	case enumMapStatus::uslope: 
+	case enumMapStatus::uslope:
+	{
+		switch (direct_)
+		{
+		case enumDirect::LEFT:
+			anim_.setAnim(animState::STOP_LEFT);
+			break;
+		case enumDirect::UP:
+			LocationOnMap = tempLoc;
+			LocationOnMap.y--;
+			anim_.setAnim(animState::JUMP_UP);
+			break;
+		case enumDirect::RIGHT:
+			anim_.setAnim(animState::STOP_RIGHT);
+			break;
+		case enumDirect::DOWN:
+			anim_.setAnim(animState::STOP_DOWN);
+			break;
+		}
+	}
 		break;
-	case enumMapStatus::dslope: 
+	case enumMapStatus::dslope:
+	{
+		switch (direct_)
+		{
+		case enumDirect::LEFT:
+			anim_.setAnim(animState::STOP_LEFT);
+			break;
+		case enumDirect::UP:
+			anim_.setAnim(animState::STOP_UP);
+			break;
+		case enumDirect::RIGHT:
+			anim_.setAnim(animState::STOP_RIGHT);
+			break;
+		case enumDirect::DOWN:
+			LocationOnMap = tempLoc;
+			LocationOnMap.y++;
+			anim_.setAnim(animState::JUMP_DOWN);
+			break;
+		}
+	}
 		break;
 		
 	case enumMapStatus::linkedMap:
@@ -93,11 +171,11 @@ bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
 		anim_.setAnim(animState::MOVE_UP);
 		break;
 		
-	case enumMapStatus::door:
-		// 앞으로 걷기
-		// 걷기 애니메이션 끝난 후 맵 전환
-		// json에 도착xy 추가.
-		break;
+	//case enumMapStatus::door:
+	//	// 앞으로 걷기
+	//	// 걷기 애니메이션 끝난 후 맵 전환
+	//	// json에 도착xy 추가.
+	//	break;
 
 	default:
 		break;
@@ -124,12 +202,43 @@ void cPlayer::addCameraPos(const string& dir, short dis)
 		CameraPivot.y += dis;
 }
 
+cNPC::cNPC(const rapidjson::Value &data) : cCharacter(data)
+{
+	
+}
+
+cNPC::~cNPC()
+{
+	cMap& Map = cGameManager::getInstance().Map;
+	Map.Speaker.erase(Map.Speaker.find(LocationOnMap));
+	Map.get_npcList().erase(std::find(Map.get_npcList().begin(), Map.get_npcList().end(), this));
+}
+
+void cNPC::show(HDC hdc)
+{
+	HDC hImgMemDC = CreateCompatibleDC(hdc);
+	cPlayer& player = cGameManager::getInstance().player;
+	HBITMAP hOldBitmap = static_cast<HBITMAP>(SelectObject(hImgMemDC, hImg));
+	int bx = bitmapData.bmWidth;
+	int by = bitmapData.bmHeight; // DrawPos 
+	TransparentBlt(hdc, DrawPos.x - player.getCameraPos().x, DrawPos.y - player.getCameraPos().y, 16, 16, hImgMemDC, 16 * static_cast<int>(currentSprite), 0, 16, 16, RGB(255, 0, 255));
+	SelectObject(hImgMemDC, hOldBitmap);
+	DeleteDC(hImgMemDC);
+}
+
+void cNPC::update()
+{
+}
+
+void cNPC::say()
+{
+}
 
 
 cCharacter::cCharacter()
 	: name("player"),
 	direct_(enumDirect::DOWN),
-	LocationOnMap(73, 9),
+	LocationOnMap(2, 3),
 	DrawPos(4 * Tile, 4 * Tile - 4)
 	//, animation()
 	,currentSprite(spriteState::DOWN)
@@ -138,9 +247,22 @@ cCharacter::cCharacter()
 	
 }
 
-//cCharacter::cCharacter(const rapidjson::Value data)
-//{
-//}
+cCharacter::cCharacter(const rapidjson::Value& data)
+	: name(data["name"].GetString()),
+	direct_(enumDirect::DOWN),
+	LocationOnMap(data["pos"]["x"].GetInt(), data["pos"]["y"].GetInt()),
+	DrawPos(LocationOnMap * Tile),
+	currentSprite(spriteState::DOWN)
+{	
+	DrawPos.y -= 4;
+
+	string tempSrc(data["imgSrc"].GetString(), data["imgSrc"].GetStringLength());
+	wstring tempWsrc;
+	tempWsrc.assign(tempSrc.begin(), tempSrc.end());
+	hImg = static_cast<HBITMAP>(LoadImage(NULL, tempWsrc.c_str(),
+		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION));
+	GetObject(hImg, sizeof(BITMAP), &bitmapData);
+}
 
 cCharacter::~cCharacter()
 {
@@ -183,7 +305,7 @@ void cPlayer::update()
 	if(static_cast<enumMapStatus>(cur_map[LocationOnMap.y][LocationOnMap.x]) == enumMapStatus::linkedMap && keyUnlock)
 	{
 		// set fade_out func fade_in
-		anim_.playAnim(this); // 애님큐 비우기
+		anim_.clear(); // 애님큐 비우기
 		map<Point, cWarpzone>::const_iterator it = cur_map.LinkedMap.find(LocationOnMap);
 		warp.set_timer();
 		warp.set_destination(it->second);
@@ -265,10 +387,54 @@ bool cPlayer::getInput()
 			// ui 열려있는지 확인.
 			// 열렸을 때
 			// 안열렸을 때
-			if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			//if (!tempLocation.isOnMap(currentMap.getWidth(), currentMap.getHeight()))
+			if (!currentMap.isOnMap(tempLocation))
 			{
-				// 현재 위치가 워프존이면 워프
-				return false;
+				// 현재 위치가 door이면 워프
+				if(currentMap[LocationOnMap] == (int) enumMapStatus::door)
+				{
+					anim_.clear();
+					map<Point, cWarpzone>::const_iterator it = currentMap.LinkedMap.find(LocationOnMap);
+					warp.set_timer();
+					warp.set_destination(it->second);
+					keyUnlock = false;
+					switch (dir)
+					{
+					case enumDirect::LEFT:
+						currentSprite = spriteState::LEFT;
+						break;
+					case enumDirect::UP:
+						currentSprite = spriteState::UP;
+						break;
+					case enumDirect::RIGHT:
+						currentSprite = spriteState::RIGHT;
+						break;
+					case enumDirect::DOWN:
+						currentSprite = spriteState::DOWN;
+						break;
+					}
+				}
+				else
+				{
+					// stop모션
+					direct = dir;
+					switch (direct_)
+					{
+					case enumDirect::LEFT:
+						anim_.setAnim(animState::STOP_LEFT);
+						break;
+					case enumDirect::UP:
+						anim_.setAnim(animState::STOP_UP);
+						break;
+					case enumDirect::RIGHT:
+						anim_.setAnim(animState::STOP_RIGHT);
+						break;
+					case enumDirect::DOWN:
+						anim_.setAnim(animState::STOP_DOWN);
+						break;
+					default: break;
+					}
+				}
 			}
 			else
 			{

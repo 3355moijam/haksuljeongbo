@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "cLoader.h"
 #include "cAnimChar.h"
-cLoader::cLoader(string FileName)
+
+#include "cMap.h"
+#include "cCharacter.h"
+//Document cLoader::doc;
+cLoader::cLoader(string FileName) : doc()
 {
-	FILE *fp = fopen(FileName.c_str(), "rb");
+	FILE* fp = fopen(FileName.c_str(), "rb");
 
 	char buffer[65536];
 	FileReadStream is(fp, buffer, sizeof(buffer));
@@ -34,6 +38,12 @@ cMap ** cMapLoader::LoadMap(string MapName)
 		}
 	}
 	return &map;
+}
+
+void cMapLoader::UnloadMap()
+{
+	delete map;
+	map = nullptr;
 }
 
 
@@ -75,4 +85,20 @@ void cAnimCharLoader::LoadAnim(string type)
 			cAnimChar::keyUnlock[i].emplace_back(anim[i]["keyUnlock"][j].GetInt());
 		}
 	}
+}
+
+cNPCLoader::cNPCLoader(): cLoader("data/npc.json")
+{
+}
+
+cNPC* cNPCLoader::LoadNPC(string name)
+{
+	for (auto& target : doc["npc"].GetArray())
+	{
+		if(name == target["name"].GetString())
+		{
+			return new cNPC(target);
+		}
+	}
+	return nullptr;
 }

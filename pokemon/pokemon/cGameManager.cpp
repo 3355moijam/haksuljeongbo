@@ -4,7 +4,7 @@
 
 cGameManager::cGameManager(): cur_state(enumGameState::OnMap), mapLoader()
 {
-	_Map = mapLoader.LoadMap("newbark");
+	_Map = mapLoader.LoadMap("playerhouse00");
 	_player = new cPlayer();
 }
 
@@ -17,8 +17,6 @@ cGameManager::~cGameManager()
 void cGameManager::show(HDC hdc)
 {
 	(*_Map)->show(hdc);
-	for (auto& ac : _actor)
-		ac->show(hdc);
 	_player->show(hdc);
 	//player->show(hdc);
 }
@@ -26,6 +24,6 @@ void cGameManager::show(HDC hdc)
 void cGameManager::update()
 {
 	_player->update();
-	for (auto& ac : _actor)
-		ac->update();
+	//for (auto& ac : _actor)
+		//ac->update();
 }

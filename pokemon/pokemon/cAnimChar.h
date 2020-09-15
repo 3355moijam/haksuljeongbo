@@ -35,4 +35,5 @@ public:
 	void setAnim(animState anim);
 	void playAnim(cCharacter* target);
 	short getRemainFrame() const { return frameData.size(); }
+	void clear();
 };

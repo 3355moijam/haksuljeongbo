@@ -1,10 +1,13 @@
 #pragma once
 #include "stdafx.h"
 
+//#include "cCharacter.h"
+class cNPC;
 
 //#include "cAnimation.h"
-#include "cMap.h"
-
+//#include "cCharacter.h"
+//#include "cMap.h"
+class cMap;
 #include "data/rapidjson/document.h"
 #include "data/rapidjson/filereadstream.h"
 #include "data/rapidjson/filewritestream.h"
@@ -27,11 +30,7 @@ public:
 	cMapLoader();
 	~cMapLoader() { UnloadMap(); }
 	cMap** LoadMap(string MapName);
-	void UnloadMap()
-	{
-		delete map;
-		map = nullptr;
-	}
+	void UnloadMap();
 };
 
 
@@ -44,3 +43,9 @@ public:
 
 
 
+class cNPCLoader : public cLoader
+{
+public:
+	cNPCLoader();
+	cNPC* LoadNPC(string name);
+};

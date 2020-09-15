@@ -3,7 +3,7 @@
 
 #include "cGameManager.h"
 extern RECT g_view;
-cMap::cMap(const rapidjson::Value &data):name(data["name"].GetString()), width(data["width"].GetInt()), height(data["height"].GetInt()), hMap(), linkedMap(), object()
+cMap::cMap(const rapidjson::Value &data):name(data["name"].GetString()), width(data["width"].GetInt()), height(data["height"].GetInt()), hMap(), linkedMap(), speakers(), npcList(), npcLoader()
 {
 	//name = data["name"].GetString();
 	//width = data["width"].GetInt();
@@ -33,6 +33,18 @@ cMap::cMap(const rapidjson::Value &data):name(data["name"].GetString()), width(d
 		cWarpzone tempzone(link[i]["name"].GetString(), link[i]["dx"].GetInt(), link[i]["dy"].GetInt());
 		linkedMap.emplace(temp, tempzone);
 	}
+
+	const rapidjson::Value& npcNames = data["npc"];
+	for (auto& name : npcNames.GetArray())
+	{
+		cNPC* newNPC = npcLoader.LoadNPC(name.GetString());
+		if (newNPC)
+		{
+			speakers.emplace(newNPC->getLocationOnMap(), newNPC);
+			npcList.emplace_back(newNPC);
+		}
+	}
+
 }
 
 cMap::~cMap()
@@ -41,11 +53,18 @@ cMap::~cMap()
 	for (int i = 0; i < height; i++)
 		delete[] mapData[i];
 	delete[] mapData;
-
+	while (!speakers.empty())
+	{
+		delete speakers.begin()->second;
+	}
+	while(!npcList.empty())
+	{
+		delete* npcList.rbegin();
+	}
 	//for (auto& k : linkedMap)
 	//	delete k;
 	//
-	//for (auto& k : object)
+	//for (auto& k : speakers)
 	//	delete k;
 	//
 }
@@ -61,6 +80,16 @@ void cMap::show(HDC hdc)
 	BitBlt(hdc, 0, 0, g_view.right, g_view.bottom, hImgMemDC, player.getCameraPos().x, player.getCameraPos().y, SRCCOPY);
 	SelectObject(hImgMemDC, hOldBitmap);
 	DeleteDC(hImgMemDC);
+
+	for (auto npc : npcList)
+	{
+		npc->show(hdc);
+	}
+}
+
+bool cMap::isOnMap(const Point& p)
+{
+	return (p.x >= 0 && p.x < width && p.y >= 0 && p.y < height);
 }
 
 cWarp::cWarp(cPlayer* player) : timer_(0), dest(), player(player)

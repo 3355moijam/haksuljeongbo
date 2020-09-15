@@ -3,8 +3,9 @@
 //#include "cAnimation.h"
 #include "cAnimChar.h"
 #include "cMap.h"
+//class cMap;
 //class cWarpzone;
-class cMap;
+//class cMap;
 //class cCharAnim;
 //class cCharacter;
 
@@ -62,7 +63,7 @@ protected:
 	bool isJumping;
 public:
 	cCharacter();
-	//cCharacter(const rapidjson::Value data);
+	cCharacter(const rapidjson::Value& data);
 	virtual ~cCharacter();
 
 	enumDirect get_direct() const;
@@ -78,7 +79,7 @@ public:
 	__declspec(property(get = get_anim)) cAnimChar& anim;
 	
 	bool MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir);
-
+	const Point& getLocationOnMap() const { return LocationOnMap; }
 };
 
 class cPlayer : public cCharacter//, public iController
@@ -102,7 +103,7 @@ public:
 	void setKeyUnlock(bool b) { keyUnlock = b; }
 	void setKeyUnlock() { keyUnlock = !keyUnlock; }
 
-	const Point& getLocationOnMap() const { return LocationOnMap; }
+	
 	void setLocationOnMap(const Point& point)
 	{
 		LocationOnMap = point;
@@ -122,9 +123,10 @@ class cNPC : public cCharacter, public iSpeakActor
 private:
 
 public:
-	cNPC();
+	cNPC(const rapidjson::Value& data);
+	~cNPC();
 	void show(HDC hdc) override;
 	void update() override;
-	bool move(cMap &map);
+	//bool move(cMap &map);
 	void say() override;
 };

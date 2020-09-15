@@ -35,7 +35,7 @@ public:
 	template<typename T>
 	Point(T _x, T _y) : x_(static_cast<short>(_x)), y_(static_cast<short>(_y)) {}
 
-	bool isOnMap(short _width, short _height) const;
+	//bool isOnMap(short _width, short _height) const; // map으로 이동해야함.
 
 	bool operator<(const Point& right) const;
 	bool operator==(const Point& right) const;

@@ -3,99 +3,116 @@
   <Class Name="cCharacter" Collapsed="true">
     <Position X="9" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BAQAAgAAEAABDAAAIAERAAAAAAAEAAAAARAABEQgAgA=</HashCode>
       <FileName>cCharacter.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cPlayer" Collapsed="true">
-    <Position X="9" Y="4.75" Width="1.5" />
+    <Position X="9" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAGAAAAAAAAgAAAAAAAAAAAAAAAABAAAAAAkAAA=</HashCode>
-      <FileName>cCharacter.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="cNPC" Collapsed="true">
-    <Position X="11.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAACAAAAAEAAAAAAAAAAABAAAAAAEAAA=</HashCode>
+      <HashCode>AAAAQAGQAgAIAAAAAABAAAAIAAAACEAABQAAAAAkAAA=</HashCode>
       <FileName>cCharacter.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cUI" Collapsed="true">
-    <Position X="2.75" Y="4.75" Width="1.5" />
+    <Position X="2.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAADAAAAABBQAAAIAAACAAABAAAAAAEQCA=</HashCode>
       <FileName>cUI.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cUIMenu" Collapsed="true">
-    <Position X="0.5" Y="6" Width="1.5" />
+    <Position X="0.5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAgAEBAA=</HashCode>
       <FileName>cUI.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cUITalk" Collapsed="true">
-    <Position X="2.75" Y="6" Width="1.5" />
+    <Position X="2.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAAAAQgAAAAgQQAAABAAAAAAEAAA=</HashCode>
       <FileName>cUI.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cUIYesNo" Collapsed="true">
-    <Position X="5" Y="6" Width="1.5" />
+    <Position X="5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAEAAA=</HashCode>
       <FileName>cUI.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="iActorBase" Collapsed="true">
-    <Position X="2.75" Y="0.5" Width="1.5" />
+    <Position X="2.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAUAAA=</HashCode>
       <FileName>interface.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="iSpeakActor" Collapsed="true">
-    <Position X="11.5" Y="7" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>interface.h</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="cGameManager" Collapsed="true">
-    <Position X="10" Y="0.5" Width="1.5" />
+    <Position X="10.5" Y="1.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAQABBgAQAAAIghCAAAAYAAAAQFBAIkAAAEAAw=</HashCode>
+      <HashCode>QAAAAAAQABBgAQAAAIghCAEAAYAAAAQFBAIkAAAEAAw=</HashCode>
       <FileName>cGameManager.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cMap" Collapsed="true">
-    <Position X="0.5" Y="2.5" Width="1.5" />
+    <Position X="5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAAACAACAQAQAEAQAAAAAAkQgAABAAAAAAEAAA=</HashCode>
+      <HashCode>QAAAAAAAAGAACgQgQAEAQgAAAAEkSgAABAAAAAAEAAA=</HashCode>
       <FileName>cMap.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="cNoticeSign" Collapsed="true">
-    <Position X="13.25" Y="8.25" Width="1.5" />
+  <Class Name="cAnimChar" Collapsed="true">
+    <Position X="7.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>EMEAAgAAQAAAAACABQAAAAEIEAAAIAAAAAAAAAAAAAE=</HashCode>
+      <FileName>cAnimChar.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cAnimCharLoader" Collapsed="true">
+    <Position X="7.25" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cLoader" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAEAAAAAAAEAAAAA=</HashCode>
+      <FileName>cLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cMapLoader" Collapsed="true">
+    <Position X="5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAAAACAAg=</HashCode>
+      <FileName>cLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cWarp" Collapsed="true">
+    <Position X="6.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAgAAAAAACAAAAACIAAAEAACEABBAAQAAgEAAA=</HashCode>
       <FileName>cMap.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="cCuttableTree" Collapsed="true">
-    <Position X="9.75" Y="8.25" Width="1.5" />
+  <Class Name="cWarpzone" Collapsed="true">
+    <Position X="6.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AEAAAAAAgAAAAAAAAAAAAAAAABAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>cMap.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="cSea" Collapsed="true">
-    <Position X="8.5" Y="7" Width="1.5" />
+  <Class Name="Point" Collapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.25" />
+    <Members>
+      <Method Name="isOnMap" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>cMap.h</FileName>
+      <HashCode>AAAAAAAAAAQAgAAAAgAAAQYAAABAAAAAAABgAAAAIAA=</HashCode>
+      <FileName>Point.h</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="enumDirect" Collapsed="true">
@@ -106,17 +123,31 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="enumUIState" Collapsed="true">
-    <Position X="1" Y="4.75" Width="1.5" />
+    <Position X="1" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAACAAAAAAAIAAAAAAAAAEAAAA=</HashCode>
       <FileName>cUI.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="enumMapStatus" Collapsed="true">
-    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Position X="5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAgwEAAAAAQAIAAAQIAAggAABGAAAAAAAAA=</HashCode>
       <FileName>cMap.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="spriteState" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAEAAAAAgIAAAAAAAAQAAICAAAgAAAAAgAAAAA=</HashCode>
+      <FileName>cCharacter.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="animState" Collapsed="true">
+    <Position X="10.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAAAAEAAUCCAAgAAFAAgAAAAEAAAAUgAAAAAAAAAA=</HashCode>
+      <FileName>cCharacter.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Malgun Gothic" Size="9" />

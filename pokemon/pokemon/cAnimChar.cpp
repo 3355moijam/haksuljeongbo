@@ -90,4 +90,25 @@ void cAnimChar::playAnim(cCharacter* target)
 			cameraQ.pop();
 		}
 	}
+	else
+	{
+		if (!cameraQ.empty())
+		{
+			to_dir temp = cameraQ.front();
+			target->addPos(temp.xy, temp.distance);
+			cameraQ.pop();
+		}
+	}
+}
+
+void cAnimChar::clear()
+{
+	while (!frameData.empty())
+		frameData.pop();
+	while (!unlockQ.empty())
+		unlockQ.pop();
+	while (!cameraQ.empty())
+		frameData.pop();
+	while (!moveQ.empty())
+		unlockQ.pop();
 }

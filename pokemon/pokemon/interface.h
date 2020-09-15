@@ -41,8 +41,7 @@ public:
 class iSpeakActor abstract
 {
 protected:
-	vector<wstring> dialog;
-	unsigned int meet;
+
 public:
 	virtual void say() = 0;
 	//virtual void addMeet();

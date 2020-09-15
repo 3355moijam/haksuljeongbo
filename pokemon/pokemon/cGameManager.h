@@ -3,6 +3,7 @@
 
 #include "cCharacter.h"
 #include "cLoader.h"
+//class cMapLoader;
 
 class cUI;
 class iActorBase;
@@ -20,8 +21,8 @@ private:
 	enumGameState cur_state;
 	cPlayer* _player;
 	cMap** _Map;
-	vector<cUI*> *activeUI;
-	vector<iActorBase*> _actor;
+	vector<cUI*> activeUI;
+	//vector<iActorBase*> _actor;
 	cMapLoader mapLoader;
 	const float multiply = 4;
 public:
@@ -33,8 +34,8 @@ public:
 	cPlayer& getPlayer() { return *_player; }
 	__declspec(property(get = getPlayer)) cPlayer& player;
 
-	vector<iActorBase*>& getActor() { return _actor; }
-	__declspec(property(get = getActor)) vector<iActorBase*>& actor;
+	//vector<iActorBase*>& getActor() { return _actor; }
+	//__declspec(property(get = getActor)) vector<iActorBase*>& actor;
 
 	cMap& getMap() { return **_Map; }
 	__declspec(property(get = getMap)) cMap& Map;
