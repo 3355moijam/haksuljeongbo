@@ -43,6 +43,7 @@ class iSpeakActor abstract
 protected:
 
 public:
+	virtual ~iSpeakActor() {};
 	virtual void say() = 0;
 	//virtual void addMeet();
 };

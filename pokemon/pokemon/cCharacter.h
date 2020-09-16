@@ -113,8 +113,6 @@ public:
 		LocationOnMap.x += x;
 		LocationOnMap.y += y;
 	}
-	// 캐릭터의 이동이 끝났는데(=인풋이 가능해졌는데) 현 위치가 워프존이라면
-	// fade out warp fade in
 	
 };
 

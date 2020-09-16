@@ -55,12 +55,13 @@ cMap::~cMap()
 	delete[] mapData;
 	while (!speakers.empty())
 	{
-		delete speakers.begin()->second;
+		iSpeakActor* temp = speakers.begin()->second;
+		delete temp;
 	}
-	while(!npcList.empty())
-	{
-		delete* npcList.rbegin();
-	}
+	//while(!npcList.empty())
+	//{
+	//	delete* npcList.rbegin();
+	//}
 	//for (auto& k : linkedMap)
 	//	delete k;
 	//

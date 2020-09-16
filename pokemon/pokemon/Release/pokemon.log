@@ -1,2 +1,33 @@
-﻿  pokemon.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Release\pokemon.exe
+﻿  stdafx.cpp
+  FunctionLibrary.cpp
+  Point.cpp
+  cAnimChar.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cAnimChar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+cAnimChar.cpp(82): warning C4800: 'short': forcing value to bool 'true' or 'false' (performance warning)
+  cCharacter.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cAnimChar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  cGameManager.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cAnimChar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  cLoader.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cAnimChar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+cLoader.cpp(10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+cLoader.cpp(59): warning C4018: '<': signed/unsigned mismatch
+cLoader.cpp(62): warning C4018: '<': signed/unsigned mismatch
+cLoader.cpp(83): warning C4018: '<': signed/unsigned mismatch
+  cMap.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cAnimChar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+cMap.cpp(53): warning C4018: '<': signed/unsigned mismatch
+cMap.cpp(92): warning C4018: '<': signed/unsigned mismatch
+  cUI.cpp
+  interface.cpp
+  pokemon.cpp
+c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cAnimChar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+pokemon.cpp(108): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating code
+  420 of 1418 functions (29.6%) were compiled, the rest were copied from previous compilation.
+    249 functions were new in current compilation
+    106 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  pokemon.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Release\pokemon.exe
   pokemon.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Release\pokemon.pdb (Full PDB)
