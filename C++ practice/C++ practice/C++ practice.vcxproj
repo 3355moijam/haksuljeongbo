@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="class\AVL.h" />
     <ClInclude Include="class\biTree.h" />
+    <ClInclude Include="class\cDijkstra.h" />
     <ClInclude Include="class\GeometricObject\Circle.h" />
     <ClInclude Include="class\GeometricObject\GeometricObject.h" />
     <ClInclude Include="class\GeometricObject\Rectangle.h" />
@@ -160,9 +161,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="0818.1 A star.cpp" />
+    <ClCompile Include="0916 dijstra test.cpp" />
     <ClCompile Include="class\AVL.cpp" />
     <ClCompile Include="class\biTree.cpp" />
+    <ClCompile Include="class\cDijkstra.cpp" />
     <ClCompile Include="class\GeometricObject\Circle.cpp" />
     <ClCompile Include="class\GeometricObject\GeometricObject.cpp" />
     <ClCompile Include="class\GeometricObject\Rectangle.cpp" />

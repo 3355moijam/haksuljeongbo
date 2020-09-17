@@ -57,6 +57,9 @@
     <ClInclude Include="class\AVL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="class\cDijkstra.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -95,7 +98,10 @@
     <ClCompile Include="class\AVL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="0818.1 A star.cpp">
+    <ClCompile Include="class\cDijkstra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="0916 dijstra test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

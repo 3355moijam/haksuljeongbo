@@ -1,4 +1,5 @@
-﻿#include "cVector3.h"
+﻿#define _USE_MATH_DEFINES
+#include "cVector3.h"
 #include <cmath>
 
 cVector3::cVector3() : x(0.0f), y(0.0f), z(0.0f)
@@ -81,6 +82,12 @@ cVector3 cVector3::operator*(float f_x)
 	return temp;
 }
 
+cVector3 operator*(float f_x, cVector3& vector3)
+{
+	cVector3 temp = vector3 * f_x;
+	return temp;
+}
+
 cVector3 cVector3::operator/(float f_x)
 {
 	cVector3 temp = {};
@@ -104,6 +111,15 @@ cVector3 cVector3::Cross(cVector3& v1, cVector3& v2)
 	return temp;
 }
 
+float cVector3::Angle(cVector3& v1, cVector3& v2, bool mode)
+{
+	float rad = acos(Dot(v1, v2) / v1.Length() / v2.Length());
+	if (mode)
+		return rad * 180 * M_1_PI;
+	else
+		return rad;
+}
+
 float cVector3::Length()
 {
 	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
@@ -114,8 +130,15 @@ cVector3 cVector3::Normalize()
 	return *this / Length();
 }
 
+
 std::ostream& operator<<(std::ostream& os, cVector3& vector3)
 {
 	os << "(" << vector3.x << ", " << vector3.y << ", " << vector3.z << ")";
 	return os;
+}
+
+std::istream& operator>>(std::istream& is, cVector3& vector3)
+{
+	is >> vector3.x >> vector3.y >> vector3.z;
+	return is;
 }

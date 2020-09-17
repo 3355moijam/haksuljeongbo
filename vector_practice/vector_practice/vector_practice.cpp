@@ -16,17 +16,17 @@ int main()
 	//외적
 	//
 
-	float x1, y1, z1;
-	float x2, y2, z2;
+	cVector3 v1, v2, v3;
+	
 
 	cout << "v1 생성. 숫자 세개 입력 : ";
-	cin >> x1 >> y1 >> z1;
-	cVector3 v1(x1, y1, z1);
-
+	cin >> v1;
 
 	cout << "v2 생성. 숫자 세개 입력 : ";
-	cin >> x2 >> y2 >> z2;
-	cVector3 v2(x2, y2, z2);
+	cin >> v2;
+
+	cout << "v3 생성. 숫자 세개 입력 : ";
+	cin >> v3;
 
 	cout << "비교" << endl;
 	cout << "v1 == v2 : " << (v1 == v2) << endl;
@@ -35,6 +35,8 @@ int main()
 
 	cout << "덧셈" << endl;
 	cout << "v1 + v2 : " << (v1 + v2) << endl;
+	cout << "3v1 + 2v2 : " << (v1 * 3 + v2 * 2) << endl;
+	cout << "v1 -2v2 : " << (v1 + v2 * -2) << endl;
 	cout << "뺄셈" << endl;
 	cout << "v1 - v2 : " << (v1 - v2) << endl;
 	cout << "곱셈" << endl;
@@ -52,8 +54,16 @@ int main()
 	cout << "v2 cross v1 : " << cVector3::Cross(v2, v1) << endl;
 	cout << endl;
 
+	cout << "Normalize" << endl;
+	cout << "v2 정규화 : " << v2.Normalize() << endl;
+	cout << endl;
+
+	cout << "각도" << endl;
+	cout << "각 : " << cVector3::Angle(v1, v2, 1) << endl;
+	cout << "검증(90이면 정상) : " << cVector3::Angle(cVector3::Cross(v1, v2), v1, 1) << endl;
 	
-	
+	cout << "삼각형에 수직인 벡터" << endl;
+	cout << cVector3::Cross((v2 - v1), (v3 - v1)) << endl;
     return 0;
 }
 
