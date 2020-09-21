@@ -16,13 +16,17 @@ cVector3::~cVector3()
 
 bool cVector3::operator==(cVector3& vector3)
 {
-	return (abs(x - vector3.x) <= FLT_EPSILON) && (abs(y - vector3.y) <= FLT_EPSILON) && (abs(z - vector3.z) <= FLT_EPSILON);
+	return	(abs(x - vector3.x) <= FLT_EPSILON) && 
+			(abs(y - vector3.y) <= FLT_EPSILON) && 
+			(abs(z - vector3.z) <= FLT_EPSILON);
 	//return (x == vector3.x) && (y == vector3.y) && (z == vector3.z);
 }
 
 bool cVector3::operator!=(cVector3& vector3)
 {
-	return (abs(x - vector3.x) > FLT_EPSILON) || (abs(y - vector3.y) > FLT_EPSILON) || (abs(z - vector3.z) > FLT_EPSILON);
+	return	(abs(x - vector3.x) > FLT_EPSILON) || 
+			(abs(y - vector3.y) > FLT_EPSILON) || 
+			(abs(z - vector3.z) > FLT_EPSILON);
 }
 
 cVector3 cVector3::operator+(cVector3& vector3)
@@ -91,18 +95,19 @@ cVector3 operator*(float f_x, cVector3& vector3)
 cVector3 cVector3::operator/(float f_x)
 {
 	cVector3 temp = {};
-	temp.x = x / f_x;
-	temp.y = y / f_x;
-	temp.z = z / f_x;
+	float f_x_ = 1 / f_x;
+	temp.x = x * f_x_;
+	temp.y = y * f_x_;
+	temp.z = z * f_x_;
 	return temp;
 }
 
-float cVector3::Dot(cVector3& v1, cVector3& v2)
+float cVector3::dot(cVector3& v1, cVector3& v2)
 {
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
-cVector3 cVector3::Cross(cVector3& v1, cVector3& v2)
+cVector3 cVector3::cross(cVector3& v1, cVector3& v2)
 {
 	cVector3 temp = {};
 	temp.x = v1.y * v2.z - v1.z * v2.y;
@@ -111,23 +116,23 @@ cVector3 cVector3::Cross(cVector3& v1, cVector3& v2)
 	return temp;
 }
 
-float cVector3::Angle(cVector3& v1, cVector3& v2, bool mode)
+float cVector3::angle(cVector3& v1, cVector3& v2, bool mode)
 {
-	float rad = acos(Dot(v1, v2) / v1.Length() / v2.Length());
+	float rad = acos(dot(v1, v2) / v1.length() / v2.length());
 	if (mode)
 		return rad * 180 * M_1_PI;
 	else
 		return rad;
 }
 
-float cVector3::Length()
+float cVector3::length()
 {
-	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+	return sqrt(x * x + y * y + z * z);
 }
 
-cVector3 cVector3::Normalize()
+cVector3 cVector3::normalize()
 {
-	return *this / Length();
+	return *this / length();
 }
 
 

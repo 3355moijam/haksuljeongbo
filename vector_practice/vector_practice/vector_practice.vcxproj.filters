@@ -41,7 +41,7 @@
     <ClCompile Include="cMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="matrix_practice.cpp">
+    <ClCompile Include="vector_practice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

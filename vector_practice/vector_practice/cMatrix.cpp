@@ -31,13 +31,14 @@ cMatrix::cRow::~cRow()
 {
 }
 
-void cMatrix::cRow::Resize(int nDimension)
+void cMatrix::cRow::resize(int nDimension)
 {
+	row.clear();
 	row.resize(nDimension);
-	for (auto & value : row)
-	{
-		value = 0;
-	}
+	//for (auto & value : row)
+	//{
+	//	value = 0;
+	//}
 }
 
 float& cMatrix::cRow::operator[](int n)
@@ -50,20 +51,20 @@ float cMatrix::cRow::operator*(vector<float> right)
 	return row * right;
 }
 
-cMatrix::cMatrix() : col(1), dimension(1)
+cMatrix::cMatrix() : rows(1), dimension_(1)
 {
 }
 
-cMatrix::cMatrix(int nDimension): col(), dimension(nDimension)
+cMatrix::cMatrix(int nDimension): rows(), dimension_(nDimension)
 {
 	for (int i = 0; i < nDimension; ++i)
 	{
-		col.emplace_back(nDimension);
+		rows.emplace_back(nDimension);
 	}
-	col.resize(nDimension);
+	rows.resize(nDimension);
 }
 
-cMatrix::cMatrix(const cMatrix& matrix): col(matrix.col), dimension(matrix.dimension)
+cMatrix::cMatrix(const cMatrix& matrix): rows(matrix.rows), dimension_(matrix.dimension_)
 {
 }
 
@@ -73,27 +74,30 @@ cMatrix::~cMatrix()
 
 std::ostream& operator<<(std::ostream& os, cMatrix& matrix)
 {
-	for (int i = 0; i < matrix.dimension; ++i)
+	for (int i = 0; i < matrix.dimension_; ++i)
 	{
 		for (auto& row : matrix[i])
 		{
-			os << std::fixed;
-			os.precision(3);
-			os << row << "   ";
+			if (abs(row) <= EPSILON)
+				os << "  0   ";
+			else if (abs(row - 1) <= EPSILON)
+				os << "  1   ";
+			else
+				os << "  " << row << "   ";
 		}
 		os << endl;
 	}
 	return os;
 }
 
-void cMatrix::Resize(int nDimension)
+void cMatrix::resize(int nDimension)
 {
-	col.resize(nDimension);
-	for (auto & row : col)
+	rows.resize(nDimension);
+	for (auto & row : rows)
 	{
-		row.Resize(nDimension);
+		row.resize(nDimension);
 	}
-	dimension = nDimension;
+	dimension_ = nDimension;
 }
 
 void cMatrix::setRandomData()
@@ -103,7 +107,7 @@ void cMatrix::setRandomData()
 	//std::uniform_real_distribution<float> dis(-500, 500); // 원하는 범위의 숫자
 	std::uniform_int_distribution<int> dis(-10, 10);
 
-	for (auto & row : col)
+	for (auto & row : rows)
 	{
 		for (auto & value : row)
 		{
@@ -114,23 +118,23 @@ void cMatrix::setRandomData()
 
 void cMatrix::setTestData()
 {
-	if (dimension == 2)
+	if (dimension_ == 2)
 	{
-		col[0][0] = 1;
-		col[0][1] = 2;
-		col[1][0] = 1;
-		col[1][1] = 3;
+		rows[0][0] = 1;
+		rows[0][1] = 2;
+		rows[1][0] = 1;
+		rows[1][1] = 3;
 	}
-	else if (dimension == 3)
+	else if (dimension_ == 3)
 	{
-		col[0][0] = 2;
-		col[1][1] = 1;
-		col[2][2] = 2;
-		//col[3][3] = 1;
+		rows[0][0] = 2;
+		rows[1][1] = 1;
+		rows[2][2] = 2;
+		//rows[3][3] = 1;
 	}
 }
 
-cMatrix cMatrix::Identity(int nDimension) // 항등행렬
+cMatrix cMatrix::identity(int nDimension) // 항등행렬
 {
 	cMatrix temp(nDimension);
 	for (int i = 0; i < nDimension; ++i)
@@ -142,19 +146,19 @@ cMatrix cMatrix::Identity(int nDimension) // 항등행렬
 
 cMatrix::cRow& cMatrix::operator[](int n)
 {
-	return col[n];
+	return rows[n];
 }
 
 bool cMatrix::operator==(cMatrix& matrix)
 {
-	if(dimension != matrix.dimension)
+	if(dimension_ != matrix.dimension_)
 		return false;
 
-	for (int i = 0; i < dimension; ++i)
+	for (int i = 0; i < dimension_; ++i)
 	{
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			if (abs(col[i][j] - matrix[i][j]) > EPSILON)
+			if (abs(rows[i][j] - matrix[i][j]) > EPSILON)
 				return false;
 		}
 	}
@@ -168,12 +172,12 @@ bool cMatrix::operator!=(cMatrix& matrix)
 
 cMatrix cMatrix::operator+(cMatrix& matrix)
 {
-	cMatrix temp(dimension);
-	for (int i = 0; i < dimension; ++i)
+	cMatrix temp(dimension_);
+	for (int i = 0; i < dimension_; ++i)
 	{
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			temp[i][j] = col[i][j] + matrix[i][j];
+			temp[i][j] = rows[i][j] + matrix[i][j];
 		}
 	}
 	return temp;
@@ -181,12 +185,12 @@ cMatrix cMatrix::operator+(cMatrix& matrix)
 
 cMatrix cMatrix::operator-(cMatrix& matrix)
 {
-	cMatrix temp(dimension);
-	for (int i = 0; i < dimension; ++i)
+	cMatrix temp(dimension_);
+	for (int i = 0; i < dimension_; ++i)
 	{
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			temp[i][j] = col[i][j] - matrix[i][j];
+			temp[i][j] = rows[i][j] - matrix[i][j];
 		}
 	}
 	return temp;
@@ -194,20 +198,20 @@ cMatrix cMatrix::operator-(cMatrix& matrix)
 
 cMatrix cMatrix::operator*(cMatrix& matrix)
 {
-	assert(dimension == matrix.dimension);
-	cMatrix temp(dimension);
+	assert(dimension_ == matrix.dimension_);
+	cMatrix temp(dimension_);
 
-	for (int i = 0; i < dimension; ++i) // i - x좌표, j - y좌표
+	for (int i = 0; i < dimension_; ++i) // i - x좌표, j - y좌표
 	{
-		vector<float> right_col(dimension);
-		for (int j = 0; j < dimension; ++j)
+		vector<float> right_col(dimension_);
+		for (int j = 0; j < dimension_; ++j)
 		{
 			right_col[j] = matrix[j][i];
 		}
 
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			temp[j][i] = col[j] * right_col;
+			temp[j][i] = rows[j] * right_col;
 		}
 	}
 	
@@ -216,15 +220,21 @@ cMatrix cMatrix::operator*(cMatrix& matrix)
 
 cMatrix cMatrix::operator*(float f)
 {
-	cMatrix temp(dimension);
-	for (int i = 0; i < dimension; ++i)
+	cMatrix temp(dimension_);
+	for (int i = 0; i < dimension_; ++i)
 	{
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			temp[i][j] = col[i][j] * f;
+			temp[i][j] = rows[i][j] * f;
 		}
 	}
 	return temp;
+}
+
+cMatrix cMatrix::operator/(float f)
+{
+	float M_1_f = 1 / f;
+	return *this * M_1_f;
 }
 
 cMatrix operator*(float f, cMatrix& matrix)
@@ -232,79 +242,84 @@ cMatrix operator*(float f, cMatrix& matrix)
 	return matrix * f;
 }
 
-cMatrix cMatrix::Transpose()
+cMatrix cMatrix::transpose()
 {
-	cMatrix temp(dimension);
-	for (int i = 0; i < dimension; ++i)
+	cMatrix temp(dimension_);
+	for (int i = 0; i < dimension_; ++i)
 	{
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			temp[i][j] = col[j][i];
+			temp[i][j] = rows[j][i];
 		}
 	}
 	return temp;
 }
 
-cMatrix cMatrix::Inverse()
+cMatrix cMatrix::inverse(OUT float & det)
 {
-	float D;
-	if ((D = Determinant()) == 0)
+	det = determinant();
+	if (abs(det) <= EPSILON)
+	{
+		cout << "역행렬이 존재하지 않음\n";
 		return{};
+	}
 	
-	//cMatrix temp(dimension);
-	return 1 / D * Adjoint();
+	//cMatrix temp(dimension_);
+	return adjoint() / det;
 }
 
-float cMatrix::Determinant()
+float cMatrix::determinant()
 {
-	if (dimension < 1)
+	if (dimension_ < 1)
 		return 0;
-	if (dimension == 1)
-		return col[0][0];
-	if (dimension == 2)
-		return col[0][0] * col[1][1] - col[0][1] * col[1][0];
+	if (dimension_ == 1)
+		return rows[0][0];
+	if (dimension_ == 2)
+		return rows[0][0] * rows[1][1] - rows[0][1] * rows[1][0];
 
 	float sum = 0;
-	for (int i = 0; i < dimension; ++i)
+	for (int i = 0; i < dimension_; ++i)
 	{
-		sum += col[0][i] * Cofactor(0, i);
+		sum += rows[0][i] * cofactor(0, i);
 	}
 	return sum;
 }
 
-cMatrix cMatrix::Adjoint()
+cMatrix cMatrix::adjoint()
 {
-	cMatrix temp(dimension);
-	for (int i = 0; i < dimension; ++i)
+	cMatrix temp(dimension_);
+	for (int i = 0; i < dimension_; ++i)
 	{
-		for (int j = 0; j < dimension; ++j)
+		for (int j = 0; j < dimension_; ++j)
 		{
-			temp[i][j] = Cofactor(j, i);
+			temp[i][j] = cofactor(j, i);
 		}
 	}
 	return temp;
 }
 
-float cMatrix::Cofactor(int nRow, int nCol)
+float cMatrix::cofactor(int nRow, int nCol)
 {
-	return pow(-1, nRow + nCol) * Minor(nRow, nCol).Determinant();
+	return pow(-1, nRow +  nCol) * minor(nRow, nCol).determinant();
 }
 
-cMatrix cMatrix::Minor(int nRow, int nCol)
+cMatrix cMatrix::minor(int nRow, int nCol)
 {
-	cMatrix temp(dimension - 1);
-	for (int j = 0, tempj = 0; j < dimension; ++j)
+	cMatrix temp(dimension_ - 1);
+	for (int j = 0, tempj = 0; j < dimension_; ++j)
 	{
 		if (nRow == j)
 			continue;
-		for (int i = 0, tempi = 0; i < dimension; ++i)
+		for (int i = 0, tempi = 0; i < dimension_; ++i)
 		{
 			if (nCol == i)
 				continue;
-			temp[tempj][tempi] = col[j][i];
+			temp[tempj][tempi] = rows[j][i];
 			tempi++;
 		}
 		tempj++;
 	}
 	return temp;
 }
+
+

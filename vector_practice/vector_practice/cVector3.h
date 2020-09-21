@@ -36,12 +36,12 @@ public:
 	friend cVector3 operator*(float f_x, cVector3& vector3);
 	cVector3 operator/(float f_x);
 
-	static float Dot(cVector3& v1, cVector3& v2);
-	static cVector3 Cross(cVector3& v1, cVector3& v2);
+	static float dot(cVector3& v1, cVector3& v2);
+	static cVector3 cross(cVector3& v1, cVector3& v2);
 	// mode 0(default): 라디안, 1: 도
-	static float Angle(cVector3& v1, cVector3& v2, bool mode = 0);
-	float Length();
-	cVector3 Normalize();
+	static float angle(cVector3& v1, cVector3& v2, bool mode = 0);
+	float length();
+	cVector3 normalize();
 
 	friend std::ostream& operator<<(std::ostream& os, cVector3& vector3);
 	friend std::istream& operator>>(std::istream& is, cVector3& vector3);

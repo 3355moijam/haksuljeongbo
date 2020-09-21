@@ -153,8 +153,8 @@
   <ItemGroup>
     <ClCompile Include="cMatrix.cpp" />
     <ClCompile Include="cVector3.cpp" />
-    <ClCompile Include="matrix_practice.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="vector_practice.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

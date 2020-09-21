@@ -8,7 +8,7 @@ using std::vector;
 class cMatrix
 {
 private:
-	int dimension;
+	int dimension_;
 	class cRow
 	{
 	private:
@@ -17,13 +17,13 @@ private:
 		cRow();
 		cRow(int nDimension);
 		~cRow();
-		void Resize(int nDimension);
+		void resize(int nDimension);
 		float& operator[](int n);
 		float operator*(vector<float> right);
 		vector<float>::iterator begin() { return row.begin(); }
 		vector<float>::iterator end() { return row.end(); }
 	};
-	vector<cRow> col;
+	vector<cRow> rows;
 public:
 	cMatrix();
 	cMatrix(int nDimension);
@@ -31,11 +31,11 @@ public:
 	~cMatrix();
 
 	friend std::ostream& operator<<(std::ostream& os, cMatrix& matrix);
-	void Resize(int nDimension);
-	int Dimension() { return dimension; }
+	void resize(int nDimension);
+	int dimension() { return dimension_; }
 	void setRandomData();
 	void setTestData();
-	static cMatrix Identity(int nDimension);
+	static cMatrix identity(int nDimension);
 	cRow& operator[](int n);
 	//===================================
 	bool operator==(cMatrix& matrix);
@@ -44,11 +44,12 @@ public:
 	cMatrix operator-(cMatrix& matrix);
 	cMatrix operator*(cMatrix& matrix);
 	cMatrix operator*(float f);
+	cMatrix operator/(float f);
 	friend cMatrix operator*(float f, cMatrix& matrix);
-	cMatrix Transpose();
-	cMatrix Inverse();
-	float Determinant();
-	cMatrix Adjoint();
-	float Cofactor(int nRow, int nCol);
-	cMatrix Minor(int nRow, int nCol);
+	cMatrix transpose();
+	cMatrix inverse(float& det);
+	float determinant();
+	cMatrix adjoint();
+	float cofactor(int nRow, int nCol);
+	cMatrix minor(int nRow, int nCol);
 };

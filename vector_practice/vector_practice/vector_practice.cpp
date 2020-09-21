@@ -46,24 +46,24 @@ int main()
 	cout << endl;
 
 	cout << "내적" << endl;
-	cout << "v1 dot v2 : " << cVector3::Dot(v1, v2) << endl;
+	cout << "v1 dot v2 : " << cVector3::dot(v1, v2) << endl;
 	cout << endl;
 	
 	cout << "외적" << endl;
-	cout << "v1 cross v2 : " << cVector3::Cross(v1, v2) << endl;
-	cout << "v2 cross v1 : " << cVector3::Cross(v2, v1) << endl;
+	cout << "v1 cross v2 : " << cVector3::cross(v1, v2) << endl;
+	cout << "v2 cross v1 : " << cVector3::cross(v2, v1) << endl;
 	cout << endl;
 
 	cout << "Normalize" << endl;
-	cout << "v2 정규화 : " << v2.Normalize() << endl;
+	cout << "v2 정규화 : " << v2.normalize() << endl;
 	cout << endl;
 
 	cout << "각도" << endl;
-	cout << "각 : " << cVector3::Angle(v1, v2, 1) << endl;
-	cout << "검증(90이면 정상) : " << cVector3::Angle(cVector3::Cross(v1, v2), v1, 1) << endl;
+	cout << "각 : " << cVector3::angle(v1, v2, 1) << endl;
+	cout << "검증(90이면 정상) : " << cVector3::angle(cVector3::cross(v1, v2), v1, 1) << endl;
 	
 	cout << "삼각형에 수직인 벡터" << endl;
-	cout << cVector3::Cross((v2 - v1), (v3 - v1)) << endl;
+	cout << cVector3::cross((v2 - v1), (v3 - v1)) << endl;
     return 0;
 }
 

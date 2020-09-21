@@ -7,32 +7,45 @@ using std::endl;
 
 int main()
 {
-	//cMatrix matrix1;
-	//cout << matrix1 << endl;
-	//cMatrix matrix2(4);
-	//cout << matrix2 << endl;
+	//cout << "몇차 행렬? : ";
+	//int nDimension;
+	//cin >> nDimension;
 
-	//cout << cMatrix::Identity(4) << endl;
+	//cMatrix mat1(nDimension);
+	//mat1 = cMatrix::identity(nDimension);
 
-	//matrix2.setRandomData();
-	//cout << matrix2 << endl;
-	//cout << matrix2 * cMatrix::Identity(4) << endl;
-	//cout << matrix2.Determinant() << endl;
-	//cMatrix matrix3(matrix2.Inverse());
-	//cout << matrix3 << endl;
-	////cout << (matrix2 == matrix2) << endl;
-	//cout << matrix2 * matrix3 << endl;
-	//cout << (cMatrix::Identity(4) == matrix2 * matrix3) << endl;
+	//for (int row = 0; row < nDimension; ++row)
+	//{
+	//	for (int col = 0; col < nDimension; ++col)
+	//	{
+	//		printf("[ %d, %d ] : ", row + 1, col + 1);
+	//		cin >> mat1[row][col];
+	//	}
+	//}
 
-	cMatrix m1(5);
-	//m1.setTestData();
-	m1.setRandomData();
-	cout << m1.Determinant() << endl;
-	cout << m1 << endl;
-	cMatrix m2(m1.Inverse());
-	cout << m2 << endl;
-	cout << m2 * m1 << endl;
-	m2.Resize(10);
-	cout << m2 << endl;
+	//cout << "초기행렬 : " << endl;
+	//cout << mat1 << endl << endl;
+
+	//cout << "행렬식 : " << endl;
+	//cout << mat1.determinant() << endl << endl;
+
+	//cout << "Adjoint : " << endl;
+	//cout << mat1.adjoint() << endl << endl;
+
+	//float fDet;
+	//cMatrix matInv = mat1.inverse(fDet);
+	//cout << "역행렬 : " << endl;
+	//cout << matInv << endl << endl;
+
+	//cout << "역행렬 체크" << endl;
+	//cout << (mat1 * matInv) << endl;
+	//
+
+	cMatrix mat2(5);
+	mat2.setRandomData();
+	cout << mat2 << endl;
+	mat2.resize(2);
+	cout << mat2 << endl;
+
 	return 0;
 }
