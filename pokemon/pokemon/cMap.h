@@ -38,7 +38,7 @@ private:
 	HBITMAP hMap;
 	BITMAP bitmapData;
 	map<Point, cWarpzone> linkedMap;
-	map<Point, iSpeakActor*> speakers;
+	vector<iSpeakActor*> speakers;
 	vector<cNPC*> npcList;
 	cNPCLoader npcLoader;
 public:
@@ -58,11 +58,11 @@ public:
 
 	__declspec(property(get = get_linked_map)) const map<Point, cWarpzone>& LinkedMap;
 
-	map<Point, iSpeakActor*>& get_speakers()
+	vector<iSpeakActor*>& get_speakers()
 	{
 		return speakers;
 	}
-	__declspec(property(get = get_speakers)) map<Point, iSpeakActor*>& Speaker;
+	__declspec(property(get = get_speakers)) vector<iSpeakActor*>& Speaker;
 
 	vector<cNPC*>& get_npcList() { return npcList; }
 

@@ -183,6 +183,28 @@ bool cCharacter::MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir)
 	return false;
 }
 
+bool cCharacter::StopMove(enumDirect direct)
+{
+	direct_ = direct;
+	switch (direct_)
+	{
+	case enumDirect::LEFT:
+		anim_.setAnim(animState::STOP_LEFT);
+		break;
+	case enumDirect::UP:
+		anim_.setAnim(animState::STOP_UP);
+		break;
+	case enumDirect::RIGHT:
+		anim_.setAnim(animState::STOP_RIGHT);
+		break;
+	case enumDirect::DOWN:
+		anim_.setAnim(animState::STOP_DOWN);
+		break;
+	default: break;
+	}
+	return false;
+}
+
 
 Point cPlayer::getCameraPos() const
 {
@@ -202,6 +224,20 @@ void cPlayer::addCameraPos(const string& dir, short dis)
 		CameraPivot.y += dis;
 }
 
+iSpeakActor* cPlayer::checkSpeaker(Point& front)
+{
+	cMap& cur_map = cGameManager::getInstance().Map;
+
+	for (auto & speaker : cur_map.Speaker)
+	{
+		if (cNPC* npc = dynamic_cast<cNPC*>(speaker))
+			if (npc->getLocationOnMap() == front)
+				return speaker;
+	}
+
+	return nullptr;
+}
+
 cNPC::cNPC(const rapidjson::Value &data) : cCharacter(data)
 {
 	
@@ -209,9 +245,6 @@ cNPC::cNPC(const rapidjson::Value &data) : cCharacter(data)
 
 cNPC::~cNPC()
 {
-	cMap& Map = cGameManager::getInstance().Map;
-	Map.Speaker.erase(Map.Speaker.find(LocationOnMap));
-	Map.get_npcList().erase(std::find(Map.get_npcList().begin(), Map.get_npcList().end(), this));
 }
 
 void cNPC::show(HDC hdc)
@@ -262,6 +295,12 @@ cCharacter::cCharacter(const rapidjson::Value& data)
 	hImg = static_cast<HBITMAP>(LoadImage(NULL, tempWsrc.c_str(),
 		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 	GetObject(hImg, sizeof(BITMAP), &bitmapData);
+
+	if (data.HasMember("direct"))
+	{
+		direct_ = (enumDirect)data["direct"].GetInt();
+		currentSprite = (spriteState)data["direct"].GetInt();
+	}
 }
 
 cCharacter::~cCharacter()
@@ -373,7 +412,7 @@ bool cPlayer::getInput()
 	{
 
 	}
-
+	iSpeakActor* target_before_player = checkSpeaker(tempLocation);
 
 	if (iskeyDownArrow)
 	{
@@ -417,28 +456,15 @@ bool cPlayer::getInput()
 				else
 				{
 					// stop모션
-					direct = dir;
-					switch (direct_)
-					{
-					case enumDirect::LEFT:
-						anim_.setAnim(animState::STOP_LEFT);
-						break;
-					case enumDirect::UP:
-						anim_.setAnim(animState::STOP_UP);
-						break;
-					case enumDirect::RIGHT:
-						anim_.setAnim(animState::STOP_RIGHT);
-						break;
-					case enumDirect::DOWN:
-						anim_.setAnim(animState::STOP_DOWN);
-						break;
-					default: break;
-					}
+					StopMove(dir);
 				}
 			}
 			else
 			{
 				// temploc에 npc가 있다면 stop anim;
+				if (target_before_player)
+					return StopMove(dir);
+				
 				return MoveOnMap(currentMap, tempLocation, dir);
 			}
 		}

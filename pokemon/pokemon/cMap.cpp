@@ -40,7 +40,7 @@ cMap::cMap(const rapidjson::Value &data):name(data["name"].GetString()), width(d
 		cNPC* newNPC = npcLoader.LoadNPC(name.GetString());
 		if (newNPC)
 		{
-			speakers.emplace(newNPC->getLocationOnMap(), newNPC);
+			speakers.emplace_back(newNPC);
 			npcList.emplace_back(newNPC);
 		}
 	}
@@ -55,8 +55,8 @@ cMap::~cMap()
 	delete[] mapData;
 	while (!speakers.empty())
 	{
-		iSpeakActor* temp = speakers.begin()->second;
-		delete temp;
+		delete speakers.back();
+		speakers.pop_back();
 	}
 	//while(!npcList.empty())
 	//{

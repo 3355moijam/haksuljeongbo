@@ -1,6 +1,4 @@
-﻿  cMap.cpp
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\canimchar.h(37): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cmap.cpp(53): warning C4018: '<': signed/unsigned mismatch
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\cmap.cpp(93): warning C4018: '<': signed/unsigned mismatch
-  pokemon.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.exe
-  pokemon.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.pdb (Full PDB)
+﻿  cCharacter.cpp
+c:\users\jaewook\onedrive - 연세대학교 (yonsei university)\개발\pokemon\pokemon\canimchar.h(37): warning C4267: 'return': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  pokemon.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.exe
+  pokemon.vcxproj -> C:\Users\Jaewook\OneDrive - 연세대학교 (Yonsei University)\개발\pokemon\Debug\pokemon.pdb (Full PDB)

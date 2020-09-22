@@ -50,85 +50,53 @@
 		},
 		{
 			"name": "newbark_woman",
-			"imgSrc": "src/mom_sprite.bmp",
+			"imgSrc": "src/woman_red.bmp",
 			"pos": {
-				"x": 4,
-				"y": 4
-			},
-			"event": [
-				{
-					"ID": 0,
-					"scriptID": 0,
-					"prev": -1,
-					"next": 1
-				},
-				{
-					"ID": 1,
-					"scriptID": 1,
-					"prev": 0,
-					"next": 1
-				}
-			],
-			"script": [
-				{
-					"ID": 0,
-					"script": "골드야 일어났니?",
-					"prev": -1,
-					"YesID": 1,
-					"NoID": -1,
-					"nextEvent": -1
-				},
-				{
-					"ID": 1,
-					"script": "공박사님이 연구소에서 기다리고 계셔.",
-					"prev": 0,
-					"YesID": 2,
-					"NoID": -1,
-					"nextEvent": -1
-				},
-				{
-					"ID": 2,
-					"script": "마을에서 가장 큰 건물이 연구소란다.",
-					"prev": 1,
-					"YesID": -1,
-					"NoID": -1,
-					"nextEvent": 1
-				}
-			]
+				"x": 66,
+				"y": 11
+			}
 		},
 		{
 			"name": "newbark_fat",
-			"imgSrc": "src/gold_sprite.bmp",
+			"imgSrc": "src/fat_green.bmp",
 			"pos": {
-				"x": 4,
+				"x": 72,
+				"y": 12
+			}
+		},
+		{
+			"name": "newbark_house00_woman",
+			"imgSrc": "src/girl_red.bmp",
+			"pos": {
+				"x": 2,
+				"y": 3
+			},
+			"direct": 8
+		},
+		{
+			"name": "newbark_house01_woman",
+			"imgSrc": "src/woman_green.bmp",
+			"pos": {
+				"x": 1,
+				"y": 5
+			}
+		},
+		{
+			"name": "newbark_house01_boy",
+			"imgSrc": "src/boy_blue.bmp",
+			"pos": {
+				"x": 5,
 				"y": 4
 			},
-			"event": [
-				{
-					"ID": 0,
-					"scriptID": 0,
-					"prev": -1,
-					"next": -1
-				}
-			],
-			"script": [
-				{
-					"ID": 0,
-					"script": "인터넷을 통해 언제 어디서든 친구와 만날 수 있어",
-					"prev": -1,
-					"YesID": 1,
-					"NoID": -1,
-					"nextEvent": -1
-				},
-				{
-					"ID": 1,
-					"script": "과학의 힘은 정말 대단해!",
-					"prev": 0,
-					"YesID": 2,
-					"NoID": -1,
-					"nextEvent": -1
-				}
-			]
+			"direct": 3
+		},
+		{
+			"name": "dr_gong",
+			"imgSrc": "src/dr_gong.bmp",
+			"pos": {
+				"x": 5,
+				"y": 2
+			}
 		}
 	]
 }

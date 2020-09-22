@@ -79,6 +79,7 @@ public:
 	__declspec(property(get = get_anim)) cAnimChar& anim;
 	
 	bool MoveOnMap(cMap& Map, const Point& tempLoc, enumDirect dir);
+	bool StopMove(enumDirect direct);
 	const Point& getLocationOnMap() const { return LocationOnMap; }
 };
 
@@ -113,6 +114,8 @@ public:
 		LocationOnMap.x += x;
 		LocationOnMap.y += y;
 	}
+
+	iSpeakActor* checkSpeaker(Point& front);
 	
 };
 
