@@ -9,21 +9,30 @@ class cMatrix;
 class cCamera
 {
 private:
-	cVector3 position_;
-	cVector3 target_;
+	cVector3 vEye_;
+	cVector3 vLookAt_;
+	cVector3 vUp_;
 	float fFovY_;
 	float fAspect_;
 	float fNearZ_;
 	float fFarZ_;
 
-public:
-	cVector3 get_position() const {	return position_;	}
-	void set_position(const cVector3& position)	{	this->position_ = position;	}
-	__declspec(property(get = get_position, put = set_position)) cVector3 position;
+	float fZoomScale;
+	float fMoveSpeed;
+	float fDistance;
 
-	cVector3 get_target() const {	return target_;	}
-	void set_target(const cVector3& target)	{	this->target_ = target;	}
-		__declspec(property(get = get_target, put = set_target)) cVector3 target;
+public:
+	cVector3 get_vEye() const {	return vEye_;	}
+	void set_vEye(const cVector3& position)	{	this->vEye_ = position;	}
+	__declspec(property(get = get_vEye, put = set_vEye)) cVector3 vEye;
+
+	cVector3 get_vLookAt() const {	return vLookAt_;	}
+	void set_vLookAt(const cVector3& target)	{	this->vLookAt_ = target;	}
+	__declspec(property(get = get_vLookAt, put = set_vLookAt)) cVector3 vLookAt;
+
+	cVector3 get_vUp() const	{	return vUp_;	}
+	void set_vUp(const cVector3& v_up)	{	vUp_ = v_up;	}
+	__declspec(property(get = get_vUp, put = set_vUp)) cVector3 vUp;
 
 	float get_f_fov_y() const {	return fFovY_;	}
 	void set_f_fov_y(float f_fov_y)	{	fFovY_ = f_fov_y;	}
@@ -42,4 +51,9 @@ public:
 	__declspec(property(get = get_f_far_z, put = set_f_far_z)) float fFarZ;
 
 	cCamera();
+
+	void update();
+	void zoom(float inout);
+	void move(float _x, float _y);
+	
 };

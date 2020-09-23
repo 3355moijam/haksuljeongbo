@@ -3,10 +3,10 @@
 
 #include "cMatrix.h"
 
-cVector3::cVector3() : x(0.0f), y(0.0f), z(0.0f), w(0.0f)
+cVector3::cVector3() : x(0.0f), y(0.0f), z(0.0f)
 {
 }
-cVector3::cVector3(float _x, float _y, float _z, float _w = 0) : x(_x), y(_y), z(_z), w(_w)
+cVector3::cVector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z)
 {
 }
 
@@ -48,6 +48,12 @@ cVector3 cVector3::operator+(float f_x)
 	return temp;
 }
 
+cVector3& cVector3::operator+=(cVector3& vector3)
+{
+	*this = *this + vector3;
+	return *this;
+}
+
 cVector3& cVector3::operator+=(float f_x)
 {
 	*this = *this + f_x;
@@ -85,6 +91,12 @@ cVector3 cVector3::operator*(float f_x)
 	temp.y = y * f_x;
 	temp.z = z * f_x;
 	return temp;
+}
+
+cVector3& cVector3::operator*=(float f_x)
+{
+	*this = *this * f_x;
+	return *this;
 }
 
 cVector3 operator*(float f_x, cVector3& vector3)
@@ -139,15 +151,17 @@ cVector3 cVector3::normalize()
 cVector3 cVector3::transformCoord(cVector3& vector3, cMatrix& matrix) // matrix = S * R * T * V * VP
 {
 	cVector3 vecRet;
-	vecRet.x = vector3.x * matrix[0][0] + vector3.y * matrix[1][0] + vector3.z * matrix[2][0] + vector3.w * matrix[3][0];
-	vecRet.y = vector3.x * matrix[0][1] + vector3.y * matrix[1][1] + vector3.z * matrix[2][1] + vector3.w * matrix[3][1];
-	vecRet.z = vector3.x * matrix[0][2] + vector3.y * matrix[1][2] + vector3.z * matrix[2][2] + vector3.w * matrix[3][2];
-	vecRet.w = vector3.x * matrix[0][3] + vector3.y * matrix[1][3] + vector3.z * matrix[2][3] + vector3.w * matrix[3][3];
+	vecRet.x = vector3.x * matrix[0][0] + vector3.y * matrix[1][0] + vector3.z * matrix[2][0] + 1.0f * matrix[3][0];
+	vecRet.y = vector3.x * matrix[0][1] + vector3.y * matrix[1][1] + vector3.z * matrix[2][1] + 1.0f * matrix[3][1];
+	vecRet.z = vector3.x * matrix[0][2] + vector3.y * matrix[1][2] + vector3.z * matrix[2][2] + 1.0f * matrix[3][2];
+	float w  = vector3.x * matrix[0][3] + vector3.y * matrix[1][3] + vector3.z * matrix[2][3] + 1.0f * matrix[3][3];
 
-	vecRet.x /= vecRet.w;
-	vecRet.y /= vecRet.w;
-	vecRet.z /= vecRet.w;
-	vecRet.w /= vecRet.w;
+	if (abs(w) > EPSILON)
+	{
+		vecRet.x /= w;
+		vecRet.y /= w;
+		vecRet.z /= w;
+	}
 
 	return vecRet;
 }
@@ -158,7 +172,6 @@ cVector3 cVector3::transformNormal(cVector3& vector3, cMatrix& matrix)
 	vecRet.x = vector3.x * matrix[0][0] + vector3.y * matrix[1][0] + vector3.z * matrix[2][0];
 	vecRet.y = vector3.x * matrix[0][1] + vector3.y * matrix[1][1] + vector3.z * matrix[2][1];
 	vecRet.z = vector3.x * matrix[0][2] + vector3.y * matrix[1][2] + vector3.z * matrix[2][2];
-	vecRet.w = 0;
 
 	return vecRet;
 }

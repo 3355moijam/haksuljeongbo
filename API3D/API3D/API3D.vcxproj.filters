@@ -42,6 +42,12 @@
     <ClInclude Include="cCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cMainGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cMainGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

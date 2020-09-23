@@ -6,11 +6,11 @@ class cVector3
 {
 public:
 	cVector3();
-	cVector3(float _x, float _y, float _z, float _w);
+	cVector3(float _x, float _y, float _z);
 	~cVector3();
 
 private:
-	float x, y, z, w;
+	float x, y, z;
 
 public:
 	float get_x() const	{	return x;	}
@@ -25,19 +25,21 @@ public:
 	void set_z(float z)	{	this->z = z;	}
 		__declspec(property(get = get_z, put = set_z)) float Z;
 
-	float get_w() const	{	return w;	}
-	void set_w(float w)	{	this->w = w;	}
-	__declspec(property(get = get_w, put = set_w)) float W;
+	//float get_w() const	{	return w;	}
+	//void set_w(float w)	{	this->w = w;	}
+	//__declspec(property(get = get_w, put = set_w)) float W;
 	
 	bool operator==(cVector3& vector3);
 	bool operator!=(cVector3& vector3);
 	cVector3 operator+(cVector3& vector3);
 	cVector3 operator+(float f_x);
+	cVector3& operator+=(cVector3& vector3);
 	cVector3& operator+=(float f_x);
 	cVector3 operator-(float f_x);
 	cVector3& operator-=(float f_x);
 	cVector3 operator-(cVector3& vector3);
 	cVector3 operator*(float f_x);
+	cVector3& operator*=(float f_x);
 	friend cVector3 operator*(float f_x, cVector3& vector3);
 	cVector3 operator/(float f_x);
 

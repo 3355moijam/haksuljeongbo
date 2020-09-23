@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "API3D.h"
-#include "cSquare.h"
+#include "cMainGame.h"
 
 #define MAX_LOADSTRING 100
 #ifdef UNICODE
@@ -17,6 +17,9 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 RECT g_view;
+HWND g_hWnd;
+cMainGame* g_pMainGame;
+#define TIMER_ID 123
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -46,6 +49,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_API3D));
 
+	g_pMainGame = new cMainGame;
+	g_pMainGame->setup();
+	SetTimer(g_hWnd, TIMER_ID, 10, NULL);
+
+	
     MSG msg;
 
     // Main message loop:
@@ -58,6 +66,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+
+	//>>:
+	KillTimer(g_hWnd, TIMER_ID);
+	delete g_pMainGame;
+	//<<:
+
+	
     return (int) msg.wParam;
 }
 
@@ -111,6 +126,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   g_hWnd = hWnd;
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
@@ -127,15 +144,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
-cSquare *square;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if(g_pMainGame)
+	{
+		g_pMainGame->WndProc(hWnd, message, wParam, lParam);
+	}
     switch (message)
     {
 	case WM_CREATE:
 		GetClientRect(hWnd, &g_view);
-		SetTimer(hWnd, 1, 100, NULL);
-        square = new cSquare;
 		break;
     case WM_COMMAND:
         {
@@ -160,19 +179,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
 			
-			square->render(hdc);
+			if (g_pMainGame)
+				g_pMainGame->render(hdc);
             EndPaint(hWnd, &ps);
         }
         break;
 	case WM_TIMER:
 		{
-        square->getInput();
-		InvalidateRect(hWnd, NULL, true);
+		if (g_pMainGame)
+			g_pMainGame->update();
+		InvalidateRect(hWnd, NULL, false);
 		}
 		break;
     case WM_DESTROY:
         PostQuitMessage(0);
-        delete square;
+        //delete g_pMainGame;
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

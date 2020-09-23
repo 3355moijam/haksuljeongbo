@@ -54,12 +54,13 @@ public:
 	cMatrix minor(int nRow, int nCol);
 	
 	static cMatrix scale(float degree);
+	static cMatrix scale(cVector3& degree);
 	static cMatrix rotationX(float Angle);
 	static cMatrix rotationY(float Angle);
 	static cMatrix rotationZ(float Angle);
 	static cMatrix translation(float x, float y, float z);
 	static cMatrix translation(cVector3& v);
-	static cMatrix view(cVector3& vEye, cVector3& vLookAt, cVector3& vUp = cVector3(0,1,0, 0));
+	static cMatrix view(cVector3& vEye, cVector3& vLookAt, cVector3& vUp = cVector3(0,1,0));
 	static cMatrix projection(float fFovY, float fAspect, float fNearZ, float fFarZ);
 	static cMatrix viewport(float x, float y, float w, float h, float minZ = 0, float maxZ = 1);
 	

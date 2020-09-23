@@ -19,7 +19,7 @@ float operator*(const vector<float> left, const vector<float> right)
 
 float AngleToRadian(float Angle)
 {
-	return Angle * M_PI / 180;
+	return Angle * (float)M_PI / 180;
 }
 
 float cot(float x)
@@ -37,6 +37,7 @@ cMatrix::cRow::cRow(int nDimension): row(nDimension)
 
 cMatrix::cRow::~cRow()
 {
+	//row.clear();
 }
 
 void cMatrix::cRow::resize(int nDimension)
@@ -78,6 +79,7 @@ cMatrix::cMatrix(const cMatrix& matrix): rows(matrix.rows), dimension_(matrix.di
 
 cMatrix::~cMatrix()
 {
+	//rows.clear();
 }
 
 std::ostream& operator<<(std::ostream& os, cMatrix& matrix)
@@ -156,7 +158,7 @@ cMatrix cMatrix::identity(int nDimension) // 항등행렬
 	cMatrix temp(nDimension);
 	for (int i = 0; i < nDimension; ++i)
 	{
-		temp[i][i] = 1;
+		temp[i][i] = 1.0f;
 	}
 	return temp;
 }
@@ -349,6 +351,16 @@ cMatrix cMatrix::scale(float degree)
 	return scaleMatrix;
 }
 
+cMatrix cMatrix::scale(cVector3& degree)
+{
+	cMatrix scaleMatrix(identity(4));
+	scaleMatrix[0][0] = degree.X;
+	scaleMatrix[1][1] = degree.Y;
+	scaleMatrix[2][2] = degree.Z;
+
+	return scaleMatrix;
+}
+
 cMatrix cMatrix::translation(float x, float y, float z)
 {
 	cMatrix transMatrix(identity(4));
@@ -387,7 +399,7 @@ cMatrix cMatrix::rotationY(float Angle)
 	rotMatrix[0][2] = -sin(rad);
 	rotMatrix[2][0] = sin(rad);
 	rotMatrix[2][2] = cos(rad);
-
+	
 	return rotMatrix;
 }
 
@@ -425,14 +437,14 @@ cMatrix cMatrix::view(cVector3& vEye, cVector3& vLookAt, cVector3& vUp) // eye: 
 // fFovY: 시야각(radian), fAspect: 종횡비(너비/높이)
 cMatrix cMatrix::projection(float fFovY, float fAspect, float fNearZ, float fFarZ) 
 {
-	float sy = cot(fFovY * 0.5f);// -> 1.0f / tanf(fovy / 2);
-	float sx = sy / fAspect;
+	float fScaleY = cot(fFovY * 0.5f);// -> 1.0f / tanf(fovy / 2);
+	float fScaleX = fScaleY / fAspect;
 	cMatrix projMatrix(4);
 
-	projMatrix[0][0] = sx;
-	projMatrix[1][1] = sy;
+	projMatrix[0][0] = fScaleX;
+	projMatrix[1][1] = fScaleY;
 	projMatrix[2][2] = fFarZ / (fFarZ - fNearZ);
-	projMatrix[2][3] = 1;
+	projMatrix[2][3] = 1.0f;
 	projMatrix[3][2] = -fFarZ * fNearZ / (fFarZ - fNearZ);
 
 	return projMatrix;

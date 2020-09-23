@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClInclude Include="API3D.h" />
     <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cGrid.h" />
+    <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMatrix.h" />
     <ClInclude Include="cSquare.h" />
     <ClInclude Include="cVector3.h" />
@@ -153,6 +155,8 @@
   <ItemGroup>
     <ClCompile Include="API3D.cpp" />
     <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cGrid.cpp" />
+    <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMatrix.cpp" />
     <ClCompile Include="cSquare.cpp" />
     <ClCompile Include="cVector3.cpp" />

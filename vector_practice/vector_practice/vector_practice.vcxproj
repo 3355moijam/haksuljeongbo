@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="cMatrix.cpp" />
     <ClCompile Include="cVector3.cpp" />
+    <ClCompile Include="matrix_practice.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vector_practice.cpp" />
   </ItemGroup>
