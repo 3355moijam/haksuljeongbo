@@ -91,7 +91,7 @@ void DrawCircle(HDC hdc, int x, int y, int r = 5)
 {
 	Ellipse(hdc, x - r, y - r, x + r, y + r);
 }
-void cSquare::render(HDC hdc, cMatrix& matWVP, cMatrix& matViewport)
+void cSquare::render(HDC hdc, cMatrix& matWVP, cMatrix& matViewport, cVector3& cameraDirect)
 {
 	for (int i = 0; i < verIndex.size(); i += 3)
 	{
@@ -103,14 +103,31 @@ void cSquare::render(HDC hdc, cMatrix& matWVP, cMatrix& matViewport)
 		v2 = cVector3::transformCoord(v2, matWVP);
 		v3 = cVector3::transformCoord(v3, matWVP);
 
+		
+		{
+			// 법선벡터 구하기
+			cVector3 temp = cVector3::cross(v2 - v1, v3 - v1);
+			if ((cameraDirect.Z >= 0 && cVector3::dot(temp, cameraDirect) > 0) ||
+				(cameraDirect.Z <  0 && cVector3::dot(temp, cameraDirect) < 0))
+				continue;
+		}
+		
 		v1 = cVector3::transformCoord(v1, matViewport);
 		v2 = cVector3::transformCoord(v2, matViewport);
 		v3 = cVector3::transformCoord(v3, matViewport);
+
 
 		MoveToEx(hdc, v1.X, v1.Y, NULL);
 		LineTo(hdc, v2.X, v2.Y);
 		LineTo(hdc, v3.X, v3.Y);
 		LineTo(hdc, v1.X, v1.Y);
+
+		//std::wstring ws1 = std::to_wstring(verIndex[i + 0]);
+		//std::wstring ws2 = std::to_wstring(verIndex[i + 1]);
+		//std::wstring ws3 = std::to_wstring(verIndex[i + 2]);
+		//TextOut(hdc, v1.X, v1.Y, ws1.c_str(), 1);
+		//TextOut(hdc, v2.X, v2.Y, ws2.c_str(), 1);
+		//TextOut(hdc, v3.X, v3.Y, ws3.c_str(), 1);
 	}
 }
 

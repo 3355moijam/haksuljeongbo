@@ -1,4 +1,0 @@
-﻿  cMainGame.cpp
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\api3d\api3d\cmaingame.cpp(49): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
-  API3D.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\API3D\Debug\API3D.exe
-  API3D.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\API3D\Debug\API3D.pdb (Full PDB)

@@ -40,4 +40,27 @@ void cGrid::render(HDC hdc, cMatrix& matWVP, cMatrix& matViewport)
 		LineTo(hdc, v4.X, v4.Y);
 
 	}
+
+	cVector3 v1(0, 0, 0);
+	cVector3 v2(10, 0, 0);
+	cVector3 v3(0, 10, 0);
+	cVector3 v4(0, 0, 10);
+	v1 = cVector3::transformCoord(v1, matWVP);
+	v2 = cVector3::transformCoord(v2, matWVP);
+	v3 = cVector3::transformCoord(v3, matWVP);
+	v4 = cVector3::transformCoord(v4, matWVP);
+
+	v1 = cVector3::transformCoord(v1, matViewport);
+	v2 = cVector3::transformCoord(v2, matViewport);
+	v3 = cVector3::transformCoord(v3, matViewport);
+	v4 = cVector3::transformCoord(v4, matViewport);
+
+	MoveToEx(hdc, v1.X, v1.Y, NULL);
+	LineTo(hdc, v2.X, v2.Y); TextOut(hdc, v2.X, v2.Y, _T("X"), _tcslen(_T("X")));
+	MoveToEx(hdc, v1.X, v1.Y, NULL);
+	LineTo(hdc, v3.X, v3.Y); TextOut(hdc, v3.X, v3.Y, _T("Y"), _tcslen(_T("Y")));
+	MoveToEx(hdc, v1.X, v1.Y, NULL);
+	LineTo(hdc, v4.X, v4.Y); TextOut(hdc, v4.X, v4.Y, _T("Z"), _tcslen(_T("Z")));
+
+	
 }

@@ -35,7 +35,7 @@ public:
 
 	__declspec(property(get = get_rotate)) cVector3& rotate;
 	//void getInput();
-	void render(HDC hdc, cMatrix& matWVP, cMatrix& matViewport);
+	void render(HDC hdc, cMatrix& matWVP, cMatrix& matViewport, cVector3& cameraDirect);
 	cVector3 move(float dir);
 	void scaleControl(float s);
 	cMatrix get_world_matrix();

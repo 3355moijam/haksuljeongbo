@@ -24,85 +24,62 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="class\Stopwatch.h">
+    <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FunctionLibrary.h">
+    <ClInclude Include="DX3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="class\GeometricObject\GeometricObject.h">
+    <ClInclude Include="cMainGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="class\GeometricObject\Triangle.h">
+    <ClInclude Include="cDeviceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="class\GeometricObject\Rectangle.h">
+    <ClInclude Include="cCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="class\GeometricObject\Circle.h">
+    <ClInclude Include="cCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="class\Student.h">
+    <ClInclude Include="cGrid.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="class\stacktp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="class\List.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="class\biTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="class\AVL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="class\cDijkstra.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source.cpp">
+    <ClCompile Include="DX3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="class\Stopwatch.cpp">
+    <ClCompile Include="cMainGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FunctionLibrary.cpp">
+    <ClCompile Include="cDeviceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="class\GeometricObject\GeometricObject.cpp">
+    <ClCompile Include="cCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="class\GeometricObject\Triangle.cpp">
+    <ClCompile Include="cCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="class\GeometricObject\Rectangle.cpp">
+    <ClCompile Include="cGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="class\GeometricObject\Circle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="class\Student.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="class\List.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="class\biTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="class\AVL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="class\cDijkstra.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="0923 multithreading.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DX3D.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="DX3D.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
