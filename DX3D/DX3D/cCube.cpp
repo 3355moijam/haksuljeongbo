@@ -7,7 +7,7 @@
 cCube::cCube()
 	:vertex(),
 	speed(0.2f), direct_(0, 0, 1),
-	scale_(1, 1, 1), pos_(0,1,0), rotate_(0,0,0)
+	scale_(1, 1, 1), pos_(0,0,0), rotate_(0,0,0)
 {
 	//vertex.push_back(ST_PC_VERTEX(-1	, -1, -1, D3DCOLOR_XRGB(255, 0, 0 )));
 	//vertex.push_back(ST_PC_VERTEX(-1	, 1	, -1, D3DCOLOR_XRGB(0, 255, 0 )));
@@ -191,17 +191,9 @@ void cCube::render()
 	D3DXMatrixTranslation(&matPos, pos_.x, pos_.y, pos_.z);
 	matWorld = matScale * matRotX * matRotY * matRotZ * matPos;
 
-
-	//vector<ST_PC_VERTEX> testVertex;
-	//testVertex.emplace_back(-1, -1, -1, D3DCOLOR_XRGB(255, 0, 0, ));
-	//testVertex.emplace_back(-1, 1, -1, D3DCOLOR_XRGB(0, 0, 255, ));
-	//testVertex.emplace_back(1, 1, -1, D3DCOLOR_XRGB(255, 0, 0, ));
-	//testVertex.emplace_back(1, -1, -1, D3DCOLOR_XRGB(0, 0, 255, ));
-	
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
-	//for (int i = 0; i < verIndex.size(); i += 3)
-	//{
+
 	g_pD3DDevice->DrawPrimitiveUP
 	(	
 		D3DPT_TRIANGLELIST,
@@ -209,57 +201,67 @@ void cCube::render()
 			&verIndex[0],
 			sizeof ST_PC_VERTEX
 	);
-	//}
-	//for (int i = 0; i < verIndex.size(); i += 3)
-	//{
-	//	cVector3 v1 = vertex[verIndex[i + 0]];
-	//	cVector3 v2 = vertex[verIndex[i + 1]];
-	//	cVector3 v3 = vertex[verIndex[i + 2]];
+}
 
-	//	v1 = cVector3::transformCoord(v1, matWVP);
-	//	v2 = cVector3::transformCoord(v2, matWVP);
-	//	v3 = cVector3::transformCoord(v3, matWVP);
+void cCube::render(D3DXMATRIXA16& matUpperWorld)
+{
+	D3DXMATRIXA16 matWorld, matScale, matPos, matRotX, matRotY, matRotZ;
+	D3DXMatrixIdentity(&matWorld);
+	D3DXMatrixScaling(&matScale, scale_.x, scale_.y, scale_.z);
+	D3DXMatrixRotationX(&matRotX, rotate_.x);
+	D3DXMatrixRotationY(&matRotY, rotate_.y);
+	D3DXMatrixRotationZ(&matRotZ, rotate_.z);
+	D3DXMatrixTranslation(&matPos, pos_.x, pos_.y, pos_.z);
+	matWorld = matScale * matRotX * matRotY * matRotZ * matPos * matUpperWorld;
 
-	//	
-	//	{
-	//		// 법선벡터 구하기
-	//		cVector3 temp = cVector3::cross(v2 - v1, v3 - v1);
-	//		if ((cameraDirect.Z >= 0 && cVector3::dot(temp, cameraDirect) > 0) ||
-	//			(cameraDirect.Z <  0 && cVector3::dot(temp, cameraDirect) < 0))
-	//			continue;
-	//	}
-	//	
-	//	v1 = cVector3::transformCoord(v1, matViewport);
-	//	v2 = cVector3::transformCoord(v2, matViewport);
-	//	v3 = cVector3::transformCoord(v3, matViewport);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
 
+	g_pD3DDevice->DrawPrimitiveUP
+	(
+		D3DPT_TRIANGLELIST,
+		verIndex.size() / 3,
+		&verIndex[0],
+		sizeof ST_PC_VERTEX
+	);
+}
 
-	//	MoveToEx(hdc, v1.X, v1.Y, NULL);
-	//	LineTo(hdc, v2.X, v2.Y);
-	//	LineTo(hdc, v3.X, v3.Y);
-	//	LineTo(hdc, v1.X, v1.Y);
+void cCube::render(D3DXMATRIXA16& matS, D3DXMATRIXA16& matX, D3DXMATRIXA16& matY, D3DXMATRIXA16& matZ,
+                   D3DXMATRIXA16& matT)
+{
+	D3DXMATRIXA16 matWorld, matScale, matPos, matRotX, matRotY, matRotZ;
+	D3DXMatrixIdentity(&matWorld);
+	D3DXMatrixScaling(&matScale, scale_.x, scale_.y, scale_.z);
+	D3DXMatrixRotationX(&matRotX, rotate_.x);
+	D3DXMatrixRotationY(&matRotY, rotate_.y);
+	D3DXMatrixRotationZ(&matRotZ, rotate_.z);
+	D3DXMatrixTranslation(&matPos, pos_.x, pos_.y, pos_.z);
+	matWorld = matS * matScale * matX * matRotX * matY * matRotY * matZ * matRotZ * matT * matPos;
 
-	//	//std::wstring ws1 = std::to_wstring(verIndex[i + 0]);
-	//	//std::wstring ws2 = std::to_wstring(verIndex[i + 1]);
-	//	//std::wstring ws3 = std::to_wstring(verIndex[i + 2]);
-	//	//TextOut(hdc, v1.X, v1.Y, ws1.c_str(), 1);
-	//	//TextOut(hdc, v2.X, v2.Y, ws2.c_str(), 1);
-	//	//TextOut(hdc, v3.X, v3.Y, ws3.c_str(), 1);
-	//}
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
+
+	g_pD3DDevice->DrawPrimitiveUP
+	(
+		D3DPT_TRIANGLELIST,
+		verIndex.size() / 3,
+		&verIndex[0],
+		sizeof ST_PC_VERTEX
+	);
 }
 
 void cCube::update()
 {
-	if (GetKeyState('q') & 0x8000 || GetKeyState('Q') & 0x8000)
-	{
-		scale_ += D3DXVECTOR3(-0.1, -0.1, -0.1);
-		pos.y += -0.1f;
-	}
-	else if (GetKeyState('e') & 0x8000 || GetKeyState('E') & 0x8000)
-	{
-		scale_ += D3DXVECTOR3(0.1, 0.1, 0.1);
-		pos.y += 0.1f;
-	}
+	//if (GetKeyState('q') & 0x8000 || GetKeyState('Q') & 0x8000)
+	//{
+	//	scale_ += D3DXVECTOR3(-0.1, -0.1, -0.1);
+	//	pos.y += -0.1f;
+	//}
+	//else if (GetKeyState('e') & 0x8000 || GetKeyState('E') & 0x8000)
+	//{
+	//	scale_ += D3DXVECTOR3(0.1, 0.1, 0.1);
+	//	pos.y += 0.1f;
+	//}
 	
 	if (GetKeyState('a') & 0x8000 || GetKeyState('A') & 0x8000)
 		rotate_.y = (rotate_.y / D3DX_PI * 180 - 5) * D3DX_PI / 180;

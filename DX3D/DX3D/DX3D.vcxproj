@@ -141,7 +141,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cBodyPart.h" />
     <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cCharacter.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cGrid.h" />
     <ClInclude Include="cMainGame.h" />
@@ -152,7 +154,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cBodyPart.cpp" />
     <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cCharacter.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cGrid.cpp" />
     <ClCompile Include="cMainGame.cpp" />

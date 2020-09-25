@@ -21,13 +21,24 @@ cCamera::cCamera()
 
 void cCamera::update(cCube& target)
 {
-	//RECT rc;
-	//GetClientRect(g_hWnd, &rc);
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
 
-	//fAspect_ = (float)rc.right / rc.bottom;
+	fAspect_ = (float)rc.right / rc.bottom;
 
 	vLookAt = target.pos;
 	vEye = vLookAt + -vRotateAngle * fDistance;
+
+
+	D3DXMATRIXA16 matView;
+	D3DXMatrixLookAtLH(&matView, &vEye, &vLookAt, &vUp);
+
+	g_pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
+
+	D3DXMATRIXA16 matProj;
+	D3DXMatrixPerspectiveFovLH(&matProj, fFovY, fAspect, fNearZ, fFarZ);
+	g_pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+
 }
 
 void cCamera::zoom(float inout)
@@ -56,4 +67,36 @@ void cCamera::move(float _x, float _y)
 	vEye_ += up * _y * fMoveSpeed;
 
 	D3DXVec3Normalize(&vRotateAngle, &(vLookAt - vEye));
+}
+
+void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	static float x = 0, y = 0;
+	switch (message)
+	{
+	case WM_RBUTTONDOWN:
+		x = LOWORD(lParam);
+		y = HIWORD(lParam);
+		break;
+	case WM_RBUTTONUP:
+		x = 0; y = 0;
+		break;
+	case WM_MOUSEMOVE:
+		switch (wParam)
+		{
+		case MK_RBUTTON:
+			//camera.move(x - LOWORD(lParam), HIWORD(lParam) - y);
+			move(LOWORD(lParam) - x, HIWORD(lParam) - y);
+			x = LOWORD(lParam);
+			y = HIWORD(lParam);
+			break;
+		}
+		break;
+	case WM_MOUSEWHEEL:
+		GET_WHEEL_DELTA_WPARAM(wParam);
+		zoom(GET_WHEEL_DELTA_WPARAM(wParam));
+		break;
+	default:
+		break;
+	}
 }

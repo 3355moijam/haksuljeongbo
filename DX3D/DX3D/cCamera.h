@@ -53,5 +53,6 @@ public:
 	void update(cCube& target);
 	void zoom(float inout);
 	void move(float _x, float _y);
-	
+	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 };
