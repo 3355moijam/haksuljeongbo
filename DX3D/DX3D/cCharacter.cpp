@@ -20,15 +20,6 @@ cCharacter::cCharacter(): head(), leg_left(), leg_right(), arm_left(), arm_right
 	leg_left.cube.pos.y += -1;
 	leg_right.setup(D3DXVECTOR3(0.4, 0.8, 0.4), D3DXVECTOR3(+0.4, -1, 0));
 	leg_right.cube.pos.y += -1;
-
-	//arm_left.cube.rotate.x -= 90 * D3DX_PI / 180;
-	arm_left.rotate.x -= 60 * D3DX_PI / 180;
-	//D3DXMATRIXA16 matRotX;
-	//D3DXMatrixRotationX(&matRotX, D3DX_PI / 6);
-	//D3DXVec3TransformCoord(&arm_left.pos, &arm_left.pos, &matRotX);
-	if (true)
-	{
-	}
 }
 
 cCharacter::~cCharacter()
@@ -37,19 +28,33 @@ cCharacter::~cCharacter()
 
 void cCharacter::update()
 {
+	bool isKeyDown = false;
 	if (GetKeyState('a') & 0x8000 || GetKeyState('A') & 0x8000)
 	{
 		rotate_.y -= fRotateSpeed;
+		isKeyDown = true;
 	}
 	else if (GetKeyState('d') & 0x8000 || GetKeyState('D') & 0x8000)
 	{
 		rotate_.y += fRotateSpeed;
+		isKeyDown = true;
 	}
 
 	if (GetKeyState('w') & 0x8000 || GetKeyState('W') & 0x8000)
+	{
 		move(1);
+		isKeyDown = true;
+	}
 	else if (GetKeyState('s') & 0x8000 || GetKeyState('S') & 0x8000)
+	{
 		move(-1);
+		isKeyDown = true;
+	}
+
+	if (isKeyDown)
+		animMove();
+	else
+		animIdle();
 }
 
 void cCharacter::render()
@@ -103,5 +108,75 @@ void cCharacter::rotation(float _y)
 	D3DXVec3TransformCoord(&leg_right.pos, &leg_right.pos, &matRotY);
 	D3DXVec3TransformCoord(&arm_left.pos, &arm_left.pos, &matRotY);
 	D3DXVec3TransformCoord(&arm_right.pos, &arm_right.pos, &matRotY);
+}
+
+void cCharacter::animMove()
+{
+	static float fClamp = D3DX_PI / 6.0f;
+	static float fMove = 5.0f * D3DX_PI / 180;
+	static bool bFoot = false;
+	if(bFoot)
+	{
+		arm_left.rotate.x += fMove;
+		leg_right.rotate.x += fMove;
+
+		arm_right.rotate.x += -fMove;
+		leg_left.rotate.x += -fMove;
+		
+		if (arm_left.rotate.x > fClamp)
+			bFoot = !bFoot;
+	}
+	else
+	{
+		arm_left.rotate.x += -fMove;
+		leg_right.rotate.x += -fMove;
+
+		arm_right.rotate.x += fMove;
+		leg_left.rotate.x += fMove;
+
+		if (arm_right.rotate.x > fClamp)
+			bFoot = !bFoot;
+	}
+}
+
+void cCharacter::animIdle()
+{
+	if (abs(arm_left.rotate.x) < ELIPSE)
+		return;
+	static float fMove = 5.0f * D3DX_PI / 180;
+	if(arm_left.rotate.x < 0)
+	{
+		arm_left.rotate.x += fMove;
+		leg_right.rotate.x += fMove;
+
+		arm_right.rotate.x += -fMove;
+		leg_left.rotate.x += -fMove;
+
+		if (abs(arm_left.rotate.x) < ELIPSE)
+		{
+			arm_left.rotate.x = 0;
+			leg_right.rotate.x = 0;
+							  
+			arm_right.rotate.x = 0;
+			leg_left.rotate.x = 0;
+		}
+	}
+	else
+	{
+		arm_left.rotate.x += -fMove;
+		leg_right.rotate.x += -fMove;
+
+		arm_right.rotate.x += fMove;
+		leg_left.rotate.x += fMove;
+
+		if (abs(arm_left.rotate.x) < ELIPSE)
+		{
+			arm_left.rotate.x = 0;
+			leg_right.rotate.x = 0;
+
+			arm_right.rotate.x = 0;
+			leg_left.rotate.x = 0;
+		}
+	}
 }
 

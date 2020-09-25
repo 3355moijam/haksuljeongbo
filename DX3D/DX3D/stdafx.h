@@ -51,6 +51,8 @@ extern HWND g_hWnd;
 			return instance; \
 		} 
 
+#define ELIPSE 0.000001f
+
 struct ST_PC_VERTEX
 {
 	D3DXVECTOR3	p;

@@ -28,6 +28,8 @@ public:
 	void render();
 	void move(float dir);
 	void rotation(float _y);
+	void animMove();
+	void animIdle();
 
 	D3DXVECTOR3& get_pos() { return pos_; }
 	__declspec(property(get = get_pos)) D3DXVECTOR3& pos;
