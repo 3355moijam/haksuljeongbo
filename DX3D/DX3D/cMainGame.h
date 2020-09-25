@@ -1,26 +1,26 @@
 ﻿#pragma once
-#include "cCamera.h"
-#include "cCharacter.h"
-#include "cCube.h"
-#include "cGrid.h"
+//#include "cCamera.h"
+//#include "cCharacter.h"
+//#include "cCube.h"
+//#include "cGrid.h"
 
-//class cCubePC;
-//class cCamera2;
-//class cGrid2;
+class cCubePC;
+class cCamera2;
+class cGrid2;
 
 class cMainGame
 {
 private:
 	//vector<ST_PC_VERTEX> m_vecLineVertex;
 	//vector<ST_PC_VERTEX> m_vecTriangleVertex;
-	cCube cube;
-	cGrid grid;
-	cCamera camera;
+	//cCube cube;
+	//cGrid grid;
+	//cCamera camera;
+	//cCharacter player;
 
-	cCharacter player;
-	//cCubePC*	m_pCubePC;
-	//cCamera2*	m_pCamera;
-	//cGrid2*		m_pGrid;
+	cCubePC*	m_pCubePC;
+	cCamera2*	m_pCamera;
+	cGrid2*		m_pGrid;
 public:
 	cMainGame();
 	~cMainGame();

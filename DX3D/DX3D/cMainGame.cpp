@@ -2,6 +2,11 @@
 #include "cMainGame.h"
 
 
+#include "cCamera2.h"
+#include "cCubePC.h"
+#include "cGrid2.h"
+
+
 //#include "cCamera2.h"
 //#include "cCubePC.h"
 //#include "cGrid2.h"
@@ -10,19 +15,19 @@
 //LPDIRECT3D9			m_pD3D;
 //LPDIRECT3DDEVICE9		m_pD3DDevice;
 
-cMainGame::cMainGame() : cube(), grid(), camera()
-	//, m_pCubePC(nullptr)
-	//, m_pCamera(nullptr)
-	//, m_pGrid(nullptr)
-	, player()
+cMainGame::cMainGame() 
+	: m_pCubePC(nullptr)
+	, m_pCamera(nullptr)
+	, m_pGrid(nullptr)
+	//, player()
 {
 }
 
 cMainGame::~cMainGame()
 {
-	//SafeDelete(m_pCubePC);
-	//SafeDelete(m_pCamera);
-	//SafeDelete(m_pGrid);
+	SafeDelete(m_pCubePC);
+	SafeDelete(m_pCamera);
+	SafeDelete(m_pGrid);
 
 	g_pDeviceManager.Destroy();
 }
@@ -32,14 +37,14 @@ void cMainGame::setup()
 	//setupLine();
 	//setupTriangle();
 
-	//m_pCubePC = new cCubePC;
-	//m_pCubePC->setup();
+	m_pCubePC = new cCubePC;
+	m_pCubePC->setup();
 
-	//m_pCamera = new cCamera2;
-	//m_pCamera->setup(&m_pCubePC->getPosition());
+	m_pCamera = new cCamera2;
+	m_pCamera->setup(&m_pCubePC->getPosition());
 
-	//m_pGrid = new cGrid2;
-	//m_pGrid->setup();
+	m_pGrid = new cGrid2;
+	m_pGrid->setup();
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 }
 
@@ -49,15 +54,15 @@ void cMainGame::update()
 	GetClientRect(g_hWnd, &rc);
 
 
-	cube.update();
-	player.update();
-	camera.update(cube);
+	//cube.update();
+	//player.update();
+	//camera.update(cube);
 	
 
-	//if(m_pCubePC)
-	//	m_pCubePC->update();
-	//if(m_pCamera)
-	//	m_pCamera->update();
+	if(m_pCubePC)
+		m_pCubePC->update();
+	if(m_pCamera)
+		m_pCamera->update();
 
 }
 
@@ -84,13 +89,13 @@ void cMainGame::render()
 
 		g_pD3DDevice->BeginScene();
 
-		grid.render();
+		//grid.render();
 		//cube_.render();
-		player.render();
-		//if (m_pGrid)
-		//	m_pGrid->render();
-		//if (m_pCubePC)
-		//	m_pCubePC->render();
+		//player.render();
+		if (m_pGrid)
+			m_pGrid->render();
+		if (m_pCubePC)
+			m_pCubePC->render();
 		
 		g_pD3DDevice->EndScene();
 
@@ -101,9 +106,9 @@ void cMainGame::render()
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	camera.WndProc(hWnd, message, wParam, lParam);
-	//if (m_pCamera)
-	//	m_pCamera->WndProc(hWnd, message, wParam, lParam);
+	//camera.WndProc(hWnd, message, wParam, lParam);
+	if (m_pCamera)
+		m_pCamera->WndProc(hWnd, message, wParam, lParam);
 	//static float x = 0, y = 0;
 	//switch (message)
 	//{

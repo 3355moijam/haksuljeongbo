@@ -81,7 +81,7 @@ void cCamera2::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			m_vCamRotAngle.y += (fDeltaY / 100.0f);
 
 			if (m_vCamRotAngle.x < -D3DX_PI / 2.0f + 0.0001f)
-			m_vCamRotAngle.x = -D3DX_PI / 2.0f + 0.0001f;
+				m_vCamRotAngle.x = -D3DX_PI / 2.0f + 0.0001f;
 
 			if (m_vCamRotAngle.x > D3DX_PI / 2.0f + 0.0001f)
 				m_vCamRotAngle.x = D3DX_PI / 2.0f - 0.0001f;
