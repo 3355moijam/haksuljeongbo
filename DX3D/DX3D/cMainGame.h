@@ -4,6 +4,7 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class cCubeMan;
 class cCubePC;
 class cCamera2;
 class cGrid2;
@@ -21,13 +22,23 @@ private:
 	cCubePC*	m_pCubePC;
 	cCamera2*	m_pCamera;
 	cGrid2*		m_pGrid;
+
+	cCubeMan*	m_pCubeMan;
+
+	// >> for texture
+	LPDIRECT3DTEXTURE9	m_pTexture;
+	vector<ST_PT_VERTEX> m_vecVertex;
+	// <<
 public:
 	cMainGame();
 	~cMainGame();
 
 	void setup();
 	void update();
+	void Draw_Texture();
 	void render();
 	
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	void Set_Light();
 };

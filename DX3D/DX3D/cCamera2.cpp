@@ -37,7 +37,7 @@ void cCamera2::update()
 	GetClientRect(g_hWnd, &rc);
 
 	D3DXMATRIXA16 matR, matRX, matRY;
-	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
+	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.y);
 	D3DXMatrixRotationY(&matRY, m_vCamRotAngle.x);
 	matR = matRX * matRY;
 

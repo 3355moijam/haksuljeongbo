@@ -34,7 +34,7 @@ void cPyramid::setup(D3DCOLOR c, D3DXMATRIXA16& mat)
 
 	v.p = D3DXVECTOR3(-1, -1, -1); m_vecVertex.push_back(v);
 	v.p = D3DXVECTOR3(1, -1, -1); m_vecVertex.push_back(v);
-	v.p = D3DXVECTOR3(-1, -1, 1); m_vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, 1); m_vecVertex.push_back(v);
 
 	v.p = D3DXVECTOR3(-1, -1, -1); m_vecVertex.push_back(v);
 	v.p = D3DXVECTOR3(1, -1, 1); m_vecVertex.push_back(v);

@@ -63,4 +63,34 @@ struct ST_PC_VERTEX
 	ST_PC_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
 };
 
+struct ST_PNT_VERTEX
+{
+	D3DXVECTOR3	p;
+	D3DXVECTOR3	n;
+	D3DXVECTOR2	t;
+	enum { FVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
+	ST_PNT_VERTEX() : p(), n(), t() {}
+	//ST_PNT_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
+};
+
+struct ST_PT_VERTEX
+{
+	D3DXVECTOR3	p;
+	D3DXVECTOR2	t;
+	enum { FVF = D3DFVF_XYZ | D3DFVF_TEX1 };
+	ST_PT_VERTEX() : p(), t() {}
+	//ST_PNT_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
+};
+
+#define Synthesize(varType, varName, funName)\
+	protected: varType varName; \
+	public : inline varType Get##funName(void) const {return varName;}\
+	public : inline void Set##funName(varType var) {varName = var;}
+
+#define Synthesize_pass_by_Ref(varType, varName, funName)\
+	protected: varType varName; \
+	public : inline varType& Get##funName(void) {return varName;}\
+	public : inline void Set##funName(varType& var) {varName = var;}
+
+
 #include "cDeviceManager.h"

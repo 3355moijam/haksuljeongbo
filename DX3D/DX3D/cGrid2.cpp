@@ -86,6 +86,7 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 
 void cGrid2::render()
 {
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matI);
