@@ -20,18 +20,18 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 {
 	float fMax = nNumHalfTile * fInterval;
 	float fMin = -fMax;
-	ST_PC_VERTEX v;
-	for (int i = 1; i <= nNumHalfTile; ++i)
+	ST_PNC_VERTEX v;
+	v.n = D3DXVECTOR3(0, 1, 0);
+	for (unsigned int i = 1; i <= nNumHalfTile; ++i)
 	{
-		if (i % 5 == 0)
-		{
-			v.c = D3DCOLOR_XRGB(255, 255, 255);
-		}
-		else
-		{
-			v.c = D3DCOLOR_XRGB(128, 128, 128);
-		}
-
+		//if (i % 5 == 0)
+		//{
+		//	v.c = D3DCOLOR_XRGB(255, 255, 255);
+		//}
+		//else
+		//{
+		//	v.c = D3DCOLOR_XRGB(128, 128, 128);
+		//}
 		v.p = D3DXVECTOR3(fMin, 0, i*fInterval);
 		m_vecVertex.push_back(v);
 		v.p = D3DXVECTOR3(fMax, 0, i*fInterval);
@@ -51,7 +51,21 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 		m_vecVertex.push_back(v);
 
 	}
+	v.c = D3DCOLOR_XRGB(60, 60, 60);
+	for (unsigned int j = 0; j < nNumHalfTile * 2; ++j)
+	{
+		for (unsigned int i = 0; i < nNumHalfTile * 2; ++i)
+		{
+			v.p = D3DXVECTOR3(fMin + i * fInterval, 0, fMax - j * fInterval); m_vecIndex.push_back(v);
+			v.p = D3DXVECTOR3(fMin + (i + 1) * fInterval, 0, fMax - j * fInterval); m_vecIndex.push_back(v);
+			v.p = D3DXVECTOR3(fMin + i * fInterval, 0, fMax - (j + 1) * fInterval); m_vecIndex.push_back(v);
 
+			v.p = D3DXVECTOR3(fMin + i * fInterval, 0, fMax - (j + 1) * fInterval); m_vecIndex.push_back(v);
+			v.p = D3DXVECTOR3(fMin + (i + 1) * fInterval, 0, fMax - j * fInterval); m_vecIndex.push_back(v);
+			v.p = D3DXVECTOR3(fMin + (i + 1)* fInterval, 0, fMax - (j + 1)* fInterval); m_vecIndex.push_back(v);
+		}
+	}
+	
 	v.c = D3DCOLOR_XRGB(255, 0, 0);
 	v.p = D3DXVECTOR3(fMin, 0, 0); m_vecVertex.push_back(v);
 	v.p = D3DXVECTOR3(fMax, 0, 0); m_vecVertex.push_back(v);
@@ -86,20 +100,28 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 
 void cGrid2::render()
 {
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matI);
 
-	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
+	g_pD3DDevice->SetFVF(ST_PNC_VERTEX::FVF);
+	//g_pD3DDevice->DrawPrimitiveUP
+	//(
+	//	D3DPT_LINELIST,
+	//	m_vecVertex.size() / 2,
+	//	&m_vecVertex[0],
+	//	sizeof ST_PNC_VERTEX
+	//);
+
 	g_pD3DDevice->DrawPrimitiveUP
 	(
-		D3DPT_LINELIST,
-		m_vecVertex.size() / 2,
-		&m_vecVertex[0],
-		sizeof ST_PC_VERTEX
+		D3DPT_TRIANGLELIST,
+		m_vecIndex.size() / 3,
+		&m_vecIndex[0],
+		sizeof ST_PNC_VERTEX
 	);
-
+	
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	for (auto & p : m_vecPyramid)
 	{
 		p->render();

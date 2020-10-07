@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "cCubePNT.h"
 
-LPDIRECT3DTEXTURE9 cCubePNT::m_pTexture = nullptr;
+//LPDIRECT3DTEXTURE9 cCubePNT::m_pTexture = nullptr;
 cCubePNT::cCubePNT()
 {
 	
@@ -13,8 +13,8 @@ cCubePNT::~cCubePNT()
 
 void cCubePNT::setup()
 {
-	if(m_pTexture == nullptr)
-		D3DXCreateTextureFromFile(g_pD3DDevice, _T("data/texture/riko.png"), &m_pTexture);
+	//if(m_pTexture == nullptr)
+		//D3DXCreateTextureFromFile(g_pD3DDevice, _T("data/texture/riko.png"), &m_pTexture);
 	vector<ST_PNT_VERTEX> vecVertex;
 	vecVertex.resize(8);
 
@@ -84,7 +84,7 @@ void cCubePNT::update()
 
 void cCubePNT::render()
 {
-	g_pD3DDevice->SetTexture(0, m_pTexture);
+	//g_pD3DDevice->SetTexture(0, m_pTexture);
 	g_pD3DDevice->SetFVF(ST_PNT_VERTEX::FVF);
 	g_pD3DDevice->DrawPrimitiveUP(
 		D3DPT_TRIANGLELIST,
@@ -92,7 +92,7 @@ void cCubePNT::render()
 		&m_vecVertex[0],
 		sizeof ST_PNT_VERTEX
 	);
-	g_pD3DDevice->SetTexture(0, NULL);
+	//g_pD3DDevice->SetTexture(0, NULL);
 }
 
 void cCubePNT::TextureMapping(int i, float u, float v)

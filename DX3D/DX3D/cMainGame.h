@@ -8,6 +8,10 @@ class cCubeMan;
 class cCubePC;
 class cCamera2;
 class cGrid2;
+class cPointLight;
+class cDirectionalLight;
+class cSpotLight;
+
 
 class cMainGame
 {
@@ -29,6 +33,13 @@ private:
 	LPDIRECT3DTEXTURE9	m_pTexture;
 	vector<ST_PT_VERTEX> m_vecVertex;
 	// <<
+
+	// >> lighting
+	cPointLight*		m_PointLight;
+	cDirectionalLight*	m_DirectionalLight;
+	cSpotLight*			m_SpotLight;
+
+	
 public:
 	cMainGame();
 	~cMainGame();

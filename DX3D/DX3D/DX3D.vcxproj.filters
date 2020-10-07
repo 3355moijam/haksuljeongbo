@@ -16,6 +16,9 @@
     <Filter Include="CubeMan">
       <UniqueIdentifier>{43f6d997-06dd-4fb5-bc59-1ad9739641ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lighting">
+      <UniqueIdentifier>{e4bec3fc-d185-463d-9011-f925da9db61c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -78,6 +81,18 @@
     <ClInclude Include="cCubeMan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cLight.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="cPointLight.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpotLight.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="cDirectionalLight.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -133,6 +148,18 @@
     </ClCompile>
     <ClCompile Include="cCubeMan.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cPointLight.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpotLight.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cDirectionalLight.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cLight.cpp">
+      <Filter>Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

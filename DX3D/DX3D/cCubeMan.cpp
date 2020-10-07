@@ -8,7 +8,7 @@
 #include "cRightLeg.h"
 #include "cHead.h"
 
-cCubeMan::cCubeMan(): m_pRoot(nullptr), m_stMtl()
+cCubeMan::cCubeMan(): m_pRoot(nullptr), m_stMtl(), m_pTexture(nullptr)
 {
 }
 
@@ -16,12 +16,13 @@ cCubeMan::~cCubeMan()
 {
 	if (m_pRoot)
 		m_pRoot->Destroy();
+	SafeRelease(m_pTexture);
 }
 
 void cCubeMan::setup()
 {
 	cCharacter::setup();
-
+	D3DXCreateTextureFromFile(g_pD3DDevice, _T("data/texture/riko.png"), &m_pTexture);
 	ZeroMemory(&m_stMtl, sizeof D3DMATERIAL9);
 	m_stMtl.Ambient = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
 	m_stMtl.Diffuse = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
@@ -376,9 +377,13 @@ void cCubeMan::render()
 
 		D3DXMATRIXA16 matWorld;
 		D3DXMatrixIdentity(&matWorld);
+		g_pD3DDevice->SetTexture(0, m_pTexture);
 
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 		if (m_pRoot)
 			m_pRoot->render();
+
+		g_pD3DDevice->SetTexture(0, NULL);
+
 	}
 }

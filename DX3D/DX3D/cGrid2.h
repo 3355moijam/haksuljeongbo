@@ -7,7 +7,8 @@ public:
 	cGrid2();
 	~cGrid2();
 private:
-	vector<ST_PC_VERTEX>	m_vecVertex;
+	vector<ST_PNC_VERTEX>	m_vecVertex;
+	vector<ST_PNC_VERTEX>	m_vecIndex;
 	vector<cPyramid*>		m_vecPyramid;
 
 public:

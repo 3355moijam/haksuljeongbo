@@ -152,14 +152,18 @@
     <ClInclude Include="cCubeNode.h" />
     <ClInclude Include="cCubePC.h" />
     <ClInclude Include="cCubePNT.h" />
+    <ClInclude Include="cDirectionalLight.h" />
     <ClInclude Include="cGrid2.h" />
     <ClInclude Include="cHead.h" />
     <ClInclude Include="cLeftArm.h" />
     <ClInclude Include="cLeftLeg.h" />
+    <ClInclude Include="cLight.h" />
     <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cPointLight.h" />
     <ClInclude Include="cPyramid.h" />
     <ClInclude Include="cRightArm.h" />
     <ClInclude Include="cRightLeg.h" />
+    <ClInclude Include="cSpotLight.h" />
     <ClInclude Include="DX3D.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -174,14 +178,18 @@
     <ClCompile Include="cCubePC.cpp" />
     <ClCompile Include="cCubePNT.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
+    <ClCompile Include="cDirectionalLight.cpp" />
     <ClCompile Include="cGrid2.cpp" />
     <ClCompile Include="cHead.cpp" />
     <ClCompile Include="cLeftArm.cpp" />
     <ClCompile Include="cLeftLeg.cpp" />
+    <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cPointLight.cpp" />
     <ClCompile Include="cPyramid.cpp" />
     <ClCompile Include="cRightArm.cpp" />
     <ClCompile Include="cRightLeg.cpp" />
+    <ClCompile Include="cSpotLight.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -16,5 +16,5 @@ public:
 protected:
 	vector<ST_PNT_VERTEX> m_vecVertex;
 	
-	static LPDIRECT3DTEXTURE9 m_pTexture;
+	//static LPDIRECT3DTEXTURE9 m_pTexture;
 };

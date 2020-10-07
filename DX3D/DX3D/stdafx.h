@@ -73,6 +73,16 @@ struct ST_PNT_VERTEX
 	//ST_PNT_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
 };
 
+struct ST_PNC_VERTEX
+{
+	D3DXVECTOR3	p;
+	D3DXVECTOR3	n;
+	D3DCOLOR	c;
+	enum { FVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE };
+	ST_PNC_VERTEX() : p(), n(), c() {}
+	//ST_PNT_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
+};
+
 struct ST_PT_VERTEX
 {
 	D3DXVECTOR3	p;

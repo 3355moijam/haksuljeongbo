@@ -4,7 +4,7 @@
 cCharacter::cCharacter()
 	: m_fRotY(D3DX_PI)
 	, m_vDirection(0,0,-1)
-	, m_vPosition(0,0,0)
+	, m_vPosition(0,1,0)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
@@ -19,6 +19,11 @@ void cCharacter::setup()
 
 void cCharacter::update()
 {
+	if (GetKeyState('K') & 0x0001)
+		return;
+	if (GetKeyState('L') & 0x0001)
+		return;
+	
 	if (GetKeyState('A') & 0x8000)
 	{
 		m_fRotY += -0.1f;

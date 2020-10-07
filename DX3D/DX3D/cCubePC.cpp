@@ -17,23 +17,38 @@ cCubePC::~cCubePC()
 void cCubePC::setup()
 {
 	ST_PC_VERTEX v;
-	v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
-
+	//v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
+	v.c = D3DCOLOR_ARGB(0, rand() % 256, rand() % 256, rand() % 256);
 	vector<ST_PC_VERTEX> tempVertex;
-	tempVertex.emplace_back(-1, -1, -1, D3DCOLOR_XRGB(255, 0, 0));
-	tempVertex.emplace_back(-1, 1, -1, D3DCOLOR_XRGB(0, 255, 0));
-	tempVertex.emplace_back(1, 1, -1, D3DCOLOR_XRGB(0, 0, 255));
-	tempVertex.emplace_back(1, -1, -1, D3DCOLOR_XRGB(255, 0, 0));
+	//tempVertex.emplace_back(-1, -1, -1, D3DCOLOR_XRGB(255, 0, 0));
+	//tempVertex.emplace_back(-1, 1, -1, D3DCOLOR_XRGB(0, 255, 0));
+	//tempVertex.emplace_back(1, 1, -1, D3DCOLOR_XRGB(0, 0, 255));
+	//tempVertex.emplace_back(1, -1, -1, D3DCOLOR_XRGB(255, 0, 0));
+
+
+	////
+	//tempVertex.emplace_back(-1, -1, 1, D3DCOLOR_XRGB(0, 0, 255));
+	//tempVertex.emplace_back(-1, 1, 1, D3DCOLOR_XRGB(0, 0, 255));
+	//tempVertex.emplace_back(1, 1, 1, D3DCOLOR_XRGB(0, 0, 255));
+	//tempVertex.emplace_back(1, -1, 1, D3DCOLOR_XRGB(0, 0, 255));
+
+
+	tempVertex.emplace_back(-0.5, -0.5, -0.5, D3DCOLOR_XRGB(255, 0, 0));
+	tempVertex.emplace_back(-0.5, 0.5, -0.5, D3DCOLOR_XRGB(0, 255, 0));
+	tempVertex.emplace_back(0.5, 0.5, -0.5, D3DCOLOR_XRGB(0, 0, 255));
+	tempVertex.emplace_back(0.5, -0.5, -0.5, D3DCOLOR_XRGB(255, 0, 0));
 
 
 	//
-	tempVertex.emplace_back(-1, -1, 1, D3DCOLOR_XRGB(0, 0, 255));
-	tempVertex.emplace_back(-1, 1, 1, D3DCOLOR_XRGB(0, 0, 255));
-	tempVertex.emplace_back(1, 1, 1, D3DCOLOR_XRGB(0, 0, 255));
-	tempVertex.emplace_back(1, -1, 1, D3DCOLOR_XRGB(0, 0, 255));
-
+	tempVertex.emplace_back(-0.5, -0.5, 0.5, D3DCOLOR_XRGB(0, 0, 255));
+	tempVertex.emplace_back(-0.5, 0.5, 0.5, D3DCOLOR_XRGB(0, 0, 255));
+	tempVertex.emplace_back(0.5, 0.5, 0.5, D3DCOLOR_XRGB(0, 0, 255));
+	tempVertex.emplace_back(0.5, -0.5, 0.5, D3DCOLOR_XRGB(0, 0, 255));
+	
 	// 폴리곤 만들기
 	{
+		v.c = D3DCOLOR_ARGB(0, rand() % 256, rand() % 256, rand() % 256);
+
 		//front
 		m_vecVertex.push_back(tempVertex[0]);
 		m_vecVertex.back().c = v.c;
@@ -49,7 +64,7 @@ void cCubePC::setup()
 		m_vecVertex.push_back(tempVertex[3]);
 		m_vecVertex.back().c = v.c;
 		//back
-		v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
+		//v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
 		m_vecVertex.push_back(tempVertex[4]);
 		m_vecVertex.back().c = v.c;
 		m_vecVertex.push_back(tempVertex[6]);
@@ -65,7 +80,7 @@ void cCubePC::setup()
 		m_vecVertex.back().c = v.c;
 
 		//left
-		v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
+		//v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
 		m_vecVertex.push_back(tempVertex[4]);
 		m_vecVertex.back().c = v.c;
 		m_vecVertex.push_back(tempVertex[5]);
@@ -81,7 +96,7 @@ void cCubePC::setup()
 		m_vecVertex.back().c = v.c;
 
 		//right
-		v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
+		//v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
 		m_vecVertex.push_back(tempVertex[3]);
 		m_vecVertex.back().c = v.c;
 		m_vecVertex.push_back(tempVertex[2]);
@@ -97,7 +112,7 @@ void cCubePC::setup()
 		m_vecVertex.back().c = v.c;
 
 		//up
-		v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
+		//v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
 		m_vecVertex.push_back(tempVertex[1]);
 		m_vecVertex.back().c = v.c;
 		m_vecVertex.push_back(tempVertex[5]);
@@ -113,7 +128,7 @@ void cCubePC::setup()
 		m_vecVertex.back().c = v.c;
 
 		//down
-		v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
+		//v.c = D3DCOLOR_XRGB(rand() % 256, rand() % 256, rand() % 256);
 		m_vecVertex.push_back(tempVertex[4]);
 		m_vecVertex.back().c = v.c;
 		m_vecVertex.push_back(tempVertex[0]);
