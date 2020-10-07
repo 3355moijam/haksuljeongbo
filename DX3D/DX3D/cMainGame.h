@@ -5,6 +5,7 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class cCubeObj;
 class cCubeMan2;
 class cCubeMan;
 class cCubePC;
@@ -47,7 +48,8 @@ private:
 
 	cCubeMan2*			m_pRouteMan;
 	cCubeMan2*			m_pShortCutMan;
-	
+
+	cCubeObj*			m_pCubeObj;
 public:
 	cMainGame();
 	~cMainGame();

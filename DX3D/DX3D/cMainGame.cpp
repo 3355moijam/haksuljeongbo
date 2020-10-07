@@ -6,6 +6,7 @@
 #include "cGrid2.h"
 #include "cCubeMan.h"
 #include "cCubeMan2.h"
+#include "cCubeObj.h"
 #include "cDirectionalLight.h"
 #include "cPointLight.h"
 #include "cSpotLight.h"
@@ -22,7 +23,8 @@ cMainGame::cMainGame()
 	: m_pCubePC(nullptr)
 	  , m_pCamera(nullptr)
 	  , m_pGrid(nullptr), m_pCubeMan(nullptr), m_pTexture(nullptr), m_PointLight(nullptr), m_DirectionalLight(nullptr),
-	  m_SpotLight(nullptr), m_pRoute(nullptr), m_pShort(nullptr), m_pRouteMan(nullptr), m_pShortCutMan(nullptr)
+	  m_SpotLight(nullptr), m_pRoute(nullptr), m_pShort(nullptr), m_pRouteMan(nullptr), m_pShortCutMan(nullptr),
+	  m_pCubeObj(nullptr)
 //, player()
 {
 }
@@ -43,7 +45,8 @@ cMainGame::~cMainGame()
 	SafeDelete(m_pShort);
 	SafeDelete(m_pRouteMan);
 	SafeDelete(m_pShortCutMan);
-	
+
+	SafeDelete(m_pCubeObj);
 	g_pDeviceManager.Destroy();
 }
 
@@ -73,11 +76,14 @@ void cMainGame::setup()
 
 	m_pShort = new cGuideline;
 	m_pShort->setup(D3DCOLOR_XRGB(255, 0, 0));
-	m_pShort->Interpolation(16);
+	m_pShort->Interpolation(4);
 
 	m_pShortCutMan = new cCubeMan2;
 	m_pShortCutMan->setup();
 	m_pShortCutMan->setGuide(m_pShort->getShortCut());
+
+	m_pCubeObj = new cCubeObj;
+	m_pCubeObj->setup();
 	
 	// for texture
 	//{
@@ -199,6 +205,9 @@ void cMainGame::render()
 
 		if (m_pShortCutMan)
 			m_pShortCutMan->render();
+
+		if (m_pCubeObj)
+			m_pCubeObj->render();
 		
 		//if (m_pCubePC)
 		//	m_pCubePC->render();

@@ -151,6 +151,7 @@
     <ClInclude Include="cCubeMan.h" />
     <ClInclude Include="cCubeMan2.h" />
     <ClInclude Include="cCubeNode.h" />
+    <ClInclude Include="cCubeObj.h" />
     <ClInclude Include="cCubePC.h" />
     <ClInclude Include="cCubePNT.h" />
     <ClInclude Include="cDirectionalLight.h" />
@@ -161,6 +162,8 @@
     <ClInclude Include="cLeftLeg.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cMtlParser.h" />
+    <ClInclude Include="cObjParser.h" />
     <ClInclude Include="cPointLight.h" />
     <ClInclude Include="cPyramid.h" />
     <ClInclude Include="cRightArm.h" />
@@ -178,6 +181,7 @@
     <ClCompile Include="cCubeMan.cpp" />
     <ClCompile Include="cCubeMan2.cpp" />
     <ClCompile Include="cCubeNode.cpp" />
+    <ClCompile Include="cCubeObj.cpp" />
     <ClCompile Include="cCubePC.cpp" />
     <ClCompile Include="cCubePNT.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
@@ -189,6 +193,8 @@
     <ClCompile Include="cLeftLeg.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cMtlParser.cpp" />
+    <ClCompile Include="cObjParser.cpp" />
     <ClCompile Include="cPointLight.cpp" />
     <ClCompile Include="cPyramid.cpp" />
     <ClCompile Include="cRightArm.cpp" />
