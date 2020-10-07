@@ -5,6 +5,7 @@
 #include "cCubePC.h"
 #include "cGrid2.h"
 #include "cCubeMan.h"
+#include "cCubeMan2.h"
 #include "cDirectionalLight.h"
 #include "cPointLight.h"
 #include "cSpotLight.h"
@@ -21,7 +22,7 @@ cMainGame::cMainGame()
 	: m_pCubePC(nullptr)
 	  , m_pCamera(nullptr)
 	  , m_pGrid(nullptr), m_pCubeMan(nullptr), m_pTexture(nullptr), m_PointLight(nullptr), m_DirectionalLight(nullptr),
-	  m_SpotLight(nullptr)
+	  m_SpotLight(nullptr), m_pRoute(nullptr), m_pShort(nullptr), m_pRouteMan(nullptr), m_pShortCutMan(nullptr)
 //, player()
 {
 }
@@ -37,6 +38,11 @@ cMainGame::~cMainGame()
 	SafeDelete(m_PointLight);
 	SafeDelete(m_DirectionalLight);
 	SafeDelete(m_SpotLight);
+
+	SafeDelete(m_pRoute);
+	SafeDelete(m_pShort);
+	SafeDelete(m_pRouteMan);
+	SafeDelete(m_pShortCutMan);
 	
 	g_pDeviceManager.Destroy();
 }
@@ -56,8 +62,23 @@ void cMainGame::setup()
 	m_pCamera->setup(&m_pCubeMan->getPosition());
 
 	m_pGrid = new cGrid2;
-	m_pGrid->setup(300, 0.05);
+	m_pGrid->setup(15, 1);
 
+	m_pRoute = new cGuideline;
+	m_pRoute->setup(D3DCOLOR_XRGB(0, 255, 0));
+
+	m_pRouteMan = new cCubeMan2;
+	m_pRouteMan->setup();
+	m_pRouteMan->setGuide(m_pRoute->getRouteNode());
+
+	m_pShort = new cGuideline;
+	m_pShort->setup(D3DCOLOR_XRGB(255, 0, 0));
+	m_pShort->Interpolation(16);
+
+	m_pShortCutMan = new cCubeMan2;
+	m_pShortCutMan->setup();
+	m_pShortCutMan->setGuide(m_pShort->getShortCut());
+	
 	// for texture
 	//{
 	//	D3DXCreateTextureFromFile(g_pD3DDevice, _T("TEXTURES/BRICK/brick_01/brick_01-2.png"), &m_pTexture);
@@ -98,14 +119,20 @@ void cMainGame::update()
 	if(m_pCamera)
 		m_pCamera->update();
 
-	if (m_PointLight)
-		m_PointLight->update();
+	//if (m_PointLight)
+	//	m_PointLight->update();
 
-	if (m_DirectionalLight)
-		m_DirectionalLight->update();
+	//if (m_DirectionalLight)
+	//	m_DirectionalLight->update();
 
-	if (m_SpotLight)
-		m_SpotLight->update();
+	//if (m_SpotLight)
+	//	m_SpotLight->update();
+
+	if (m_pRouteMan)
+		m_pRouteMan->update();
+
+	if (m_pShortCutMan)
+		m_pShortCutMan->update();
 
 }
 
@@ -157,21 +184,35 @@ void cMainGame::render()
 		if (m_pGrid)
 			m_pGrid->render();
 
+		if (m_pRoute)
+			m_pRoute->render();
+		
 		if (m_pCubeMan)
 			m_pCubeMan->render();
+
+		if (m_pRouteMan)
+			m_pRouteMan->render();
+
+
+		if (m_pShort)
+			m_pShort->render();
+
+		if (m_pShortCutMan)
+			m_pShortCutMan->render();
+		
 		//if (m_pCubePC)
 		//	m_pCubePC->render();
 
 		//Draw_Texture();
 
-		if (m_PointLight)
-			m_PointLight->render();
+		//if (m_PointLight)
+		//	m_PointLight->render();
 
-		if (m_DirectionalLight)
-			m_DirectionalLight->render();
+		//if (m_DirectionalLight)
+		//	m_DirectionalLight->render();
 
-		if (m_SpotLight)
-			m_SpotLight->render();
+		//if (m_SpotLight)
+		//	m_SpotLight->render();
 		
 		g_pD3DDevice->EndScene();
 
@@ -217,67 +258,12 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void cMainGame::Set_Light()
 {
-	//D3DLIGHT9 stLight{};
-	//stLight.Type = D3DLIGHT_DIRECTIONAL;
-	//stLight.Ambient = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//stLight.Diffuse = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//stLight.Specular = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-
-	//D3DXVECTOR3 vDir(1.0f, -1.0f, 0.0f);
-	//D3DXVec3Normalize(&vDir, &vDir);
-	//stLight.Direction = vDir;
-	//g_pD3DDevice->SetLight(0, &stLight);
-	//g_pD3DDevice->LightEnable(0, true);
-
-	//D3DLIGHT9 SpotLight{};
-	//SpotLight.Type = D3DLIGHT_SPOT;
-	//SpotLight.Ambient = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-	//SpotLight.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-	//SpotLight.Specular = D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.5f);
-	//
-	//vDir = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
-	//D3DXVECTOR3 vPos(0, 13, 0);
-	//D3DXVec3Normalize(&vDir, &vDir);
-	//SpotLight.Direction = vDir;
-	//SpotLight.Position = vPos;
-	//SpotLight.Range = 20.0f;
-	//SpotLight.Falloff = 1.0f;
-
-	//SpotLight.Attenuation0 = 0.0625f;
-	//SpotLight.Attenuation1 = 0.0625f;
-	//SpotLight.Attenuation2 = 0.00625f;
-	//
-
-	//SpotLight.Phi = D3DX_PI / 4;
-	//SpotLight.Theta = D3DX_PI / 20;
-	//
-	//g_pD3DDevice->SetLight(1, &SpotLight);
-	//g_pD3DDevice->LightEnable(1, true);
-
-	//D3DLIGHT9 PointLight{};
-	//PointLight.Type = D3DLIGHT_POINT;
-	//PointLight.Ambient = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	//PointLight.Diffuse = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	//PointLight.Specular = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-
-	//vPos = D3DXVECTOR3(10, 5, 0);
-
-	//PointLight.Position = vPos;
-	//PointLight.Range = 10.0f;
-
-	//PointLight.Attenuation0 = 0.0625f;
-	//PointLight.Attenuation1 = 0.0625f;
-	//PointLight.Attenuation2 = 0.0625f;
-
-	//g_pD3DDevice->SetLight(2, &PointLight);
-	//g_pD3DDevice->LightEnable(2, true);
-
-	m_PointLight = new cPointLight;
-	m_PointLight->setup();
+	//m_PointLight = new cPointLight;
+	//m_PointLight->setup();
 
 	m_DirectionalLight = new cDirectionalLight;
 	m_DirectionalLight->setup();
 
-	m_SpotLight = new cSpotLight;
-	m_SpotLight->setup();
+	//m_SpotLight = new cSpotLight;
+	//m_SpotLight->setup();
 }

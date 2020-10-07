@@ -1,9 +1,11 @@
 ﻿#pragma once
+#include "cGuideline.h"
 //#include "cCamera.h"
 //#include "cCharacter.h"
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class cCubeMan2;
 class cCubeMan;
 class cCubePC;
 class cCamera2;
@@ -38,7 +40,13 @@ private:
 	cPointLight*		m_PointLight;
 	cDirectionalLight*	m_DirectionalLight;
 	cSpotLight*			m_SpotLight;
+	// <<
 
+	cGuideline*			m_pRoute;
+	cGuideline*			m_pShort;
+
+	cCubeMan2*			m_pRouteMan;
+	cCubeMan2*			m_pShortCutMan;
 	
 public:
 	cMainGame();

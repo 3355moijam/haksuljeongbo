@@ -93,6 +93,12 @@
     <ClInclude Include="cDirectionalLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="cGuideline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCubeMan2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -160,6 +166,12 @@
     </ClCompile>
     <ClCompile Include="cLight.cpp">
       <Filter>Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cGuideline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cCubeMan2.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
