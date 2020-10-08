@@ -365,6 +365,22 @@ void cCubeMan2::update()
 	//cCharacter::update();
 	D3DXMATRIXA16 matR, matT;
 
+
+	//D3DXVECTOR3 vUp(0, 1, 0);
+	//D3DXVECTOR3 vAt(1, 0, 1);
+	////m_vDirection = D3DXVECTOR3(0, 0, -1);
+	//D3DXMatrixIdentity(&matR);
+	//D3DXMatrixLookAtLH(&matR, &m_vPosition, &vAt, &vUp);
+	//D3DXMatrixLookAtLH(&matR, &m_vPosition, &(*m_pTraceline)[m_destID].p, &vUp);
+	//D3DXMatrixTranspose(&matR, &matR);
+
+	//m_vDirection = D3DXVECTOR3(0, 0, -1);
+	//D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
+	//D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+
+	//m_matWorld = matR * matT;
+
+	
 	m_vDirection = (*m_pTraceline)[m_destID].p - m_vPosition;
 	float dist = D3DXVec3Length(&m_vDirection);
 	D3DXVec3Normalize(&m_vDirection, &m_vDirection);
@@ -380,8 +396,8 @@ void cCubeMan2::update()
 	
 	D3DXMatrixRotationY(&matR, angle);
 
-
 	m_matWorld = matR * matT;
+	//m_matWorld = matT * matR;
 
 	if (dist < m_fSpeed)
 	{
@@ -400,7 +416,7 @@ void cCubeMan2::render()
 	{
 		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 		g_pD3DDevice->SetMaterial(&m_stMtl);
-
+		
 		cCharacter::render();
 
 		D3DXMATRIXA16 matWorld;

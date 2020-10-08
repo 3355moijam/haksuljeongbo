@@ -24,12 +24,14 @@ int cObjParser::open(string file)
 {
 	string temp = m_sRoot + file;
 	ifstream is(temp);
+	//ifstream is;
+	//is.open("data/obj/box.obj");
 
-	FILE* fp = fopen(temp.c_str(), "r");
-	
+	//FILE* fp = fopen(temp.c_str(), "r");
+	//is.seekg(0);
 	if (is.is_open())
 	{
-		while(is.eof())
+		while(!is.eof())
 		{
 			char arr[256];
 			is.getline(arr, 256);
@@ -107,12 +109,15 @@ void cObjParser::objParse()
 
 			token = strtok(NULL, " ");
 			v.z = atof(token);
+			D3DXVec3Normalize(&v, &v);
 			vecNormal.push_back(v);
 		}
 		else if (strcmp(token, "usemtl") == 0)
 		{
 			token = strtok(NULL, " ");
-			cMtlParser mtlParser(m_sRoot + mtladdr);
+			cMtlParser mtlParser;
+			mtlParser.setRoot(m_sRoot);
+			mtlParser.open(mtladdr);
 			mtlParser.mtlParse();
 			m_stMtl = mtlParser.createMtl(token, m_pTexture);
 			
@@ -141,6 +146,21 @@ void cObjParser::objParse()
 			
 		}
 		
+	}
+
+	D3DXVECTOR3 u, v, n;
+	const int length = m_vecVertex.size();
+	for (int i = 0; i < length; i += 3)
+	{
+		u = m_vecVertex[i + 1].p - m_vecVertex[i].p;
+		v = m_vecVertex[i + 2].p - m_vecVertex[i].p;
+
+		D3DXVec3Cross(&n, &u, &v);
+		D3DXVec3Normalize(&n, &n);
+
+		m_vecVertex[i + 0].n = n;
+		m_vecVertex[i + 1].n = n;
+		m_vecVertex[i + 2].n = n;
 	}
 
 	delete[] arr;

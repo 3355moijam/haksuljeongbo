@@ -19,10 +19,10 @@ cMtlParser::~cMtlParser()
 
 int cMtlParser::open(string file)
 {
-	std::ifstream is(file);
+	std::ifstream is(m_sRoot + file);
 	if (is.is_open())
 	{
-		while (is.eof())
+		while (!is.eof())
 		{
 			char arr[256];
 			is.getline(arr, 256);
@@ -36,7 +36,7 @@ int cMtlParser::open(string file)
 
 void cMtlParser::mtlParse()
 {
-	D3DMATERIAL9 mtl;
+	D3DMATERIAL9 mtl{};
 	
 	for (auto& line : oFile)
 	{
@@ -51,33 +51,33 @@ void cMtlParser::mtlParse()
 		else if(strncmp(line.c_str(), "newmtl", 6)== 0)
 		{
 			char temp[32];
-			sscanf(line.c_str(), "%*s %s", temp);
-			m_mtlName.push_back(temp);
+			sscanf_s(line.c_str(), "%*s %s", temp, sizeof temp);
+			m_mtlName.emplace_back(temp);
 		}
-		else if(strncmp(line.c_str(), "Ka", 1) == 0)
+		else if(strncmp(line.c_str(), "Ka", 2) == 0)
 		{
 			float x, y, z;
-			sscanf(line.c_str(), "%*s %f %f %f", &x, &y, &z);
+			sscanf_s(line.c_str(), "%*s %f %f %f", &x, &y, &z);
 			mtl.Ambient = D3DXCOLOR(x, y, z, 1.0f);
 		}
-		else if (strncmp(line.c_str(), "Kd", 1) == 0)
+		else if (strncmp(line.c_str(), "Kd", 2) == 0)
 		{
 			float x, y, z;
-			sscanf(line.c_str(), "%*s %f %f %f", &x, &y, &z);
+			sscanf_s(line.c_str(), "%*s %f %f %f", &x, &y, &z);
 			mtl.Diffuse = D3DXCOLOR(x, y, z, 1.0f);
 		}
-		else if (strncmp(line.c_str(), "Ks", 1) == 0)
+		else if (strncmp(line.c_str(), "Ks", 2) == 0)
 		{
 			float x, y, z;
-			sscanf(line.c_str(), "%*s %f %f %f", &x, &y, &z);
+			sscanf_s(line.c_str(), "%*s %f %f %f", &x, &y, &z);
 			mtl.Specular = D3DXCOLOR(x, y, z, 1.0f);
 			m_mtlList.push_back(mtl);
 		}
 		else if(strncmp(line.c_str(), "map_Kd", 6) == 0)
 		{
 			char temp[32];
-			sscanf(line.c_str(), "%*s %s", temp);
-			m_textureAddr.push_back(temp);
+			sscanf_s(line.c_str(), "%*s %s", temp, sizeof temp);
+			m_textureAddr.push_back(m_sRoot + temp);
 		}
 	}
 }

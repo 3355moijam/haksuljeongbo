@@ -30,29 +30,31 @@ void cCubePNT::setup()
 
 	vector<DWORD> vecIndex;
 
-	//front
-	vecIndex.push_back(0); vecIndex.push_back(1); vecIndex.push_back(2);
-	vecIndex.push_back(0); vecIndex.push_back(2); vecIndex.push_back(3);
+	{
+		//front
+		vecIndex.push_back(0); vecIndex.push_back(1); vecIndex.push_back(2);
+		vecIndex.push_back(0); vecIndex.push_back(2); vecIndex.push_back(3);
 
-	//back
-	vecIndex.push_back(7); vecIndex.push_back(6); vecIndex.push_back(5);
-	vecIndex.push_back(7); vecIndex.push_back(5); vecIndex.push_back(4);
+		//back
+		vecIndex.push_back(7); vecIndex.push_back(6); vecIndex.push_back(5);
+		vecIndex.push_back(7); vecIndex.push_back(5); vecIndex.push_back(4);
 
-	//left
-	vecIndex.push_back(4); vecIndex.push_back(5); vecIndex.push_back(1);
-	vecIndex.push_back(4); vecIndex.push_back(1); vecIndex.push_back(0);
+		//left
+		vecIndex.push_back(4); vecIndex.push_back(5); vecIndex.push_back(1);
+		vecIndex.push_back(4); vecIndex.push_back(1); vecIndex.push_back(0);
 
-	//right
-	vecIndex.push_back(3); vecIndex.push_back(2); vecIndex.push_back(6);
-	vecIndex.push_back(3); vecIndex.push_back(6); vecIndex.push_back(7);
+		//right
+		vecIndex.push_back(3); vecIndex.push_back(2); vecIndex.push_back(6);
+		vecIndex.push_back(3); vecIndex.push_back(6); vecIndex.push_back(7);
 
-	//top
-	vecIndex.push_back(1); vecIndex.push_back(5); vecIndex.push_back(6);
-	vecIndex.push_back(1); vecIndex.push_back(6); vecIndex.push_back(2);
+		//top
+		vecIndex.push_back(1); vecIndex.push_back(5); vecIndex.push_back(6);
+		vecIndex.push_back(1); vecIndex.push_back(6); vecIndex.push_back(2);
 
-	//bottom
-	vecIndex.push_back(4); vecIndex.push_back(0); vecIndex.push_back(3);
-	vecIndex.push_back(4); vecIndex.push_back(3); vecIndex.push_back(7);
+		//bottom
+		vecIndex.push_back(4); vecIndex.push_back(0); vecIndex.push_back(3);
+		vecIndex.push_back(4); vecIndex.push_back(3); vecIndex.push_back(7);
+	}
 
 	m_vecVertex.resize(36);
 	for (size_t i = 0; i < vecIndex.size(); i += 3)

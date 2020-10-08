@@ -23,6 +23,7 @@ void cDirectionalLight::setup()
 
 void cDirectionalLight::update()
 {
+	//return;
 	D3DXMATRIXA16 matRZ;
 	D3DXMatrixRotationZ(&matRZ, 1 * D3DX_PI / 180);
 	D3DXVECTOR3 tempDir(light.Direction);

@@ -10,6 +10,8 @@
 #include "cDirectionalLight.h"
 #include "cPointLight.h"
 #include "cSpotLight.h"
+#include "cObjectLoader.h"
+#include "cGroup.h"
 
 //#include "cCamera2.h"
 //#include "cCubePC.h"
@@ -47,6 +49,15 @@ cMainGame::~cMainGame()
 	SafeDelete(m_pShortCutMan);
 
 	SafeDelete(m_pCubeObj);
+
+	for (auto * p : m_vecGroup)
+	{
+		SafeRelease(p);
+	}
+	m_vecGroup.clear();
+	g_pObjectManager.Destroy();
+	
+	
 	g_pDeviceManager.Destroy();
 }
 
@@ -76,7 +87,7 @@ void cMainGame::setup()
 
 	m_pShort = new cGuideline;
 	m_pShort->setup(D3DCOLOR_XRGB(255, 0, 0));
-	m_pShort->Interpolation(4);
+	m_pShort->Interpolation(30);
 
 	m_pShortCutMan = new cCubeMan2;
 	m_pShortCutMan->setup();
@@ -101,7 +112,7 @@ void cMainGame::setup()
 	//	v.t = D3DXVECTOR2(1, 0);
 	//	m_vecVertex.push_back(v);
 	//}
-
+	Setup_Obj();
 	Set_Light();
 	//g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 }
@@ -190,6 +201,8 @@ void cMainGame::render()
 		if (m_pGrid)
 			m_pGrid->render();
 
+
+
 		if (m_pRoute)
 			m_pRoute->render();
 		
@@ -222,6 +235,8 @@ void cMainGame::render()
 
 		//if (m_SpotLight)
 		//	m_SpotLight->render();
+
+		Obj_Render();
 		
 		g_pD3DDevice->EndScene();
 
@@ -275,4 +290,29 @@ void cMainGame::Set_Light()
 
 	//m_SpotLight = new cSpotLight;
 	//m_SpotLight->setup();
+}
+
+void cMainGame::Setup_Obj()
+{
+	cObjectLoader l;
+	l.Load(m_vecGroup, "data/obj", "box.obj");
+}
+
+void cMainGame::Obj_Render()
+{
+	D3DXMATRIXA16 matWorld, matS, matR;
+
+	D3DXMatrixScaling(&matS, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixRotationX(&matR, -D3DX_PI / 2);
+
+	matWorld = matS * matR;
+
+	if(g_pD3DDevice)
+	{
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+		for (auto * p : m_vecGroup)
+		{
+			p->render();
+		}
+	}
 }

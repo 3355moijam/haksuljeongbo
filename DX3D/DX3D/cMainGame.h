@@ -5,6 +5,7 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class cGroup;
 class cCubeObj;
 class cCubeMan2;
 class cCubeMan;
@@ -50,6 +51,8 @@ private:
 	cCubeMan2*			m_pShortCutMan;
 
 	cCubeObj*			m_pCubeObj;
+
+	vector<cGroup*>		m_vecGroup;
 public:
 	cMainGame();
 	~cMainGame();
@@ -62,4 +65,7 @@ public:
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	void Set_Light();
+
+	void Setup_Obj();
+	void Obj_Render();
 };

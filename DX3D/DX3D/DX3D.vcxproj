@@ -156,6 +156,7 @@
     <ClInclude Include="cCubePNT.h" />
     <ClInclude Include="cDirectionalLight.h" />
     <ClInclude Include="cGrid2.h" />
+    <ClInclude Include="cGroup.h" />
     <ClInclude Include="cGuideline.h" />
     <ClInclude Include="cHead.h" />
     <ClInclude Include="cLeftArm.h" />
@@ -163,12 +164,17 @@
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMtlParser.h" />
+    <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cObject.h" />
+    <ClInclude Include="cObjectLoader.h" />
+    <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjParser.h" />
     <ClInclude Include="cPointLight.h" />
     <ClInclude Include="cPyramid.h" />
     <ClInclude Include="cRightArm.h" />
     <ClInclude Include="cRightLeg.h" />
     <ClInclude Include="cSpotLight.h" />
+    <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="DX3D.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -187,6 +193,7 @@
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cDirectionalLight.cpp" />
     <ClCompile Include="cGrid2.cpp" />
+    <ClCompile Include="cGroup.cpp" />
     <ClCompile Include="cGuideline.cpp" />
     <ClCompile Include="cHead.cpp" />
     <ClCompile Include="cLeftArm.cpp" />
@@ -194,12 +201,17 @@
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMtlParser.cpp" />
+    <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cObject.cpp" />
+    <ClCompile Include="cObjectLoader.cpp" />
+    <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjParser.cpp" />
     <ClCompile Include="cPointLight.cpp" />
     <ClCompile Include="cPyramid.cpp" />
     <ClCompile Include="cRightArm.cpp" />
     <ClCompile Include="cRightLeg.cpp" />
     <ClCompile Include="cSpotLight.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

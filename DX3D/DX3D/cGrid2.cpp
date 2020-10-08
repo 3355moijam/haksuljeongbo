@@ -100,6 +100,8 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 
 void cGrid2::render()
 {
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+	//g_pD3DDevice->SetMaterial(nullptr);
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matI);
@@ -112,7 +114,6 @@ void cGrid2::render()
 	//	&m_vecVertex[0],
 	//	sizeof ST_PNC_VERTEX
 	//);
-
 	g_pD3DDevice->DrawPrimitiveUP
 	(
 		D3DPT_TRIANGLELIST,
@@ -126,4 +127,5 @@ void cGrid2::render()
 	{
 		p->render();
 	}
+	
 }

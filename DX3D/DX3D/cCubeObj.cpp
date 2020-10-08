@@ -20,6 +20,8 @@ void cCubeObj::setup()
 
 	parser.objParse();
 	parser.createObj(m_vecVertex, &m_stMtl, m_pTexture);
+
+
 	
 }
 
@@ -36,6 +38,8 @@ void cCubeObj::render()
 
 		D3DXMATRIXA16 matWorld;
 		D3DXMatrixIdentity(&matWorld);
+		D3DXMatrixScaling(&matWorld, 0.1f, 0.1f, 0.1f);
+		//D3DXMatrixTranslation(&matWorld, 0, 1, 0);
 		g_pD3DDevice->SetTexture(0, m_pTexture);
 
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
@@ -48,6 +52,6 @@ void cCubeObj::render()
 		);
 
 		g_pD3DDevice->SetTexture(0, NULL);
-
+		//g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 	}
 }

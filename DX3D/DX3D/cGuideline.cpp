@@ -72,7 +72,7 @@ void cGuideline::render()
 	{
 		p->render();
 	}
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+	//g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 void cGuideline::Interpolation(float div)
