@@ -8,66 +8,66 @@
 #include <vector>
 #include <string>
 using namespace std;
-
-class Creature
-{
-public:
-	string name;
-	int attack, defense;
-	Creature(string name, int atk, int def) : name(name), attack(atk), defense(def) {};
-	friend ostream& operator<<(ostream& os, Creature& creat)
-	{
-
-	}
-
-};
-
-class CreatureModifier
-{
-	CreatureModifier* next{ nullptr };
-protected:
-	Creature& creature;
-public:
-	explicit CreatureModifier(Creature& creat)
-		:creature(creat) {}
-
-	void add(CreatureModifier* cm)
-	{
-		if (next) next->add(cm);
-		else next = cm;
-	}
-
-	virtual void handle()
-	{
-		if (next) next->handle();
-	}
-};
-
-class DoubleAttackModifier : public CreatureModifier
-{
-public:
-	explicit DoubleAttackModifier(Creature& creat)
-		: CreatureModifier(creat) {}
-	void handle()
-	{
-		creature.attack *= 2;
-		CreatureModifier::handle();
-	}
-};
-
-class IncreaseDefenseModifier : public CreatureModifier
-{
-public:
-	explicit IncreaseDefenseModifier(Creature& creat)
-		: CreatureModifier(creature) {}
-
-	void handle()
-	{
-		if (creature.attack <= 2)
-			creature.defense += 1;
-		CreatureModifier::handle();
-	}
-};
+//
+//class Creature
+//{
+//public:
+//	string name;
+//	int attack, defense;
+//	Creature(string name, int atk, int def) : name(name), attack(atk), defense(def) {};
+//	friend ostream& operator<<(ostream& os, Creature& creat)
+//	{
+//
+//	}
+//
+//};
+//
+//class CreatureModifier
+//{
+//	CreatureModifier* next{ nullptr };
+//protected:
+//	Creature& creature;
+//public:
+//	explicit CreatureModifier(Creature& creat)
+//		:creature(creat) {}
+//
+//	void add(CreatureModifier* cm)
+//	{
+//		if (next) next->add(cm);
+//		else next = cm;
+//	}
+//
+//	virtual void handle()
+//	{
+//		if (next) next->handle();
+//	}
+//};
+//
+//class DoubleAttackModifier : public CreatureModifier
+//{
+//public:
+//	explicit DoubleAttackModifier(Creature& creat)
+//		: CreatureModifier(creat) {}
+//	void handle()
+//	{
+//		creature.attack *= 2;
+//		CreatureModifier::handle();
+//	}
+//};
+//
+//class IncreaseDefenseModifier : public CreatureModifier
+//{
+//public:
+//	explicit IncreaseDefenseModifier(Creature& creat)
+//		: CreatureModifier(creature) {}
+//
+//	void handle()
+//	{
+//		if (creature.attack <= 2)
+//			creature.defense += 1;
+//		CreatureModifier::handle();
+//	}
+//};
 
 int main()
 {
