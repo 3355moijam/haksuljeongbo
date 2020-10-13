@@ -14,7 +14,7 @@ protected:
 	D3DMATERIAL9		m_stMtl;
 public:
 	virtual void setup() override;
-	virtual void update() override;
+	virtual void update(const vector<cGroup*>& floor = vector<cGroup*>()) override;
 	virtual void render() override;
 
 	LPDIRECT3DTEXTURE9 m_pTexture;

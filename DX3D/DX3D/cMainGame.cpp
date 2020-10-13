@@ -55,6 +55,12 @@ cMainGame::~cMainGame()
 		SafeRelease(p);
 	}
 	m_vecGroup.clear();
+
+	for (auto* p : m_vecGroupSurf)
+	{
+		SafeRelease(p);
+	}
+	m_vecGroupSurf.clear();
 	g_pObjectManager.Destroy();
 	
 	
@@ -131,7 +137,7 @@ void cMainGame::update()
 	//if(m_pCubePC)
 	//	m_pCubePC->update();
 	if (m_pCubeMan)
-		m_pCubeMan->update();
+		m_pCubeMan->update(m_vecGroupSurf);
 	
 	if(m_pCamera)
 		m_pCamera->update();
@@ -295,14 +301,15 @@ void cMainGame::Set_Light()
 void cMainGame::Setup_Obj()
 {
 	cObjectLoader l;
-	l.Load(m_vecGroup, "data/obj", "box.obj");
+	l.Load(m_vecGroup, "data/obj", "map.obj");
+	l.Load(m_vecGroupSurf, "data/obj", "map_surface.obj");
 }
 
 void cMainGame::Obj_Render()
 {
 	D3DXMATRIXA16 matWorld, matS, matR;
 
-	D3DXMatrixScaling(&matS, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixScaling(&matS, 0.01f, 0.01f, 0.01f);
 	D3DXMatrixRotationX(&matR, -D3DX_PI / 2);
 
 	matWorld = matS * matR;
@@ -314,5 +321,10 @@ void cMainGame::Obj_Render()
 		{
 			p->render();
 		}
+
+		//for (auto* p : m_vecGroupSurf)
+		//{
+		//	p->render();
+		//}
 	}
 }

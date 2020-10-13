@@ -1,7 +1,11 @@
 ﻿#include "stdafx.h"
 #include "cCubeMan.h"
 
+#include <vector>
+
+
 #include "cBody.h"
+#include "cGroup.h"
 #include "cLeftArm.h"
 #include "cRightArm.h"
 #include "cLeftLeg.h"
@@ -10,6 +14,8 @@
 
 cCubeMan::cCubeMan(): m_pRoot(nullptr), m_stMtl(), m_pTexture(nullptr)
 {
+	m_vPosition.x = -1;
+	m_vPosition.z = 1;
 }
 
 cCubeMan::~cCubeMan()
@@ -359,9 +365,9 @@ void cCubeMan::setup()
 
 }
 
-void cCubeMan::update()
+void cCubeMan::update(const vector<cGroup*>& floor)
 {
-	cCharacter::update();
+	cCharacter::update(floor);
 	if (m_pRoot)
 		m_pRoot->update();
 }

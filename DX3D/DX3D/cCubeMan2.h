@@ -1,5 +1,8 @@
 ﻿#pragma once
+#include <vector>
+
 #include "cCharacter.h"
+#include "cGroup.h"
 
 class cCubeNode;
 
@@ -18,7 +21,7 @@ protected:
 
 public:
 	virtual void setup() override;
-	virtual void update() override;
+	virtual void update(const vector<cGroup*>& floor = vector<cGroup*>()) override;
 	virtual void render() override;
 	void setGuide(vector<ST_PC_VERTEX>& line);
 	LPDIRECT3DTEXTURE9 m_pTexture;

@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include <vector>
+
+#include "cGroup.h"
 
 class cCharacter
 {
@@ -15,7 +18,7 @@ protected:
 public:
 	virtual ~cCharacter();
 	virtual void setup();
-	virtual void update();
+	virtual void update(const vector<cGroup*>& floor = vector<cGroup*>());
 	virtual void render();
 
 	virtual D3DXVECTOR3& getPosition();

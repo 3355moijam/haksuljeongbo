@@ -53,6 +53,7 @@ private:
 	cCubeObj*			m_pCubeObj;
 
 	vector<cGroup*>		m_vecGroup;
+	vector<cGroup*>		m_vecGroupSurf;
 public:
 	cMainGame();
 	~cMainGame();

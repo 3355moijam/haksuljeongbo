@@ -1,7 +1,11 @@
 ﻿#include "stdafx.h"
 #include "cCubeMan2.h"
 
+#include <vector>
+
+
 #include "cBody.h"
+#include "cGroup.h"
 #include "cLeftArm.h"
 #include "cRightArm.h"
 #include "cLeftLeg.h"
@@ -11,6 +15,7 @@
 cCubeMan2::cCubeMan2() : m_pRoot(nullptr), m_stMtl(), m_destID(0), m_pTraceline(nullptr), m_fSpeed(0.1f),
                          m_pTexture(nullptr)
 {
+
 }
 
 cCubeMan2::~cCubeMan2()
@@ -360,7 +365,7 @@ void cCubeMan2::setup()
 
 }
 
-void cCubeMan2::update()
+void cCubeMan2::update(const vector<cGroup*>& floor)
 {
 	//cCharacter::update();
 	D3DXMATRIXA16 matR, matT;
