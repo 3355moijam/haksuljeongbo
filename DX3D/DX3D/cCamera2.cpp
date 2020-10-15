@@ -89,7 +89,7 @@ void cCamera2::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			m_ptPrevMouse = ptCurMouse;
 		}
 	case WM_MOUSEWHEEL:
-		m_fCameraDistance -= (GET_WHEEL_DELTA_WPARAM(wParam) / 30.0f);
+		m_fCameraDistance -= (GET_WHEEL_DELTA_WPARAM(wParam) / 120.0f) * 1.0f;
 		if (m_fCameraDistance < 0.0001f)
 			m_fCameraDistance = 0.0001f;
 		break;

@@ -372,6 +372,13 @@ void cCubeMan::update(const vector<cGroup*>& floor)
 		m_pRoot->update();
 }
 
+void cCubeMan::update(iMap* pMap)
+{
+	cCharacter::update(pMap);
+	if (m_pRoot)
+		m_pRoot->update();
+}
+
 void cCubeMan::render()
 {
 	if (g_pD3DDevice)

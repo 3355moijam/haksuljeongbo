@@ -92,6 +92,27 @@ struct ST_PT_VERTEX
 	//ST_PNT_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
 };
 
+struct ST_POS_SAMPLE
+{
+	int         n;
+	D3DXVECTOR3 v;
+	ST_POS_SAMPLE()
+		: n(0)
+		, v(0, 0, 0)
+	{}
+};
+
+struct ST_ROT_SAMPLE
+{
+	int            n;
+	D3DXQUATERNION q;
+	ST_ROT_SAMPLE()
+		: n(0)
+	{
+		D3DXQuaternionIdentity(&q);
+	}
+};
+
 #define Synthesize(varType, varName, funName)\
 	protected: varType varName; \
 	public : inline varType Get##funName(void) const {return varName;}\
@@ -124,3 +145,4 @@ struct ST_PT_VERTEX
 #include "cObject.h"
 #include "cObjectManager.h"
 #include "cTextureManager.h"
+#include "iMap.h"

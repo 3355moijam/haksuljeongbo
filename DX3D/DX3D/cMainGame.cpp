@@ -1,6 +1,9 @@
 ﻿#include "stdafx.h"
 #include "cMainGame.h"
 
+
+#include "cAseLoader.h"
+#include "cAseLoader2.h"
 #include "cCamera2.h"
 #include "cCubePC.h"
 #include "cGrid2.h"
@@ -8,10 +11,13 @@
 #include "cCubeMan2.h"
 #include "cCubeObj.h"
 #include "cDirectionalLight.h"
+#include "cFrame.h"
 #include "cPointLight.h"
 #include "cSpotLight.h"
 #include "cObjectLoader.h"
 #include "cGroup.h"
+#include "cGroupNode.h"
+#include "cObjMap.h"
 
 //#include "cCamera2.h"
 //#include "cCubePC.h"
@@ -26,7 +32,7 @@ cMainGame::cMainGame()
 	  , m_pCamera(nullptr)
 	  , m_pGrid(nullptr), m_pCubeMan(nullptr), m_pTexture(nullptr), m_PointLight(nullptr), m_DirectionalLight(nullptr),
 	  m_SpotLight(nullptr), m_pRoute(nullptr), m_pShort(nullptr), m_pRouteMan(nullptr), m_pShortCutMan(nullptr),
-	  m_pCubeObj(nullptr)
+	  m_pCubeObj(nullptr), m_pMap(nullptr), m_pRootFrame(nullptr), m_pFont(nullptr)
 //, player()
 {
 }
@@ -50,6 +56,8 @@ cMainGame::~cMainGame()
 
 	SafeDelete(m_pCubeObj);
 
+	SafeDelete(m_pMap);
+
 	for (auto * p : m_vecGroup)
 	{
 		SafeRelease(p);
@@ -61,8 +69,21 @@ cMainGame::~cMainGame()
 		SafeRelease(p);
 	}
 	m_vecGroupSurf.clear();
+
+	for (auto* p : m_vecGroupNode)
+	{
+		SafeRelease(p);
+	}
+	m_vecGroupNode.clear();
+
+	m_pRootFrame->Destroy();
+
+	for (auto* p : m_vecRootFrame)
+	{
+		p->Destroy();
+	}
+	m_vecRootFrame.clear();
 	g_pObjectManager.Destroy();
-	
 	
 	g_pDeviceManager.Destroy();
 }
@@ -71,7 +92,23 @@ void cMainGame::setup()
 {
 	//setupLine();
 	//setupTriangle();
+	{
+		//폰트 생성
+		D3DXFONT_DESC fd;
+		ZeroMemory(&fd, sizeof(D3DXFONT_DESC));
+		fd.Height = 45;
+		fd.Width = 28;
+		fd.Weight = FW_MEDIUM;
+		fd.Italic = false;
+		fd.CharSet = DEFAULT_CHARSET;
+		fd.OutputPrecision = OUT_DEFAULT_PRECIS;
+		fd.PitchAndFamily = FF_DONTCARE;
+		//strcpy_s(fd.FaceName, "궁서체");   //글꼴 스타일
+		AddFontResource(L"umberto.ttf");
+		wcscpy(fd.FaceName, L"umberto");
 
+		D3DXCreateFontIndirect(g_pD3DDevice, &fd, &m_pFont);
+	}
 	m_pCubePC = new cCubePC;
 	m_pCubePC->setup();
 
@@ -102,25 +139,20 @@ void cMainGame::setup()
 	m_pCubeObj = new cCubeObj;
 	m_pCubeObj->setup();
 	
-	// for texture
-	//{
-	//	D3DXCreateTextureFromFile(g_pD3DDevice, _T("TEXTURES/BRICK/brick_01/brick_01-2.png"), &m_pTexture);
-	//	ST_PT_VERTEX v;
-	//	v.p = D3DXVECTOR3(0, 0, 0);
-	//	v.t = D3DXVECTOR2(0, 1);
-	//	m_vecVertex.push_back(v);
 
-	//	v.p = D3DXVECTOR3(0, 1, 0);
-	//	v.t = D3DXVECTOR2(0, 0);
-	//	m_vecVertex.push_back(v);
-
-	//	v.p = D3DXVECTOR3(1, 1, 0);
-	//	v.t = D3DXVECTOR2(1, 0);
-	//	m_vecVertex.push_back(v);
-	//}
 	Setup_Obj();
+	//Load_Surface();
 	Set_Light();
-	//g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+
+	{
+		cAseLoader2 l;
+		m_pRootFrame = l.Load("./woman/woman_01_all.ASE");
+
+		for (int i = 0; i < 100; ++i)
+		{
+			m_vecRootFrame.push_back(l.Load("./woman/woman_01_all.ASE"));
+		}
+	}
 }
 
 void cMainGame::update()
@@ -128,7 +160,7 @@ void cMainGame::update()
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 
-
+	m_FrameCounter.update();
 	//cube.update();
 	//player.update();
 	//camera.update(cube);
@@ -137,7 +169,7 @@ void cMainGame::update()
 	//if(m_pCubePC)
 	//	m_pCubePC->update();
 	if (m_pCubeMan)
-		m_pCubeMan->update(m_vecGroupSurf);
+		m_pCubeMan->update(m_pMap);
 	
 	if(m_pCamera)
 		m_pCamera->update();
@@ -145,8 +177,8 @@ void cMainGame::update()
 	//if (m_PointLight)
 	//	m_PointLight->update();
 
-	//if (m_DirectionalLight)
-	//	m_DirectionalLight->update();
+	if (m_DirectionalLight)
+		m_DirectionalLight->update();
 
 	//if (m_SpotLight)
 	//	m_SpotLight->update();
@@ -156,6 +188,14 @@ void cMainGame::update()
 
 	if (m_pShortCutMan)
 		m_pShortCutMan->update();
+
+	if (m_pRootFrame)
+		m_pRootFrame->update(m_pRootFrame->GetKeyFrame(), NULL);
+
+	for (auto * p : m_vecRootFrame)
+	{
+		p->update(p->GetKeyFrame(), NULL);
+	}
 
 }
 
@@ -225,8 +265,29 @@ void cMainGame::render()
 		if (m_pShortCutMan)
 			m_pShortCutMan->render();
 
-		if (m_pCubeObj)
-			m_pCubeObj->render();
+		if (m_pRootFrame)
+			m_pRootFrame->render();
+
+		if (m_pFont)
+		{
+			RECT rc;
+			SetRect(&rc, 100, 100, 103, 103);
+			char szTemp[1024];
+			sprintf(szTemp, "FPS = %d", m_FrameCounter.GetFPS());
+			m_pFont->DrawTextA(nullptr,
+				szTemp,
+				strlen(szTemp),
+				&rc,
+				DT_LEFT | DT_TOP | DT_NOCLIP,
+				D3DCOLOR_XRGB(255, 0, 0));
+		}
+
+		for (auto * p : m_vecRootFrame)
+		{
+			p->render();
+		}
+		//if (m_pCubeObj)
+		//	m_pCubeObj->render();
 		
 		//if (m_pCubePC)
 		//	m_pCubePC->render();
@@ -242,7 +303,7 @@ void cMainGame::render()
 		//if (m_SpotLight)
 		//	m_SpotLight->render();
 
-		Obj_Render();
+		//Obj_Render();
 		
 		g_pD3DDevice->EndScene();
 
@@ -302,7 +363,11 @@ void cMainGame::Setup_Obj()
 {
 	cObjectLoader l;
 	l.Load(m_vecGroup, "data/obj", "map.obj");
-	l.Load(m_vecGroupSurf, "data/obj", "map_surface.obj");
+	//l.Load(m_vecGroupSurf, "data/obj", "map_surface.obj");
+	Load_Surface();
+
+	cAseLoader al;
+	al.Load(m_vecGroupNode, "data/woman", "woman_01_all.ASE");
 }
 
 void cMainGame::Obj_Render()
@@ -326,5 +391,19 @@ void cMainGame::Obj_Render()
 		//{
 		//	p->render();
 		//}
+		m_vecGroupNode[0]->render();
 	}
+}
+
+void cMainGame::Load_Surface()
+{
+	D3DXMATRIXA16 matWorld, matS, matR;
+
+	D3DXMatrixScaling(&matS, 0.01f, 0.01f, 0.01f);
+	D3DXMatrixRotationX(&matR, -D3DX_PI / 2);
+
+	matWorld = matS * matR;
+
+	m_pMap = new cObjMap("data/obj", "map_surface.obj", &matWorld);
+	
 }

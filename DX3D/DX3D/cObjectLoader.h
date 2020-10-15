@@ -7,11 +7,12 @@ class cObjectLoader
 {
 public:
 	cObjectLoader();
-	~cObjectLoader();
-private:
+	virtual ~cObjectLoader();
+protected:
 	std::map<string, cMtlTex*> m_mapMtlTex;
 public:
-	void Load(OUT vector<cGroup*> & vecGroup, IN char* szFolder, IN char* szFile);
-	void LoadMtlLib(char* szFolder, char* szFile);
-	
+	virtual void Load(OUT vector<cGroup*> & vecGroup, IN char* szFolder, IN char* szFile);
+	virtual void LoadMtlLib(char* szFolder, char* szFile);
+
+	virtual void LoadSurface(OUT vector<D3DXVECTOR3>& vecSurface, IN char* szFolder, IN char* szFile, IN D3DXMATRIXA16* pmat = nullptr);
 };

@@ -10,6 +10,6 @@ private:
 	Synthesize_Pass_by_Ref(vector<ST_PNT_VERTEX>, m_vecVertex, Vertex);
 	Synthesize_Add_Ref(cMtlTex*, m_pMtlTex, MtlTex);
 public:
-	void render();
+	virtual void render();
 	
 };

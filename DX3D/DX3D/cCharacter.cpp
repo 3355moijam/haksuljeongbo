@@ -98,6 +98,57 @@ void cCharacter::update(const vector<cGroup*>& floor)
 	m_matWorld = matR * matT;
 }
 
+void cCharacter::update(iMap* pMap)
+{
+	m_pMap = pMap;
+	if (GetKeyState('K') & 0x0001)
+		return;
+	if (GetKeyState('L') & 0x0001)
+		return;
+	D3DXVECTOR3 vTempPos = m_vPosition;
+	bool bPush = false;
+	if (GetKeyState('A') & 0x8000)
+	{
+		m_fRotY += -0.1f;
+	}
+	if (GetKeyState('D') & 0x8000)
+	{
+		m_fRotY += 0.1f;
+	}
+
+	if (GetKeyState('W') & 0x8000)
+	{
+		vTempPos += (m_vDirection*0.1f);
+		bPush = true;
+	}
+	if (GetKeyState('S') & 0x8000)
+	{
+		vTempPos -= (m_vDirection*0.1f);
+		bPush = true;
+	}
+
+
+
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
+	D3DXMATRIXA16 matR, matT;
+	D3DXMatrixRotationY(&matR, m_fRotY);
+
+	m_vDirection = D3DXVECTOR3(0, 0, -1);
+	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
+
+	if(pMap)
+	{
+		if(pMap->GetHeight(vTempPos.x, vTempPos.y, vTempPos.z))
+		{
+			m_vPosition = vTempPos;
+		}
+	}
+	
+	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	m_matWorld = matR * matT;
+}
+
 void cCharacter::render()
 {
 }

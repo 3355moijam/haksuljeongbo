@@ -22,6 +22,18 @@
     <Filter Include="ObjLoader">
       <UniqueIdentifier>{3c33ac04-25ec-4c1d-ae6a-ef55710bdb4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{e32eb820-3d3a-4908-9127-9d8c5f16488f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASEParser">
+      <UniqueIdentifier>{b26f17ae-c47d-41c8-89e7-e31b52ceb850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASELoader">
+      <UniqueIdentifier>{9974a7d5-8c60-47ba-bf82-e329ff2a3c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool">
+      <UniqueIdentifier>{abf93b5b-4517-42a3-8373-f78e94b8d35b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -129,6 +141,30 @@
     <ClInclude Include="cObject.h">
       <Filter>ObjLoader</Filter>
     </ClInclude>
+    <ClInclude Include="iMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cAseLoader.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="cGroupNode.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Asciitok.h">
+      <Filter>ASELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrame.h">
+      <Filter>ASELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cAseLoader2.h">
+      <Filter>ASELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrameCounter.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -229,6 +265,27 @@
     </ClCompile>
     <ClCompile Include="cTextureManager.cpp">
       <Filter>ObjLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="iMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cObjMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAseLoader.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="cGroupNode.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAseLoader2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrameCounter.cpp">
+      <Filter>Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

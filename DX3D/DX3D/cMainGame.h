@@ -1,10 +1,13 @@
 ﻿#pragma once
+#include "cFrameCounter.h"
 #include "cGuideline.h"
 //#include "cCamera.h"
 //#include "cCharacter.h"
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class cFrame;
+class cGroupNode;
 class cGroup;
 class cCubeObj;
 class cCubeMan2;
@@ -54,6 +57,15 @@ private:
 
 	vector<cGroup*>		m_vecGroup;
 	vector<cGroup*>		m_vecGroupSurf;
+
+	iMap*				m_pMap;
+	vector<cGroupNode*> m_vecGroupNode;
+
+	cFrame*				m_pRootFrame;
+	vector<cFrame*>		m_vecRootFrame;
+
+	LPD3DXFONT			m_pFont;
+	cFrameCounter		m_FrameCounter;
 public:
 	cMainGame();
 	~cMainGame();
@@ -69,4 +81,7 @@ public:
 
 	void Setup_Obj();
 	void Obj_Render();
+
+	void Load_Surface();
+
 };

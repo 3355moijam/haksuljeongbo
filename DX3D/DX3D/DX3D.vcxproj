@@ -145,6 +145,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asciitok.h" />
+    <ClInclude Include="cAseLoader.h" />
+    <ClInclude Include="cAseLoader2.h" />
+    <ClInclude Include="cFrame.h" />
+    <ClInclude Include="cFrameCounter.h" />
+    <ClInclude Include="cGroupNode.h" />
     <ClInclude Include="cBody.h" />
     <ClInclude Include="cCamera2.h" />
     <ClInclude Include="cCharacter.h" />
@@ -168,6 +174,7 @@
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectLoader.h" />
     <ClInclude Include="cObjectManager.h" />
+    <ClInclude Include="cObjMap.h" />
     <ClInclude Include="cObjParser.h" />
     <ClInclude Include="cPointLight.h" />
     <ClInclude Include="cPyramid.h" />
@@ -176,11 +183,17 @@
     <ClInclude Include="cSpotLight.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="DX3D.h" />
+    <ClInclude Include="iMap.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cAseLoader.cpp" />
+    <ClCompile Include="cAseLoader2.cpp" />
+    <ClCompile Include="cFrame.cpp" />
+    <ClCompile Include="cFrameCounter.cpp" />
+    <ClCompile Include="cGroupNode.cpp" />
     <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cCamera2.cpp" />
     <ClCompile Include="cCharacter.cpp" />
@@ -205,6 +218,7 @@
     <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjectLoader.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
+    <ClCompile Include="cObjMap.cpp" />
     <ClCompile Include="cObjParser.cpp" />
     <ClCompile Include="cPointLight.cpp" />
     <ClCompile Include="cPyramid.cpp" />
@@ -213,6 +227,7 @@
     <ClCompile Include="cSpotLight.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="DX3D.cpp" />
+    <ClCompile Include="iMap.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

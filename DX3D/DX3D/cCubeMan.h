@@ -15,6 +15,7 @@ protected:
 public:
 	virtual void setup() override;
 	virtual void update(const vector<cGroup*>& floor = vector<cGroup*>()) override;
+	virtual void update(iMap* pMap) override;
 	virtual void render() override;
 
 	LPDIRECT3DTEXTURE9 m_pTexture;
