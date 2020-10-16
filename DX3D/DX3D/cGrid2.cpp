@@ -3,7 +3,7 @@
 
 #include "cPyramid.h"
 
-cGrid2::cGrid2()
+cGrid2::cGrid2(): m_stMtl({})
 {
 }
 
@@ -18,6 +18,10 @@ cGrid2::~cGrid2()
 
 void cGrid2::setup(int nNumHalfTile, float fInterval)
 {
+	m_stMtl.Ambient	 = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+	m_stMtl.Diffuse	 = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+	m_stMtl.Specular = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+	
 	float fMax = nNumHalfTile * fInterval;
 	float fMin = -fMax;
 	ST_PNC_VERTEX v;
@@ -101,7 +105,7 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 void cGrid2::render()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
-	//g_pD3DDevice->SetMaterial(nullptr);
+	g_pD3DDevice->SetMaterial(&m_stMtl);
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matI);

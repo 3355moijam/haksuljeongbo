@@ -155,6 +155,7 @@ void cAseLoader2::ProcessMATERIAL_LIST()
 		{
 			int nIndex = GetInteger();
 			m_vecMtlTex[nIndex] = new cMtlTex;
+			m_vecMtlTex[nIndex]->SetAttrID(nIndex);
 			ProcessMATERIAL(m_vecMtlTex[nIndex]);
 		}
 	}
@@ -269,6 +270,7 @@ cFrame* cAseLoader2::ProcessGEOMOBJECT()
 			pFrame->SetMtlTex(m_vecMtlTex[nMtlIndex]);
 		}
 	} while (nLevel > 0);
+	
 	return pFrame;
 }
 

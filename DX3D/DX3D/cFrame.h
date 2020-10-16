@@ -12,6 +12,7 @@ private:
 	Synthesize_Pass_by_Ref(D3DXMATRIXA16, m_matWorldTM, WorldTM);
 
 	Synthesize_Add_Ref(cMtlTex*, m_pMtlTex, MtlTex);
+	//Synthesize_Pass_by_Ref(vector<cMtlTex*>, m_vecMtlTex, vecMtlTex);
 	vector<cFrame*> m_vecChild;
 
 
@@ -36,9 +37,11 @@ public:
 private:
 	int							m_nNumTri;
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;
-	LPDIRECT3DVERTEXBUFFER9		m_pVIB;
 	LPDIRECT3DINDEXBUFFER9		m_pIB;
+	int							m_nAttrID;
+	Synthesize(LPD3DXMESH, m_pMesh, Mesh);
 public:
 	void BuildVB(vector<ST_PNT_VERTEX>& vecVertex);
 	void BuildIB(vector<ST_PNT_VERTEX>& vecVertex);
+	
 };

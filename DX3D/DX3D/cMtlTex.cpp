@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "cMtlTex.h"
 
-cMtlTex::cMtlTex(): m_stMtl(), m_pTexture(nullptr)
+cMtlTex::cMtlTex(): m_stMtl({}), m_pTexture(nullptr), m_nAttrID(0)
 {
 	ZeroMemory(&m_stMtl, sizeof D3DMATERIAL9);
 }

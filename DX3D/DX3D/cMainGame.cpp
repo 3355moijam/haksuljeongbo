@@ -32,7 +32,9 @@ cMainGame::cMainGame()
 	  , m_pCamera(nullptr)
 	  , m_pGrid(nullptr), m_pCubeMan(nullptr), m_pTexture(nullptr), m_PointLight(nullptr), m_DirectionalLight(nullptr),
 	  m_SpotLight(nullptr), m_pRoute(nullptr), m_pShort(nullptr), m_pRouteMan(nullptr), m_pShortCutMan(nullptr),
-	  m_pCubeObj(nullptr), m_pMap(nullptr), m_pRootFrame(nullptr), m_pFont(nullptr)
+	  m_pCubeObj(nullptr), m_pMap(nullptr), m_pRootFrame(nullptr), m_pFont(nullptr), m_pMeshTeapot(nullptr),
+	  m_pMeshSphere(nullptr),
+	  m_stMtlTeapot(), m_stMtlSphere(), m_pObjMesh(nullptr)
 //, player()
 {
 }
@@ -57,6 +59,16 @@ cMainGame::~cMainGame()
 	SafeDelete(m_pCubeObj);
 
 	SafeDelete(m_pMap);
+
+	SafeRelease(m_pMeshTeapot);
+	SafeRelease(m_pMeshSphere);
+	SafeRelease(m_pObjMesh);
+
+	for (auto * p : m_vecObjMtltex)
+	{
+		SafeRelease(p);
+	}
+	
 
 	for (auto * p : m_vecGroup)
 	{
@@ -148,11 +160,13 @@ void cMainGame::setup()
 		cAseLoader2 l;
 		m_pRootFrame = l.Load("./woman/woman_01_all.ASE");
 
-		for (int i = 0; i < 100; ++i)
-		{
-			m_vecRootFrame.push_back(l.Load("./woman/woman_01_all.ASE"));
-		}
+		//for (int i = 0; i < 100; ++i)
+		//{
+		//	m_vecRootFrame.push_back(l.Load("./woman/woman_01_all.ASE"));
+		//}
 	}
+
+	Setup_MeshObject();
 }
 
 void cMainGame::update()
@@ -304,6 +318,8 @@ void cMainGame::render()
 		//	m_SpotLight->render();
 
 		//Obj_Render();
+
+		Mesh_Render();
 		
 		g_pD3DDevice->EndScene();
 
@@ -314,37 +330,8 @@ void cMainGame::render()
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	//camera.WndProc(hWnd, message, wParam, lParam);
 	if (m_pCamera)
 		m_pCamera->WndProc(hWnd, message, wParam, lParam);
-	//static float x = 0, y = 0;
-	//switch (message)
-	//{
-	//case WM_RBUTTONDOWN:
-	//	x = LOWORD(lParam);
-	//	y = HIWORD(lParam);
-	//	break;
-	//case WM_RBUTTONUP:
-	//	x = 0; y = 0;
-	//	break;
-	//case WM_MOUSEMOVE:
-	//	switch (wParam)
-	//	{
-	//	case MK_RBUTTON:
-	//		//camera.move(x - LOWORD(lParam), HIWORD(lParam) - y);
-	//		camera.move(LOWORD(lParam) - x, HIWORD(lParam) - y);
-	//		x = LOWORD(lParam);
-	//		y = HIWORD(lParam);
-	//		break;
-	//	}
-	//	break;
-	//case WM_MOUSEWHEEL:
-	//	GET_WHEEL_DELTA_WPARAM(wParam);
-	//	camera.zoom(GET_WHEEL_DELTA_WPARAM(wParam));
-	//	break;
-	//default:
-	//	break;
-	//}
 }
 
 void cMainGame::Set_Light()
@@ -406,4 +393,64 @@ void cMainGame::Load_Surface()
 
 	m_pMap = new cObjMap("data/obj", "map_surface.obj", &matWorld);
 	
+}
+
+void cMainGame::Setup_MeshObject()
+{
+	D3DXCreateTeapot(g_pD3DDevice, &m_pMeshTeapot, NULL);
+	D3DXCreateSphere(g_pD3DDevice, 0.5f, 10, 10, &m_pMeshSphere, NULL);
+
+	ZeroMemory(&m_stMtlTeapot, sizeof D3DMATERIAL9);
+	m_stMtlTeapot.Ambient  = D3DXCOLOR(0.0f, 0.7f, 0.7f, 1.0f);
+	m_stMtlTeapot.Diffuse  = D3DXCOLOR(0.0f, 0.7f, 0.7f, 1.0f);
+	m_stMtlTeapot.Specular = D3DXCOLOR(0.0f, 0.7f, 0.7f, 1.0f);
+
+	ZeroMemory(&m_stMtlSphere, sizeof D3DMATERIAL9);
+	m_stMtlSphere.Ambient  = D3DXCOLOR(0.7f, 0.7f, 0.0f, 1.0f);
+	m_stMtlSphere.Diffuse  = D3DXCOLOR(0.7f, 0.7f, 0.0f, 1.0f);
+	m_stMtlSphere.Specular = D3DXCOLOR(0.7f, 0.7f, 0.0f, 1.0f);
+
+	cObjectLoader l;
+	m_pObjMesh = l.LoadMesh(m_vecObjMtltex, "data/obj", "map.obj");
+}
+
+void cMainGame::Mesh_Render()
+{
+	D3DXMATRIXA16 matWorld, matS, matR;
+	if(g_pD3DDevice)
+	{
+		g_pD3DDevice->SetTexture(0, NULL);
+		D3DXMatrixIdentity(&matS);
+		D3DXMatrixIdentity(&matR);
+		matWorld = matS * matR;
+		D3DXMatrixTranslation(&matWorld, 0, 0, 10);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+		g_pD3DDevice->SetMaterial(&m_stMtlTeapot);
+		m_pMeshTeapot->DrawSubset(0);
+
+
+		D3DXMatrixTranslation(&matWorld, 10, 0, 0);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+		g_pD3DDevice->SetMaterial(&m_stMtlSphere);
+		m_pMeshSphere->DrawSubset(0);
+	}
+
+	//D3DXMATRIXA16 matWorld, matS, matR;
+
+	D3DXMatrixScaling(&matS, 0.01f, 0.01f, 0.01f);
+	D3DXMatrixRotationX(&matR, -D3DX_PI / 2);
+
+	matWorld = matS * matR;
+
+	if (g_pD3DDevice)
+	{
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+		for (int i = 0; i < m_vecObjMtltex.size(); ++i)
+		{
+			g_pD3DDevice->SetMaterial(&m_vecObjMtltex[i]->GetMaterial());
+			g_pD3DDevice->SetTexture(0, m_vecObjMtltex[i]->GetTexture());
+			m_pObjMesh->DrawSubset(i);
+		}
+		
+	}
 }

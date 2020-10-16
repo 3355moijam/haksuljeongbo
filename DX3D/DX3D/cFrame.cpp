@@ -40,6 +40,7 @@ void cFrame::render()
 	if (m_pMtlTex)
 	{
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorldTM);
+		
 		g_pD3DDevice->SetTexture(0, m_pMtlTex->GetTexture());
 		g_pD3DDevice->SetMaterial(&m_pMtlTex->GetMaterial());
 
@@ -52,32 +53,34 @@ void cFrame::render()
 		//	sizeof ST_PNT_VERTEX
 		//);
 
+		//{
+		//	g_pD3DDevice->SetStreamSource(0, m_pVB, 0, sizeof ST_PNT_VERTEX);
+		//	g_pD3DDevice->DrawPrimitive
+  //          (
+  //              D3DPT_TRIANGLELIST,
+  //              0,
+  //              m_nNumTri
+  //          );
+		//}
+
 		{
 			g_pD3DDevice->SetStreamSource(0, m_pVB, 0, sizeof ST_PNT_VERTEX);
-			g_pD3DDevice->DrawPrimitive
-            (
-                D3DPT_TRIANGLELIST,
-                0,
-                m_nNumTri
-            );
+			g_pD3DDevice->SetIndices(m_pIB);
+			g_pD3DDevice->DrawIndexedPrimitive
+			(
+				D3DPT_TRIANGLELIST,
+				0,
+				0,
+				m_nNumTri * 3,
+				0,
+				m_nNumTri
+			);
 		}
-
-		//{
-		//	g_pD3DDevice->SetStreamSource(0, m_pVIB, 0, sizeof ST_PNT_VERTEX);
-		//	g_pD3DDevice->SetIndices(m_pIB);
-		//	g_pD3DDevice->DrawIndexedPrimitive
-		//	(
-		//		D3DPT_TRIANGLELIST,
-		//		0,
-		//		0,
-		//		m_nNumTri * 3,
-		//		0,
-		//		m_nNumTri
-		//	);
-		//}
 		
 		//g_pD3DDevice->SetTexture(0, NULL);
 		/////
+		///
+		
 	}
 	for (auto * c : m_vecChild)
 	{
@@ -238,21 +241,6 @@ void cFrame::BuildVB(vector<ST_PNT_VERTEX>& vecVertex)
 
 void cFrame::BuildIB(vector<ST_PNT_VERTEX>& vecVertex)
 {
-	m_nNumTri = vecVertex.size() / 3;
-	g_pD3DDevice->CreateVertexBuffer
-	(
-		vecVertex.size() * sizeof ST_PNT_VERTEX,
-		0,
-		ST_PNT_VERTEX::FVF,
-		D3DPOOL_MANAGED,
-		&m_pVIB,
-		NULL
-	);
-	ST_PNT_VERTEX * pV = NULL;
-	m_pVIB->Lock(0, 0, (LPVOID*)&pV, 0);
-	memcpy(pV, &vecVertex[0], vecVertex.size() * sizeof ST_PNT_VERTEX);
-	m_pVIB->Unlock();
-
 	vector<WORD> vecIndex;
 	for (int i = 0; i < vecVertex.size(); ++i)
 	{
@@ -274,3 +262,12 @@ void cFrame::BuildIB(vector<ST_PNT_VERTEX>& vecVertex)
 	m_pIB->Unlock();
 
 }
+//
+//void cFrame::BuildAB(vector<cMtlTex*>& vecMtlTex)
+//{
+//	vector<DWORD> vecAttrBuf;
+//	for (int i = 0; i < vecMtlTex.size(); ++i)
+//	{
+//		vecAttrBuf.push_back(i);
+//	}
+//}

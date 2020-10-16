@@ -10,6 +10,7 @@ private:
 	vector<ST_PNC_VERTEX>	m_vecVertex;
 	vector<ST_PNC_VERTEX>	m_vecIndex;
 	vector<cPyramid*>		m_vecPyramid;
+	D3DMATERIAL9			m_stMtl;
 
 public:
 	void setup(int nNumHalfTile = 15, float fInterval = 1);

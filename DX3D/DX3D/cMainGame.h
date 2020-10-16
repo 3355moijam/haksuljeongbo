@@ -6,6 +6,7 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class cMtlTex;
 class cFrame;
 class cGroupNode;
 class cGroup;
@@ -84,4 +85,15 @@ public:
 
 	void Load_Surface();
 
+private:
+	LPD3DXMESH			m_pMeshTeapot;
+	LPD3DXMESH			m_pMeshSphere;
+	D3DMATERIAL9		m_stMtlTeapot;
+	D3DMATERIAL9		m_stMtlSphere;
+
+	LPD3DXMESH			m_pObjMesh;
+	vector<cMtlTex*>	m_vecObjMtltex;
+public:
+	void Setup_MeshObject();
+	void Mesh_Render();
 };

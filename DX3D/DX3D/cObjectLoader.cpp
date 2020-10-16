@@ -153,6 +153,7 @@ void cObjectLoader::LoadMtlLib(char* szFolder, char* szFile)
 			if(m_mapMtlTex.find(szMtlName) == m_mapMtlTex.end())
 			{
 				m_mapMtlTex[sMtlName] = new cMtlTex;
+				m_mapMtlTex[sMtlName]->SetAttrID(m_mapMtlTex.size() - 1);
 			}
 			
 		}
@@ -271,4 +272,156 @@ void cObjectLoader::LoadSurface(vector<D3DXVECTOR3>& vecSurface, char* szFolder,
 			D3DXVec3TransformCoord(&vecSurface[i], &vecSurface[i], pmat);
 		}
 	}
+}
+
+LPD3DXMESH cObjectLoader::LoadMesh(vector<cMtlTex*>& vecMtlTex, char* szFolder, char* szFile)
+{
+	vector<DWORD>		vecAttrBuf;
+	vector<D3DXVECTOR3> vecV;
+	vector<D3DXVECTOR2> vecVT;
+	vector<D3DXVECTOR3> vecVN;
+	vector<ST_PNT_VERTEX> vecVertex;
+
+	string sFullPath(szFolder);
+	sFullPath += string("/") + string(szFile);
+
+	FILE* fp;
+	fopen_s(&fp, sFullPath.c_str(), "r");
+
+	string sMtlName;
+	while (true)
+	{
+		if (feof(fp))
+			break;
+
+		char szTemp[1024];
+		fgets(szTemp, 1024, fp);
+
+		if (szTemp[0] == '#')
+			continue;
+
+		else if (szTemp[0] == 'm')
+		{
+			char szMtlFile[1024];
+			sscanf_s(szTemp, "%*s %s", szMtlFile, 1024);
+			LoadMtlLib(szFolder, szMtlFile);
+		}
+		else if (szTemp[0] == 'g')
+		{
+			//if (!vecVertex.empty())
+			//{
+			//	cGroup* pGroup = new cGroup;
+			//	pGroup->SetVertex(vecVertex);
+			//	pGroup->SetMtlTex(m_mapMtlTex[sMtlName]);
+			//	vecGroup.push_back(pGroup);
+			//	vecVertex.clear();
+			//}
+		}
+		else if (szTemp[0] == 'v')
+		{
+			if (szTemp[1] == ' ')
+			{
+				float x, y, z;
+				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
+				vecV.emplace_back(x, y, z);
+			}
+			else if (szTemp[1] == 't')
+			{
+				float u, v;
+				sscanf_s(szTemp, "%*s %f %f %*f", &u, &v);
+				vecVT.emplace_back(u, v);
+			}
+			else if (szTemp[1] == 'n')
+			{
+				float x, y, z;
+				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
+				vecVN.emplace_back(x, y, z);
+			}
+		}
+		else if (szTemp[0] == 'u')
+		{
+			char szMtlName[1024];
+			sscanf_s(szTemp, "%*s %s", szMtlName, 1024);
+			sMtlName = string(szMtlName);
+		}
+		else if (szTemp[0] == 'f')
+		{
+			int nIndex[3][3];
+			sscanf_s(szTemp, "%*s %d/%d/%d %d/%d/%d %d/%d/%d",
+				&nIndex[0][0], &nIndex[0][1], &nIndex[0][2],
+				&nIndex[1][0], &nIndex[1][1], &nIndex[1][2],
+				&nIndex[2][0], &nIndex[2][1], &nIndex[2][2]
+			);
+
+			for (int i = 0; i < 3; ++i)
+			{
+				ST_PNT_VERTEX v;
+				v.p = vecV[nIndex[i][0] - 1];
+				v.t = vecVT[nIndex[i][1] - 1];
+				v.n = vecVN[nIndex[i][2] - 1];
+
+
+				vecVertex.push_back(v);
+			}
+			vecAttrBuf.push_back(m_mapMtlTex[sMtlName]->GetAttrID());
+
+			D3DXVECTOR3 u, v, n;
+			for (int i = 0; i < vecVertex.size(); i += 3)
+			{
+				u = vecVertex[i + 1].p - vecVertex[i].p;
+				v = vecVertex[i + 2].p - vecVertex[i].p;
+
+				D3DXVec3Cross(&n, &u, &v);
+				D3DXVec3Normalize(&n, &n);
+
+				vecVertex[i + 0].n = n;
+				vecVertex[i + 1].n = n;
+				vecVertex[i + 2].n = n;
+			}
+		}
+	}
+
+	fclose(fp);
+
+	vecMtlTex.resize(m_mapMtlTex.size());
+	for (auto & it : m_mapMtlTex)
+	{
+		vecMtlTex[it.second->GetAttrID()] = it.second;
+	}
+	LPD3DXMESH pMesh = NULL;
+	D3DXCreateMeshFVF(vecAttrBuf.size(), vecVertex.size(), D3DXMESH_MANAGED, ST_PNT_VERTEX::FVF, g_pD3DDevice, &pMesh);
+
+	ST_PNT_VERTEX * pVertex = NULL;
+	pMesh->LockVertexBuffer(0, (LPVOID*)&pVertex);
+	memcpy(pVertex, &vecVertex[0], vecVertex.size() * sizeof ST_PNT_VERTEX);
+	pMesh->UnlockVertexBuffer();
+
+	WORD* pIndex = NULL;
+	pMesh->LockIndexBuffer(0, (LPVOID*)&pIndex);
+	for (int i = 0; i < vecVertex.size(); ++i)
+	{
+		pIndex[i] = i;
+	}
+	pMesh->UnlockIndexBuffer();
+
+	DWORD* pAttr = NULL;
+	pMesh->LockAttributeBuffer(0, &pAttr);
+	memcpy(pAttr, &vecAttrBuf[0], vecAttrBuf.size() * sizeof DWORD);
+	pMesh->UnlockAttributeBuffer();
+
+	vector<DWORD> vecAdj(vecVertex.size());
+	pMesh->GenerateAdjacency(0.00001f, &vecAdj[0]);
+
+	pMesh->OptimizeInplace
+	(
+		D3DXMESHOPT_ATTRSORT | D3DXMESHOPT_COMPACT | D3DXMESHOPT_VERTEXCACHE,
+		&vecAdj[0],
+		0,0,0
+	);
+	//for (auto & it : m_mapMtlTex)
+	//{
+	//	SafeRelease(it.second);
+	//}
+	m_mapMtlTex.clear();
+	return pMesh;
 }
