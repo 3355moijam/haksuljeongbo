@@ -270,7 +270,7 @@ cFrame* cAseLoader2::ProcessGEOMOBJECT()
 			pFrame->SetMtlTex(m_vecMtlTex[nMtlIndex]);
 		}
 	} while (nLevel > 0);
-	
+	pFrame->CreateMesh();
 	return pFrame;
 }
 

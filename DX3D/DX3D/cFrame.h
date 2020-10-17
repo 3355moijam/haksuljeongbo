@@ -43,5 +43,5 @@ private:
 public:
 	void BuildVB(vector<ST_PNT_VERTEX>& vecVertex);
 	void BuildIB(vector<ST_PNT_VERTEX>& vecVertex);
-	
+	LPD3DXMESH CreateMesh();
 };

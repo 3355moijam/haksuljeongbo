@@ -3,7 +3,7 @@
 
 cFrame::cFrame(): m_pMtlTex(nullptr), m_dwTicksPerFrame(0), m_dwFirstFrame(0), m_dwLastFrame(0), m_dwFrameSpeed(0),
                   m_nNumTri(0),
-                  m_pVB(nullptr)
+                  m_pVB(nullptr), m_pIB(nullptr), m_nAttrID(0), m_pMesh(nullptr)
 {
 	D3DXMatrixIdentity(&m_matLocalTM);
 	D3DXMatrixIdentity(&m_matWorldTM);
@@ -63,24 +63,23 @@ void cFrame::render()
   //          );
 		//}
 
-		{
-			g_pD3DDevice->SetStreamSource(0, m_pVB, 0, sizeof ST_PNT_VERTEX);
-			g_pD3DDevice->SetIndices(m_pIB);
-			g_pD3DDevice->DrawIndexedPrimitive
-			(
-				D3DPT_TRIANGLELIST,
-				0,
-				0,
-				m_nNumTri * 3,
-				0,
-				m_nNumTri
-			);
-		}
+		//{
+		//	g_pD3DDevice->SetStreamSource(0, m_pVB, 0, sizeof ST_PNT_VERTEX);
+		//	g_pD3DDevice->SetIndices(m_pIB);
+		//	g_pD3DDevice->DrawIndexedPrimitive
+		//	(
+		//		D3DPT_TRIANGLELIST,
+		//		0,
+		//		0,
+		//		m_nNumTri * 3,
+		//		0,
+		//		m_nNumTri
+		//	);
+		//}
 		
-		//g_pD3DDevice->SetTexture(0, NULL);
-		/////
-		///
-		
+		m_pMesh->DrawSubset(0);
+
+		g_pD3DDevice->SetTexture(0, NULL);
 	}
 	for (auto * c : m_vecChild)
 	{
@@ -262,6 +261,44 @@ void cFrame::BuildIB(vector<ST_PNT_VERTEX>& vecVertex)
 	m_pIB->Unlock();
 
 }
+
+LPD3DXMESH cFrame::CreateMesh()
+{
+	vector<DWORD> vecAttrBuf(m_vecVertex.size() / 3, 0);
+
+	
+	D3DXCreateMeshFVF(vecAttrBuf.size(), m_vecVertex.size(), D3DXMESH_MANAGED, ST_PNT_VERTEX::FVF, g_pD3DDevice, &m_pMesh);
+
+	ST_PNT_VERTEX * pVertex = NULL;
+	m_pMesh->LockVertexBuffer(0, (LPVOID*)&pVertex);
+	memcpy(pVertex, &m_vecVertex[0], m_vecVertex.size() * sizeof ST_PNT_VERTEX);
+	m_pMesh->UnlockVertexBuffer();
+
+	WORD* pIndex = NULL;
+	m_pMesh->LockIndexBuffer(0, (LPVOID*)&pIndex);
+	for (int i = 0; i < m_vecVertex.size(); ++i)
+	{
+		pIndex[i] = i;
+	}
+	m_pMesh->UnlockIndexBuffer();
+
+	DWORD* pAttr = NULL;
+	m_pMesh->LockAttributeBuffer(0, &pAttr);
+	memcpy(pAttr, &vecAttrBuf[0], vecAttrBuf.size() * sizeof DWORD);
+	m_pMesh->UnlockAttributeBuffer();
+
+	vector<DWORD> vecAdj(m_vecVertex.size());
+	m_pMesh->GenerateAdjacency(0.00001f, &vecAdj[0]);
+
+	m_pMesh->OptimizeInplace
+	(
+		D3DXMESHOPT_ATTRSORT | D3DXMESHOPT_COMPACT | D3DXMESHOPT_VERTEXCACHE,
+		&vecAdj[0],
+		0, 0, 0
+	);
+	return m_pMesh;
+}
+
 //
 //void cFrame::BuildAB(vector<cMtlTex*>& vecMtlTex)
 //{
