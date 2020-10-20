@@ -148,6 +148,7 @@
     <ClInclude Include="class\AVL.h" />
     <ClInclude Include="class\biTree.h" />
     <ClInclude Include="class\cDijkstra.h" />
+    <ClInclude Include="class\cSingleton.h" />
     <ClInclude Include="class\GeometricObject\Circle.h" />
     <ClInclude Include="class\GeometricObject\GeometricObject.h" />
     <ClInclude Include="class\GeometricObject\Rectangle.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="class\AVL.cpp" />
     <ClCompile Include="class\biTree.cpp" />
     <ClCompile Include="class\cDijkstra.cpp" />
+    <ClCompile Include="class\cSingleton.cpp" />
     <ClCompile Include="class\GeometricObject\Circle.cpp" />
     <ClCompile Include="class\GeometricObject\GeometricObject.cpp" />
     <ClCompile Include="class\GeometricObject\Rectangle.cpp" />
