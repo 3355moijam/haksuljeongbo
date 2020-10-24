@@ -3,6 +3,23 @@
 
 #include "cPyramid.h"
 
+int factorial(int n)
+{
+	float ret = 1;
+	for (int i = 1; i <= n; ++i)
+	{
+		ret *= i;
+	}
+
+	return ret;
+}
+
+int Combination(int n, int r)
+{
+	return factorial(n) / (factorial(n - r) * factorial(r));
+}
+
+
 cGuideline::cGuideline()
 {
 }
@@ -88,14 +105,28 @@ void cGuideline::Interpolation(float div)
 
 	ST_PC_VERTEX v;
 	v.c = m_RouteNode[0].c;
-	for (int i = 0; i < m_RouteNode.size() - 1; i += 2)
+	//for (int i = 0; i < m_RouteNode.size() - 1; i += 2)
+	//{
+	//	for (int j = 0; j < div; ++j)
+	//	{
+	//		v.p = pow(1 - (t*j), 2) * m_RouteNode[i].p + 2 * (1 - (t*j)) * (t*j) * m_RouteNode[i + 1].p + pow((t*j), 2) * m_RouteNode[i + 2].p;
+	//		m_ShortCut.push_back(v);
+	//	}
+	//}
+
+
+	for (int j = 0; j < div; ++j)
 	{
-		for (int j = 0; j < div; ++j)
+		v.p = D3DXVECTOR3(0, 0, 0);
+		for (int i = 0; i < m_RouteNode.size(); ++i)
 		{
-			v.p = pow(1 - (t*j), 2) * m_RouteNode[i].p + 2 * (1 - (t*j)) * (t*j) * m_RouteNode[i + 1].p + pow((t*j), 2) * m_RouteNode[i + 2].p;
-			m_ShortCut.push_back(v);
+			v.p += Combination(m_RouteNode.size() - 1, i) * pow(t * j, i) * pow(1 - t*j, m_RouteNode.size() - 1 - i) * m_RouteNode[i].p;
 		}
+		//v.p = pow(1 - (t*j), 2) * m_RouteNode[i].p + 2 * (1 - (t*j)) * (t*j) * m_RouteNode[i + 1].p + pow((t*j), 2) * m_RouteNode[i + 2].p;
+		m_ShortCut.push_back(v);
 	}
+	
+	
 	m_ShortCut.push_back(m_RouteNode.back());
 
 	D3DXMATRIXA16 matR;

@@ -34,6 +34,18 @@
     <Filter Include="Tool">
       <UniqueIdentifier>{abf93b5b-4517-42a3-8373-f78e94b8d35b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Peaking">
+      <UniqueIdentifier>{9a73904a-97a2-410f-a93f-05bc150848a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RawLoader">
+      <UniqueIdentifier>{d8e0b470-f9a1-4ebf-9b15-b4bf030d5c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XFile">
+      <UniqueIdentifier>{b7dfdd3a-8a63-4fc5-9281-46916bc555ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrustumCulling">
+      <UniqueIdentifier>{05578ac2-5375-4694-abea-82e98572496f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -165,6 +177,36 @@
     <ClInclude Include="cFrameCounter.h">
       <Filter>Tool</Filter>
     </ClInclude>
+    <ClInclude Include="cSphere.h">
+      <Filter>Peaking</Filter>
+    </ClInclude>
+    <ClInclude Include="CRay.h">
+      <Filter>Peaking</Filter>
+    </ClInclude>
+    <ClInclude Include="cRayT.h">
+      <Filter>Peaking</Filter>
+    </ClInclude>
+    <ClInclude Include="CHeightMapLoader.h">
+      <Filter>RawLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cFieldMap.h">
+      <Filter>RawLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CObj_X.h">
+      <Filter>XFile</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CAllocateHierachy.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkinnedMesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CFrustumCube.h">
+      <Filter>FrustumCulling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -266,9 +308,6 @@
     <ClCompile Include="cTextureManager.cpp">
       <Filter>ObjLoader</Filter>
     </ClCompile>
-    <ClCompile Include="iMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cObjMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -278,14 +317,47 @@
     <ClCompile Include="cGroupNode.cpp">
       <Filter>ASEParser</Filter>
     </ClCompile>
-    <ClCompile Include="cFrame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cAseLoader2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cFrameCounter.cpp">
       <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="iMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="cAseLoader2.cpp">
+      <Filter>ASELoader</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrame.cpp">
+      <Filter>ASELoader</Filter>
+    </ClCompile>
+    <ClCompile Include="cSphere.cpp">
+      <Filter>Peaking</Filter>
+    </ClCompile>
+    <ClCompile Include="CRay.cpp">
+      <Filter>Peaking</Filter>
+    </ClCompile>
+    <ClCompile Include="cRayT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CHeightMapLoader.cpp">
+      <Filter>RawLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="cFieldMap.cpp">
+      <Filter>RawLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj_X.cpp">
+      <Filter>XFile</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAllocateHierachy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkinnedMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrustumCube.cpp">
+      <Filter>FrustumCulling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -32,6 +32,7 @@ using std::list;
 #include <assert.h>
 
 #include <d3dx9.h>
+
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
 
@@ -39,6 +40,8 @@ extern HWND g_hWnd;
 #define SafeRelease(p) { if(p) p->Release(); p = NULL; }
 
 #define SafeDelete(p) { if(p) delete p; p = NULL; }
+
+#define SafeDeleteArray(p) { if(p) delete[] p; p = NULL; }
 
 #define Singletone(class_name) \
 	private : \
@@ -61,6 +64,14 @@ struct ST_PC_VERTEX
 	ST_PC_VERTEX() : p(), c(0) {}
 	//ST_PC_VERTEX(float _x, float _y, float _z) : p(_x, _y, _x), c(0) {}
 	ST_PC_VERTEX(float _x, float _y, float _z, D3DCOLOR _c = 0) : p(_x, _y, _z), c(_c) {}
+};
+
+struct ST_PN_VERTEX
+{
+	D3DXVECTOR3 p;
+	D3DXVECTOR3 n;
+	enum { FVF = D3DFVF_XYZ | D3DFVF_NORMAL };
+	ST_PN_VERTEX() : p(), n() {}
 };
 
 struct ST_PNT_VERTEX
@@ -113,6 +124,16 @@ struct ST_ROT_SAMPLE
 	}
 };
 
+struct ST_SPHERE
+{
+	float	fRaidus;
+	D3DXVECTOR3		vCenter;
+	bool			isPicked;
+	ST_SPHERE(): fRaidus(0), isPicked(false), vCenter(0,0,0)
+	{
+	}
+};
+
 #define Synthesize(varType, varName, funName)\
 	protected: varType varName; \
 	public : inline varType Get##funName(void) const {return varName;}\
@@ -145,4 +166,12 @@ struct ST_ROT_SAMPLE
 #include "cObject.h"
 #include "cObjectManager.h"
 #include "cTextureManager.h"
+#include "CTimeManager.h"
 #include "iMap.h"
+
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+//[출처] WINAPI 프로젝트에서 콘솔창 띄우는 방법(비공개 카페)

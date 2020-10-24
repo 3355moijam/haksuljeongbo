@@ -79,6 +79,7 @@ void cCharacter::update(const vector<cGroup*>& floor)
 					m_vPosition = vTempPos;
 					break;
 				}
+				
 			}
 			if (bIsCollide)
 				break;
@@ -137,13 +138,15 @@ void cCharacter::update(iMap* pMap)
 	m_vDirection = D3DXVECTOR3(0, 0, -1);
 	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
 
-	if(pMap)
+	if (pMap)
 	{
-		if(pMap->GetHeight(vTempPos.x, vTempPos.y, vTempPos.z))
+		if (pMap->GetHeight(vTempPos.x, vTempPos.y, vTempPos.z))
 		{
 			m_vPosition = vTempPos;
 		}
 	}
+	else
+		m_vPosition = vTempPos;
 	
 	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 	m_matWorld = matR * matT;

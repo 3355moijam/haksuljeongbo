@@ -3,7 +3,7 @@
 
 #include "cPyramid.h"
 
-cGrid2::cGrid2(): m_stMtl({})
+cGrid2::cGrid2(): m_stMtl({}), m_pMesh(nullptr)
 {
 }
 
@@ -14,6 +14,7 @@ cGrid2::~cGrid2()
 		SafeDelete(p)
 	}
 	m_vecPyramid.clear();
+	SafeRelease(m_pMesh);
 }
 
 void cGrid2::setup(int nNumHalfTile, float fInterval)
@@ -99,13 +100,28 @@ void cGrid2::setup(int nNumHalfTile, float fInterval)
 	D3DXMatrixRotationX(&matR, -D3DX_PI / 2);
 	pPyramid->setup(D3DCOLOR_XRGB(0, 0, 255), matR);
 	m_vecPyramid.push_back(pPyramid);
-	
+
+
+	D3DXCreateMeshFVF(m_vecIndex.size() / 3, m_vecIndex.size(), D3DXMESH_MANAGED, ST_PNC_VERTEX::FVF, g_pD3DDevice, &m_pMesh);
+	ST_PNC_VERTEX * pVertex = NULL;
+	m_pMesh->LockVertexBuffer(0, (LPVOID*)&pVertex);
+	memcpy(pVertex, &m_vecIndex[0], m_vecIndex.size() * sizeof ST_PNC_VERTEX);
+	m_pMesh->UnlockVertexBuffer();
+
+	WORD* pIndex = NULL;
+	m_pMesh->LockIndexBuffer(0, (LPVOID*)&pIndex);
+	for (int i = 0; i < m_vecIndex.size(); ++i)
+	{
+		pIndex[i] = i;
+	}
+	m_pMesh->UnlockIndexBuffer();
 }
 
 void cGrid2::render()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 	g_pD3DDevice->SetMaterial(&m_stMtl);
+	g_pD3DDevice->SetTexture(0, 0);
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matI);
@@ -118,13 +134,16 @@ void cGrid2::render()
 	//	&m_vecVertex[0],
 	//	sizeof ST_PNC_VERTEX
 	//);
-	g_pD3DDevice->DrawPrimitiveUP
-	(
-		D3DPT_TRIANGLELIST,
-		m_vecIndex.size() / 3,
-		&m_vecIndex[0],
-		sizeof ST_PNC_VERTEX
-	);
+
+	//g_pD3DDevice->DrawPrimitiveUP
+	//(
+	//	D3DPT_TRIANGLELIST,
+	//	m_vecIndex.size() / 3,
+	//	&m_vecIndex[0],
+	//	sizeof ST_PNC_VERTEX
+	//);
+
+	m_pMesh->DrawSubset(0);
 	
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	for (auto & p : m_vecPyramid)
@@ -132,4 +151,32 @@ void cGrid2::render()
 		p->render();
 	}
 	
+}
+
+bool cGrid2::GetHeight(float x, float& y, float z)
+{
+	D3DXVECTOR3 vRayPos(x, y + 1, z);
+	D3DXVECTOR3 vRayDir(0, -1, 0);
+
+	for (int i = 0; i < m_vecIndex.size(); i += 3)
+	{
+		float u, v, f;
+		if (D3DXIntersectTri
+		(
+			&m_vecIndex[i + 0].p,
+			&m_vecIndex[i + 1].p,
+			&m_vecIndex[i + 2].p,
+			&vRayPos,
+			&vRayDir,
+			&u, &v,
+			&f
+		))
+		{
+			if (f > 3.0f + 0.9f)
+				return false;
+			y += 1 - f + 0.9f;
+			return true;
+		}
+	}
+	return false;
 }

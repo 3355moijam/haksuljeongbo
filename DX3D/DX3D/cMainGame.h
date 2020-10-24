@@ -6,6 +6,12 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class CFrustumCube;
+class CSkinnedMesh;
+class CObj_X;
+class cFieldMap;
+class CRay;
+class cSphere;
 class cMtlTex;
 class cFrame;
 class cGroupNode;
@@ -67,6 +73,8 @@ private:
 
 	LPD3DXFONT			m_pFont;
 	cFrameCounter		m_FrameCounter;
+
+	
 public:
 	cMainGame();
 	~cMainGame();
@@ -85,6 +93,7 @@ public:
 
 	void Load_Surface();
 
+
 private:
 	LPD3DXMESH			m_pMeshTeapot;
 	LPD3DXMESH			m_pMeshSphere;
@@ -96,4 +105,42 @@ private:
 public:
 	void Setup_MeshObject();
 	void Mesh_Render();
+
+	// >> peaking
+private:
+	vector<cSphere*>	m_vecSphere;
+	CRay*				m_pcRay;
+public:
+	void				SetupPeakingObj();
+	void				RenderPeakingObj();
+
+//private:
+//	vector<ST_SPHERE>	m_vecSphereT;
+//	D3DMATERIAL9		m_stMtlNone;
+//	D3DMATERIAL9		m_stMtlPicked;
+//	D3DMATERIAL9		m_stMtlPlane;
+//	vector<ST_PN_VERTEX> m_vecPlaneVertex;
+//	D3DXVECTOR3			m_vPickedPosition;
+//public:
+//	void Setup_MeshObjectT();
+//	void Mesh_RenderT();
+//	void Setup_PickingObj();
+//	void PickingObj_Render();
+	// <<
+
+	// >> cFieldMap
+private:
+	cFieldMap*			m_pFieldMap;
+	
+	// <<
+	// >> anim
+private:
+	CObj_X*				m_pObj_X;
+	CSkinnedMesh*		m_pSkinnedMesh;
+public:
+	void SkinnedMesh_Render();
+	// <<
+private:
+	CFrustumCube*		m_pFrustumCube;
+	
 };
