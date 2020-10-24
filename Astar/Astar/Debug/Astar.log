@@ -1,9 +1,0 @@
-﻿  stdafx.cpp
-  cAstar.cpp
-c:\users\user\onedrive - 연세대학교 (yonsei university)\개발\astar\astar\castar.cpp(180): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
-  FunctionLibrary.cpp
-  Astar.cpp
-  Generating Code...
-  LINK : C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\Astar\Debug\Astar.exe not found or not built by the last incremental link; performing full link
-  Astar.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\Astar\Debug\Astar.exe
-  Astar.vcxproj -> C:\Users\User\OneDrive - 연세대학교 (Yonsei University)\개발\Astar\Debug\Astar.pdb (Full PDB)
