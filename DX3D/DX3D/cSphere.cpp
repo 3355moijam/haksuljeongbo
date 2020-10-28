@@ -1,14 +1,17 @@
 ﻿#include "stdafx.h"
 #include "cSphere.h"
 
-cSphere::cSphere() : m_pMesh(nullptr), m_stMtl({}), m_vPos(0, 0, 0), m_fRadius(1.0f), m_bFlip(false)
+LPD3DXMESH cSphere::m_pMesh = nullptr;
+
+cSphere::cSphere() : m_stMtl({}), m_vPos(0, 0, 0), m_fRadius(0.5f), m_bFlip(false)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 	m_stMtl.Ambient = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
 	m_stMtl.Diffuse = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
 	m_stMtl.Specular = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
 
-	D3DXCreateSphere(g_pD3DDevice, m_fRadius, 20, 20, &m_pMesh, NULL);
+	if(m_pMesh == nullptr)
+		D3DXCreateSphere(g_pD3DDevice, m_fRadius, 20, 20, &m_pMesh, NULL);
 }
 
 cSphere::cSphere(float _x, float _y, float _z) : cSphere()
@@ -66,6 +69,17 @@ void cSphere::render()
 		g_pD3DDevice->SetTexture(0, NULL);
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
 		g_pD3DDevice->SetMaterial(&m_stMtl);
+		m_pMesh->DrawSubset(0);
+	}
+}
+
+void cSphere::render(D3DMATERIAL9& stMtl)
+{
+	if (g_pD3DDevice)
+	{
+		g_pD3DDevice->SetTexture(0, NULL);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+		g_pD3DDevice->SetMaterial(&stMtl);
 		m_pMesh->DrawSubset(0);
 	}
 }

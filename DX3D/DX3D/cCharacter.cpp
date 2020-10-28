@@ -5,7 +5,7 @@
 cCharacter::cCharacter()
 	: m_fRotY(D3DX_PI)
 	, m_vDirection(0,0,-1)
-	, m_vPosition(0,0.9f,0)
+	, m_vPosition(0,0,0)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
@@ -101,7 +101,7 @@ void cCharacter::update(const vector<cGroup*>& floor)
 
 void cCharacter::update(iMap* pMap)
 {
-	m_pMap = pMap;
+	//m_pMap = pMap;
 	if (GetKeyState('K') & 0x0001)
 		return;
 	if (GetKeyState('L') & 0x0001)

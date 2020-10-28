@@ -91,7 +91,7 @@ void CFrustumCube::culling()
 	D3DXPlaneFromPoints(&stBottom	, &vecFrustumVertex[3], &vecFrustumVertex[7], &vecFrustumVertex[4]);
 	D3DXPlaneFromPoints(&stNear		, &vecFrustumVertex[0], &vecFrustumVertex[1], &vecFrustumVertex[2]);
 	D3DXPlaneFromPoints(&stFar		, &vecFrustumVertex[7], &vecFrustumVertex[6], &vecFrustumVertex[5]);
-
+	
 	//
 	//{
 	//	D3DXVECTOR3 center(0, 0, 0);

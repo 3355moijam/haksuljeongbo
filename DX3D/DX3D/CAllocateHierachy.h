@@ -24,6 +24,8 @@ public:
 	
 protected:
 	Synthesize(string, m_sFolder, Folder);
+	Synthesize(D3DXVECTOR3, m_vMin, Min);
+	Synthesize(D3DXVECTOR3, m_vMax, Max);
 public:
 	STDMETHOD(CreateFrame)(THIS_ LPCSTR Name, LPD3DXFRAME* ppNewFrame);
 	STDMETHOD(CreateMeshContainer)(THIS_

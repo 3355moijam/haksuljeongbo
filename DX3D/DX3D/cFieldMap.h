@@ -24,8 +24,14 @@ private:
 
 	vector<vector<int>>			m_vecHeightMap;
 	D3DMATERIAL9				m_stMtl;
+
+	D3DXPLANE m_stLeft, m_stRight, m_stTop, m_stBottom, m_stNear, m_stFar;
 public:
 	void createMap(vector<int>& vecHeightMap, float fHeightMultiply, int nNumVertexWidth, int nNumVertexDepth, int nWidthSpace, int
 	               nDepthSpace, LPDIRECT3DTEXTURE9 pTexture);
 	void render();
+
+	void setFrustum();
+	void setCulling();
+	void unsetCulling();
 };

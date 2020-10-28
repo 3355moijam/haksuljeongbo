@@ -14,8 +14,9 @@
 
 cCubeMan::cCubeMan(): m_pRoot(nullptr), m_stMtl(), m_pTexture(nullptr)
 {
-	m_vPosition.x = 1;
-	m_vPosition.z = 1;
+	//m_vPosition.x = 1;
+	//m_vPosition.z = 1;
+	m_vPosition.y += 0.9f;
 }
 
 cCubeMan::~cCubeMan()

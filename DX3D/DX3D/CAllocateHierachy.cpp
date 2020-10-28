@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "CAllocateHierachy.h"
 
-CAllocateHierachy::CAllocateHierachy()
+CAllocateHierachy::CAllocateHierachy() : m_vMax(0,0,0), m_vMin(0,0,0)
 {
 }
 
@@ -52,6 +52,20 @@ STDMETHODIMP CAllocateHierachy::CreateMeshContainer(THIS_
 
 	pMeshData->pMesh->AddRef();
 	pBoneMesh->MeshData.pMesh = pMeshData->pMesh;
+
+	// >> : 바운딩박스
+	if(pMeshData && pMeshData->pMesh)
+	{
+		D3DXVECTOR3		vMin(0, 0, 0), vMax(0, 0, 0);
+		LPVOID pV = NULL;
+		pMeshData->pMesh->LockVertexBuffer(0, &pV);
+		D3DXComputeBoundingBox((D3DXVECTOR3*)pV, pMeshData->pMesh->GetNumVertices(), D3DXGetFVFVertexSize(pMeshData->pMesh->GetFVF()), &vMin, &vMax);
+		D3DXVec3Minimize(&m_vMin, &m_vMin, &vMin);
+		D3DXVec3Maximize(&m_vMax, &m_vMax, &vMax);
+		pMeshData->pMesh->UnlockVertexBuffer();
+	}
+	// <<
+	
 	pMeshData->pMesh->CloneMeshFVF
 	(
 		pMeshData->pMesh->GetOptions(),

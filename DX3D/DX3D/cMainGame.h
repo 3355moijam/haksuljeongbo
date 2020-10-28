@@ -6,6 +6,8 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class CZealot;
+class CFrustum;
 class CFrustumCube;
 class CSkinnedMesh;
 class CObj_X;
@@ -140,7 +142,25 @@ private:
 public:
 	void SkinnedMesh_Render();
 	// <<
+	// >> frustum culling
 private:
 	CFrustumCube*		m_pFrustumCube;
-	
+
+	LPD3DXMESH			m_pSphere;
+	D3DMATERIAL9		m_stCullingMtl;
+	vector<cSphere*>	m_vecCullingSphere;
+	CFrustum*			m_pFrustum;
+public:
+	void SetupFrustum();
+	void FrustumRender();
+	// <<
+
+	// >> obb
+private:
+	CZealot*		m_pHoldZealot;
+	CZealot*		m_pMoveZealot;
+public:
+	void SetupOBB();
+	void OBBRender();
+	// <<
 };

@@ -12,6 +12,7 @@
 #include "cCubeObj.h"
 #include "cDirectionalLight.h"
 #include "cFrame.h"
+#include "CFrustum.h"
 #include "CFrustumCube.h"
 #include "cPointLight.h"
 #include "cSpotLight.h"
@@ -19,11 +20,13 @@
 #include "cGroup.h"
 #include "cGroupNode.h"
 #include "CHeightMapLoader.h"
+#include "COBB.h"
 #include "cObjMap.h"
 #include "CObj_X.h"
 #include "CRay.h"
 #include "CSkinnedMesh.h"
 #include "cSphere.h"
+#include "CZealot.h"
 
 //#include "cCamera2.h"
 //#include "cCubePC.h"
@@ -41,7 +44,8 @@ cMainGame::cMainGame()
 	  m_pCubeObj(nullptr), m_pMap(nullptr), m_pRootFrame(nullptr), m_pFont(nullptr), m_pMeshTeapot(nullptr),
 	  m_pMeshSphere(nullptr),
 	  m_stMtlTeapot({}), m_stMtlSphere({}), m_pObjMesh(nullptr), m_pcRay(nullptr), m_pFieldMap(nullptr),
-	  m_pObj_X(nullptr), m_pSkinnedMesh(nullptr), m_pFrustumCube(nullptr)
+	  m_pObj_X(nullptr), m_pSkinnedMesh(nullptr), m_pFrustumCube(nullptr), m_pSphere(nullptr), m_stCullingMtl({}),
+	  m_pFrustum(nullptr), m_pHoldZealot(nullptr), m_pMoveZealot(nullptr)
 /*, m_stMtlNone({}), m_stMtlPicked({}),
 	  m_stMtlPlane({})*/
 //, player()
@@ -117,7 +121,13 @@ cMainGame::~cMainGame()
 	SafeDelete(m_pSkinnedMesh);
 
 	SafeDelete(m_pFrustumCube);
+	SafeDelete(m_pFrustum);
+	SafeRelease (m_pSphere);
 
+
+	SafeDelete(m_pHoldZealot);
+	SafeDelete(m_pMoveZealot);
+	
 	g_pObjectManager.Destroy();
 	
 	g_pDeviceManager.Destroy();
@@ -147,11 +157,11 @@ void cMainGame::setup()
 	//m_pCubePC = new cCubePC;
 	//m_pCubePC->setup();
 
-	//{
-	//	CHeightMapLoader l;
-	//	l.readRawFile("data/HeightMapData/HeightMap.raw", "data/HeightMapData/terrain.jpg");
-	//	m_pFieldMap = l.createMap();
-	//}
+	{
+		CHeightMapLoader l;
+		l.readRawFile("data/HeightMapData/HeightMap.raw", "data/HeightMapData/terrain.jpg");
+		m_pFieldMap = l.createMap();
+	}
 	
 	
 	m_pCubeMan = new cCubeMan;
@@ -163,6 +173,7 @@ void cMainGame::setup()
 	m_pGrid = new cGrid2;
 	m_pGrid->setup(15, 1);
 
+	//SetupFrustum();
 	//m_pRoute = new cGuideline;
 	//m_pRoute->setup(D3DCOLOR_XRGB(0, 255, 0));
 
@@ -182,6 +193,8 @@ void cMainGame::setup()
 	//m_pCubeObj->setup();
 	
 
+	SetupOBB();
+	
 	//Setup_Obj();
 	//Load_Surface();
 	Set_Light();
@@ -204,7 +217,7 @@ void cMainGame::setup()
 	//m_pSkinnedMesh = new CSkinnedMesh;
 	//m_pSkinnedMesh->setup("data/Zealot", "zealot.X");
 	
-	m_pFrustumCube = new CFrustumCube;
+	//m_pFrustumCube = new CFrustumCube;
 	
 
 	
@@ -248,6 +261,12 @@ void cMainGame::update()
 	if (m_pRootFrame)
 		m_pRootFrame->update(m_pRootFrame->GetKeyFrame(), NULL);
 
+	if (m_pHoldZealot)
+		m_pHoldZealot->Update(m_pMap);
+
+	if (m_pMoveZealot)
+		m_pMoveZealot->Update(m_pMap);
+
 	for (auto * p : m_vecRootFrame)
 	{
 		p->update(p->GetKeyFrame(), NULL);
@@ -256,6 +275,9 @@ void cMainGame::update()
 	
 	if (m_pSkinnedMesh)
 		m_pSkinnedMesh->update();
+
+	if (m_pFrustum)
+		m_pFrustum->Update();
 }
 
 void cMainGame::Draw_Texture()
@@ -364,6 +386,10 @@ void cMainGame::render()
 			m_pFrustumCube->render();
 		
 		SkinnedMesh_Render();
+
+		FrustumRender();
+
+		OBBRender();
 		
 		g_pD3DDevice->EndScene();
 
@@ -393,6 +419,19 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (m_pFrustumCube)
 			m_pFrustumCube->culling();
+
+		if (m_pFieldMap)
+			m_pFieldMap->setCulling();
+
+		if(m_pFrustum)
+		{
+			for (int i = 0; i < m_vecCullingSphere.size(); ++i)
+			{
+				if (m_pFrustum->IsIn(m_vecCullingSphere[i]))
+					m_vecCullingSphere[i]->FlipColor();
+				
+			}
+		}
 		break;
 	case WM_RBUTTONDOWN:
 		{
@@ -575,6 +614,72 @@ void cMainGame::SkinnedMesh_Render()
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 	if (m_pSkinnedMesh)
 		m_pSkinnedMesh->render(NULL);
+}
+
+void cMainGame::SetupFrustum()
+{
+	D3DXCreateSphere(g_pD3DDevice, 0.5f, 10, 10, &m_pSphere, nullptr);
+
+	for (int i = -20; i <= 20; ++i)
+	{
+		for (int j = -20; j <= 20; ++j)
+		{
+			for (int k = -20; k <= 20; ++k)
+			{
+				cSphere* s = new cSphere(i,j,k);
+				m_vecCullingSphere.emplace_back(s);
+			}
+		}
+	}
+
+	m_stCullingMtl.Ambient  = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+	m_stCullingMtl.Diffuse  = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+	m_stCullingMtl.Specular = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+
+	m_pFrustum = new CFrustum;
+	m_pFrustum->Setup();
+}
+
+void cMainGame::FrustumRender()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMatrixIdentity(&matWorld);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	for (auto && sphere : m_vecCullingSphere)
+	{
+		//D3DXMatrixIdentity(&matWorld);
+		//matWorld._41 = sphere->getPosition().x;
+		//matWorld._42 = sphere->getPosition().y;
+		//matWorld._43 = sphere->getPosition().z;
+		//g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+		//g_pD3DDevice->SetMaterial(&m_stCullingMtl);
+		sphere->render();
+		
+	}
+}
+
+void cMainGame::SetupOBB()
+{
+	m_pHoldZealot = new CZealot;
+	m_pHoldZealot->Setup();
+	
+	m_pMoveZealot = new CZealot;
+	m_pMoveZealot->Setup();
+
+	cCharacter* pCharacter = new cCharacter;
+	m_pMoveZealot->SetCharacterController(pCharacter);
+	SafeRelease(pCharacter);
+}
+
+void cMainGame::OBBRender()
+{
+	D3DCOLOR c = COBB::IsCollision(m_pHoldZealot->GetOBB(), m_pMoveZealot->GetOBB()) ? D3DCOLOR_XRGB(255, 0, 0) : D3DCOLOR_XRGB(255, 255, 255);
+
+	if (m_pHoldZealot)
+		m_pHoldZealot->Render(c);
+	if (m_pMoveZealot)
+		m_pMoveZealot->Render(c);
 }
 
 //

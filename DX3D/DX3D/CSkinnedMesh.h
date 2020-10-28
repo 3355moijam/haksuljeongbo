@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+struct ST_BONE;
+
 class CSkinnedMesh
 {
 public:
@@ -27,4 +29,20 @@ public:
 
 	void SetAnimationIndex(int nIndex);
 	void SetAnimationIndexBlend(int nIndex);
+
+private:
+	Synthesize(D3DXVECTOR3, m_vMin, Min);
+	Synthesize(D3DXVECTOR3, m_vMax, Max);
+
+public:
+	CSkinnedMesh(char * szFolder, char* szFileName);
+	void Load(char* szFolder, char* szFileName);
+	void Destroy();
+	void UpdateAndRender();
+	void Update(ST_BONE* pCurrent, D3DXMATRIXA16* pmatParent);
+	void SetRandomTrackPosition();
+
+	D3DXMATRIXA16 m_matWorldTM;
+	void SetTransform(D3DXMATRIXA16 * pmat);
+	
 };

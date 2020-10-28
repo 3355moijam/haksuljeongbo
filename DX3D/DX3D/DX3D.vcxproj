@@ -152,6 +152,7 @@
     <ClInclude Include="cFieldMap.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="cFrameCounter.h" />
+    <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CFrustumCube.h" />
     <ClInclude Include="cGroupNode.h" />
     <ClInclude Include="cBody.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMtlParser.h" />
     <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="COBB.h" />
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectLoader.h" />
     <ClInclude Include="cObjectManager.h" />
@@ -187,11 +189,13 @@
     <ClInclude Include="cRightArm.h" />
     <ClInclude Include="cRightLeg.h" />
     <ClInclude Include="CSkinnedMesh.h" />
+    <ClInclude Include="CSkinnedMeshManager.h" />
     <ClInclude Include="cSphere.h" />
     <ClInclude Include="cSpotLight.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="CObj_X.h" />
     <ClInclude Include="CTimeManager.h" />
+    <ClInclude Include="CZealot.h" />
     <ClInclude Include="DX3D.h" />
     <ClInclude Include="iMap.h" />
     <ClInclude Include="Resource.h" />
@@ -205,6 +209,7 @@
     <ClCompile Include="cFieldMap.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="cFrameCounter.cpp" />
+    <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CFrustumCube.cpp" />
     <ClCompile Include="cGroupNode.cpp" />
     <ClCompile Include="cBody.cpp" />
@@ -228,6 +233,7 @@
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMtlParser.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="COBB.cpp" />
     <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjectLoader.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
@@ -241,11 +247,13 @@
     <ClCompile Include="cRightArm.cpp" />
     <ClCompile Include="cRightLeg.cpp" />
     <ClCompile Include="CSkinnedMesh.cpp" />
+    <ClCompile Include="CSkinnedMeshManager.cpp" />
     <ClCompile Include="cSphere.cpp" />
     <ClCompile Include="cSpotLight.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="CObj_X.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
+    <ClCompile Include="CZealot.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="iMap.cpp" />
     <ClCompile Include="stdafx.cpp">

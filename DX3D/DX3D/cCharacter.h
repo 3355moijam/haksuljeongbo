@@ -3,7 +3,7 @@
 
 #include "cGroup.h"
 
-class cCharacter
+class cCharacter : public cObject
 {
 public:
 	cCharacter();
@@ -24,5 +24,6 @@ public:
 	virtual void render();
 
 	virtual D3DXVECTOR3& getPosition();
-	
+
+	virtual D3DXMATRIXA16* GetTransform() { return &m_matWorld; }
 };

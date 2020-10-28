@@ -40,7 +40,7 @@ bool cFieldMap::GetHeight(float x, float& y, float z)
 	//
 	//return isHit;
 
-	if(x < 0.0f || z < 0.0f || x >= m_nWidth || z >= m_nDepth)
+	if(x <= 0.0f || z <= 0.0f || x >= m_nWidth || z >= m_nDepth)
 	{
 		y = 0.9f;
 		return true;
@@ -209,3 +209,151 @@ void cFieldMap::render()
 		g_pD3DDevice->SetTexture(0, 0);
 	}
 }
+
+void cFieldMap::setFrustum()
+{
+	D3DVIEWPORT9 vp;
+	D3DXMATRIXA16 matProj, matView;
+
+	g_pD3DDevice->GetViewport(&vp);
+	g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &matProj);
+	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
+
+	vector<D3DXVECTOR3> vecFrustumVertex;
+	vecFrustumVertex.emplace_back(-1, -1, 0);
+	vecFrustumVertex.emplace_back(-1,  1, 0);
+	vecFrustumVertex.emplace_back( 1,  1, 0);
+	vecFrustumVertex.emplace_back( 1, -1, 0);
+
+	vecFrustumVertex.emplace_back(-1, -1, 1);
+	vecFrustumVertex.emplace_back(-1,  1, 1);
+	vecFrustumVertex.emplace_back( 1,  1, 1);
+	vecFrustumVertex.emplace_back( 1, -1, 1);
+
+	for (auto&& value : vecFrustumVertex)
+	{
+		//D3DXVec3Unproject(&value, &value, &vp, nullptr, nullptr, nullptr);
+		D3DXVec3Unproject(&value, &value, nullptr, &matProj, &matView, nullptr);
+	}
+	D3DXPlaneFromPoints(&m_stLeft  , &vecFrustumVertex[4], &vecFrustumVertex[5], &vecFrustumVertex[1]);
+	D3DXPlaneFromPoints(&m_stRight , &vecFrustumVertex[3], &vecFrustumVertex[2], &vecFrustumVertex[6]);
+	D3DXPlaneFromPoints(&m_stTop   , &vecFrustumVertex[1], &vecFrustumVertex[5], &vecFrustumVertex[6]);
+	D3DXPlaneFromPoints(&m_stBottom, &vecFrustumVertex[3], &vecFrustumVertex[7], &vecFrustumVertex[4]);
+	D3DXPlaneFromPoints(&m_stNear  , &vecFrustumVertex[0], &vecFrustumVertex[1], &vecFrustumVertex[2]);
+	D3DXPlaneFromPoints(&m_stFar   , &vecFrustumVertex[7], &vecFrustumVertex[6], &vecFrustumVertex[5]);
+
+	//
+	//{
+	//	D3DXVECTOR3 center(0, 0, 0);
+	//	D3DXVECTOR3 lt(0, 0, 0);
+	//	D3DXVECTOR3 rt(vp.Width, 0, 0);
+	//	D3DXVECTOR3 lb(0, vp.Height, 0);
+	//	D3DXVECTOR3 rb(vp.Width, vp.Height, 0);
+	//	D3DXVec3Unproject(&lt, &lt, &vp, &matProj, &matView, nullptr);
+	//	D3DXVec3Unproject(&rt, &rt, &vp, &matProj, &matView, nullptr);
+	//	D3DXVec3Unproject(&lb, &lb, &vp, &matProj, &matView, nullptr);
+	//	D3DXVec3Unproject(&rb, &rb, &vp, &matProj, &matView, nullptr);
+	//	D3DXVec3Unproject(&center, &center, nullptr, nullptr, &matView, nullptr);
+	//
+	//
+	//
+	//	
+	//	D3DXPlaneFromPoints(&stLeft  , &(lt), &(center * 01), &(lb));
+	//	D3DXPlaneFromPoints(&stRight , &(center * 01), &(rt), &(rb));
+	//	D3DXPlaneFromPoints(&stTop   , &(center * 01), &(lt), &(rt));
+	//	D3DXPlaneFromPoints(&stBottom, &(center * 01), &(rb), &(lb));
+	//
+	//
+	//	D3DXVECTOR3 vDirlb = lb - center;
+	//	D3DXVec3Normalize(&vDirlb, &vDirlb);
+	//
+	//	D3DXVECTOR3 vDirlt = lt - center;
+	//	D3DXVec3Normalize(&vDirlt, &vDirlt);
+	//
+	//	D3DXVECTOR3 vDirrt = rt - center;
+	//	D3DXVec3Normalize(&vDirrt, &vDirrt);
+	//
+	//	D3DXVECTOR3 a, b, c;
+	//	a = (center + vDirlb * 1);
+	//	b = (center + vDirlt * 1);
+	//	c = (center + vDirrt * 1);
+	//	D3DXPlaneFromPoints(&stNear  , &a, &b, &c);
+	//
+	//	a = (center + vDirlb * 20);
+	//	b = (center + vDirlt * 20);
+	//	c = (center + vDirrt * 20);
+	//	D3DXPlaneFromPoints(&stFar, &a, &c, &b);
+	//}
+
+
+	//for (int i = 0; i < m_vecSphere.size(); ++i)
+	//{
+	//	D3DXVECTOR3 vPos = m_vecSphere[i]->getPosition();
+	//	if (
+	//		D3DXPlaneDotCoord(&stLeft, &vPos) < 0 &&
+	//		D3DXPlaneDotCoord(&stRight, &vPos) < 0 &&
+	//		D3DXPlaneDotCoord(&stTop, &vPos) < 0 &&
+	//		D3DXPlaneDotCoord(&stBottom, &vPos) < 0 &&
+	//		D3DXPlaneDotCoord(&stNear, &vPos) < 0 &&
+	//		D3DXPlaneDotCoord(&stFar, &vPos) < 0
+	//		)
+	//		m_vecIsCull[i] = false;
+	//	else
+	//		m_vecIsCull[i] = true;
+	//}
+}
+
+void cFieldMap::setCulling()
+{
+	setFrustum();
+	
+	vector<DWORD> vecIndex;
+	set<DWORD> vecOutScene;
+
+	for (size_t i = 0; i < m_vecVertex.size(); ++i)
+	{
+			D3DXVECTOR3 vPos = m_vecVertex[i].p;
+		if (
+			D3DXPlaneDotCoord(&m_stLeft  , &vPos) > 0 ||
+			D3DXPlaneDotCoord(&m_stRight , &vPos) > 0 ||
+			D3DXPlaneDotCoord(&m_stTop   , &vPos) > 0 ||
+			D3DXPlaneDotCoord(&m_stBottom, &vPos) > 0 ||
+			D3DXPlaneDotCoord(&m_stNear  , &vPos) > 0 ||
+			D3DXPlaneDotCoord(&m_stFar   , &vPos) > 0
+			)
+			vecOutScene.emplace(i);
+	}
+
+	for (size_t i = 0; i < m_vecIndex.size(); i += 3)
+	{
+		if
+		(
+			vecOutScene.find(m_vecIndex[i + 0]) == vecOutScene.end() ||
+			vecOutScene.find(m_vecIndex[i + 1]) == vecOutScene.end() ||
+			vecOutScene.find(m_vecIndex[i + 2]) == vecOutScene.end()
+		)
+		{
+			vecIndex.push_back(m_vecIndex[i + 0]);
+			vecIndex.push_back(m_vecIndex[i + 1]);
+			vecIndex.push_back(m_vecIndex[i + 2]);
+		}
+	}
+
+
+	
+	DWORD* pIndex = nullptr;
+	m_pMesh->LockIndexBuffer(0, (LPVOID*)&pIndex);
+	ZeroMemory(pIndex, m_vecIndex.size() * sizeof DWORD);
+	memcpy(pIndex, &vecIndex[0], vecIndex.size() * sizeof DWORD);
+	m_pMesh->UnlockIndexBuffer();
+}
+
+void cFieldMap::unsetCulling()
+{
+	DWORD* pIndex = nullptr;
+	m_pMesh->LockIndexBuffer(0, (LPVOID*)&pIndex);
+	ZeroMemory(pIndex, m_vecIndex.size() * sizeof DWORD);
+	memcpy(pIndex, &m_vecIndex[0], m_vecIndex.size() * sizeof DWORD);
+	m_pMesh->UnlockIndexBuffer();
+}
+

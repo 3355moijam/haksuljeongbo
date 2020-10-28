@@ -15,7 +15,7 @@
 cCubeMan2::cCubeMan2() : m_pRoot(nullptr), m_stMtl(), m_destID(0), m_pTraceline(nullptr), m_fSpeed(0.1f),
                          m_pTexture(nullptr)
 {
-
+	m_vPosition.y += 0.9f;
 }
 
 cCubeMan2::~cCubeMan2()

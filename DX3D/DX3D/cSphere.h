@@ -8,7 +8,7 @@ public:
 	~cSphere();
 
 private:
-	LPD3DXMESH		m_pMesh;
+	static LPD3DXMESH		m_pMesh;
 	D3DMATERIAL9	m_stMtl;
 
 	D3DXMATRIXA16	m_matWorld;
@@ -27,4 +27,5 @@ public:
 
 	void FlipColor();
 	void render();
+	void render(D3DMATERIAL9 & stMtl);
 };
