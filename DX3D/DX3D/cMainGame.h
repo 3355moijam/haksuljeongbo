@@ -6,6 +6,7 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class CMainUI;
 class CZealot;
 class CFrustum;
 class CFrustumCube;
@@ -172,5 +173,20 @@ public:
 	void CreateFontW();
 	void TextRender();
 	
+	// <<
+
+	// >> ui
+private:
+	LPD3DXSPRITE			m_pSprite;
+	D3DXIMAGE_INFO			m_stImageInfo;
+	LPDIRECT3DTEXTURE9		m_pTextureUI;
+public:
+	void SetupUI();
+	void UIRender();
+	// <<
+
+	// >> mainUI
+private:
+	CMainUI*				m_pMainUI;
 	// <<
 };

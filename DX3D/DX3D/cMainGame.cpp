@@ -20,6 +20,7 @@
 #include "cGroup.h"
 #include "cGroupNode.h"
 #include "CHeightMapLoader.h"
+#include "CMainUI.h"
 #include "COBB.h"
 #include "cObjMap.h"
 #include "CObj_X.h"
@@ -38,7 +39,10 @@ cMainGame::cMainGame()
 	  m_pMeshSphere(nullptr),
 	  m_stMtlTeapot({}), m_stMtlSphere({}), m_pObjMesh(nullptr), m_pcRay(nullptr), m_pFieldMap(nullptr),
 	  m_pObj_X(nullptr), m_pSkinnedMesh(nullptr), m_pFrustumCube(nullptr), m_pSphere(nullptr), m_stCullingMtl({}),
-	  m_pFrustum(nullptr), m_pHoldZealot(nullptr), m_pMoveZealot(nullptr), m_pFont2(nullptr), m_p3DText(nullptr)
+	  m_pFrustum(nullptr), m_pHoldZealot(nullptr), m_pMoveZealot(nullptr), m_pFont2(nullptr), m_p3DText(nullptr),
+	  m_pSprite(nullptr),
+	  m_stImageInfo({}),
+	  m_pTextureUI(nullptr), m_pMainUI(nullptr)
 /*, m_stMtlNone({}), m_stMtlPicked({}),
 	  m_stMtlPlane({})*/
 //, player()
@@ -126,6 +130,10 @@ cMainGame::~cMainGame()
 	SafeDelete(m_pHoldZealot);
 	SafeDelete(m_pMoveZealot);
 
+	SafeRelease(m_pSprite);
+	SafeRelease(m_pTextureUI);
+	SafeDelete(m_pMainUI);
+	
 	g_pFontManager.Destroy();
 	
 	g_pObjectManager.Destroy();
@@ -157,11 +165,11 @@ void cMainGame::setup()
 	//m_pCubePC = new cCubePC;
 	//m_pCubePC->setup();
 
-	{
-		CHeightMapLoader l;
-		l.readRawFile("data/HeightMapData/HeightMap.raw", "data/HeightMapData/terrain.jpg");
-		m_pFieldMap = l.createMap();
-	}
+	//{
+	//	CHeightMapLoader l;
+	//	l.readRawFile("data/HeightMapData/HeightMap.raw", "data/HeightMapData/terrain.jpg");
+	//	m_pFieldMap = l.createMap();
+	//}
 	
 	
 	m_pCubeMan = new cCubeMan;
@@ -191,15 +199,16 @@ void cMainGame::setup()
 
 	//m_pCubeObj = new cCubeObj;
 	//m_pCubeObj->setup();
-	
+
+	m_pMainUI = new CMainUI;
 
 	SetupOBB();
 
-	CreateFontW();
+	//CreateFontW();
 	//Setup_Obj();
 	//Load_Surface();
 	Set_Light();
-
+	//SetupUI();
 	//SetupPeakingObj();
 	//{
 	//	cAseLoader2 l;
@@ -361,7 +370,9 @@ void cMainGame::render()
 
 		if (m_pObj_X)
 			m_pObj_X->render();
-		
+
+		if (m_pMainUI)
+			m_pMainUI->Render();
 		//if (m_pCubeObj)
 		//	m_pCubeObj->render();
 		
@@ -392,7 +403,8 @@ void cMainGame::render()
 		FrustumRender();
 
 		OBBRender();
-		
+
+		UIRender();
 		g_pD3DDevice->EndScene();
 
 		g_pD3DDevice->Present(0, 0, 0, 0);
@@ -404,6 +416,9 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	if (m_pCamera)
 		m_pCamera->WndProc(hWnd, message, wParam, lParam);
+	if (m_pMainUI)
+		m_pMainUI->WndProc(hWnd, message, wParam, lParam);
+	
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
@@ -434,6 +449,12 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				
 			}
 		}
+		break;
+	case WM_MOUSEMOVE:
+
+		break;
+	case WM_LBUTTONUP:
+
 		break;
 	case WM_RBUTTONDOWN:
 		{
@@ -731,6 +752,9 @@ void cMainGame::CreateFontW()
 
 void cMainGame::TextRender()
 {
+	if (m_p3DText == nullptr)
+		return;
+	
 	string sText("ABC abc 123 !@#$ 가나다라 ㅁㄴㅇㄹ");
 	RECT rc;
 	SetRect(&rc, 100, 100, 301, 200);
@@ -757,6 +781,58 @@ void cMainGame::TextRender()
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 	m_p3DText->DrawSubset(0);
 	
+}
+
+void cMainGame::SetupUI()
+{
+	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
+
+	//m_pTextureUI = g_pTextureManager.GetTexture("data/UI/수지.png");
+	//m_pTextureUI = g_pTextureManager.GetTexture("data/UI/김태희.jpg");
+
+	D3DXCreateTextureFromFileEx
+	(
+		g_pD3DDevice,
+		L"data/UI/김태희.jpg",
+		D3DX_DEFAULT_NONPOW2,
+		D3DX_DEFAULT_NONPOW2,
+		D3DX_DEFAULT,
+		0,
+		D3DFMT_UNKNOWN,
+		D3DPOOL_MANAGED,
+		D3DX_FILTER_NONE,
+		D3DX_DEFAULT,
+		0,
+		&m_stImageInfo,
+		nullptr,
+		&m_pTextureUI
+
+	);
+}
+
+void cMainGame::UIRender()
+{
+	if (m_pSprite == nullptr)
+		return;
+	
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
+
+	RECT rc;
+	SetRect(&rc, m_stImageInfo.Width * 0.25f, 0, m_stImageInfo.Width * 0.75f, m_stImageInfo.Height);
+
+	D3DXMATRIXA16 matT, matS, matR, matWorld;
+	D3DXMatrixIdentity(&matR);
+	D3DXMatrixTranslation(&matT, 100, 100, 0);
+	static float fAngle = 0.0f;
+	fAngle += 0.001f;
+	//D3DXMatrixRotationY(&matR, fAngle);
+	matWorld = matR * matT;
+
+	m_pSprite->SetTransform(&matWorld);
+	
+	m_pSprite->Draw(m_pTextureUI, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	m_pSprite->End();
 }
 
 //

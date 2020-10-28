@@ -344,7 +344,8 @@ void cFieldMap::setCulling()
 	DWORD* pIndex = nullptr;
 	m_pMesh->LockIndexBuffer(0, (LPVOID*)&pIndex);
 	ZeroMemory(pIndex, m_vecIndex.size() * sizeof DWORD);
-	memcpy(pIndex, &vecIndex[0], vecIndex.size() * sizeof DWORD);
+	if (!vecIndex.empty())
+		memcpy(pIndex, &vecIndex[0], vecIndex.size() * sizeof DWORD);
 	m_pMesh->UnlockIndexBuffer();
 }
 

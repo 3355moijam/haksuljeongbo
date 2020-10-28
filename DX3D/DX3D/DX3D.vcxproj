@@ -149,6 +149,7 @@
     <ClInclude Include="CAllocateHierachy.h" />
     <ClInclude Include="cAseLoader.h" />
     <ClInclude Include="cAseLoader2.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="cFieldMap.h" />
     <ClInclude Include="CFontManager.h" />
     <ClInclude Include="cFrame.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="cLeftLeg.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="CMainUI.h" />
     <ClInclude Include="cMtlParser.h" />
     <ClInclude Include="cMtlTex.h" />
     <ClInclude Include="COBB.h" />
@@ -196,6 +198,7 @@
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="CObj_X.h" />
     <ClInclude Include="CTimeManager.h" />
+    <ClInclude Include="CUIManager.h" />
     <ClInclude Include="CZealot.h" />
     <ClInclude Include="DX3D.h" />
     <ClInclude Include="iMap.h" />
@@ -207,6 +210,7 @@
     <ClCompile Include="CAllocateHierachy.cpp" />
     <ClCompile Include="cAseLoader.cpp" />
     <ClCompile Include="cAseLoader2.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="cFieldMap.cpp" />
     <ClCompile Include="CFontManager.cpp" />
     <ClCompile Include="cFrame.cpp" />
@@ -233,6 +237,7 @@
     <ClCompile Include="cLeftLeg.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="CMainUI.cpp" />
     <ClCompile Include="cMtlParser.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
     <ClCompile Include="COBB.cpp" />
@@ -255,6 +260,7 @@
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="CObj_X.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
+    <ClCompile Include="CUIManager.cpp" />
     <ClCompile Include="CZealot.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="iMap.cpp" />

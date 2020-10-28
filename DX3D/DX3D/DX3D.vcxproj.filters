@@ -228,6 +228,15 @@
     <ClInclude Include="CFontManager.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -393,6 +402,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CFontManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
