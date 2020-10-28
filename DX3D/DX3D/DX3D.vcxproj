@@ -198,6 +198,7 @@
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="CObj_X.h" />
     <ClInclude Include="CTimeManager.h" />
+    <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIManager.h" />
     <ClInclude Include="CZealot.h" />
     <ClInclude Include="DX3D.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="CObj_X.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
+    <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIManager.cpp" />
     <ClCompile Include="CZealot.cpp" />
     <ClCompile Include="DX3D.cpp" />

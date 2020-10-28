@@ -4,11 +4,14 @@
 
 LPD3DXSPRITE CButton::m_pSprite = nullptr;
 
-CButton::CButton(): /*m_pSprite(nullptr), */isActive(false), m_pmatParentWorldTM(nullptr), isButton(false), m_eStatus(E_DEFAULT),
-                    m_vecImageInfo(3),
-                    m_vecTexture(3)
+CButton::CButton():
+	//m_pSprite(nullptr), 
+	isActive(false),
+	m_pmatParentWorldTM(nullptr),
+	isButton(false),
+	m_eStatus(E_DEFAULT), m_pEvent(nullptr)
 {
-	if(!m_pSprite)
+	if (!m_pSprite)
 		D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
 
 	D3DXMatrixIdentity(&m_matWorldTM);
@@ -34,10 +37,22 @@ void CButton::SetActive(bool b)
 	}
 }
 
-void CButton::Load(string sFolder, string sFilename, eStatus e)
+void CButton::Load(string sFolder, string sFilename, int mode)
 {
 	string sFullPath = sFolder + "/" + sFilename;
-	m_vecTexture[e] = g_pUIManager.GetTexture(sFullPath, &m_vecImageInfo[e]);
+
+	if (mode & E_DEFAULT)
+	{
+		g_pUIManager.GetTexture(sFullPath, &m_mapTextureAndInfo[E_DEFAULT]);
+	}
+	if (mode & E_HOVER)
+	{
+		g_pUIManager.GetTexture(sFullPath, &m_mapTextureAndInfo[E_HOVER]);
+	}
+	if (mode & E_DOWN)
+	{
+		g_pUIManager.GetTexture(sFullPath, &m_mapTextureAndInfo[E_DOWN]);
+	}
 }
 
 void CButton::SetScale(float x, float y, float z)
@@ -53,12 +68,12 @@ void CButton::SetPosition(float x, float y)
 	
 }
 
-void CButton::render(int nAlpha)
+void CButton::Render(int nAlpha)
 {
 	if (!isActive)
 		return;
 	RECT rc;
-	SetRect(&rc, 0, 0, m_vecImageInfo[m_eStatus].Width, m_vecImageInfo[m_eStatus].Height);
+	SetRect(&rc, 0, 0, m_mapTextureAndInfo[m_eStatus].second.Width, m_mapTextureAndInfo[m_eStatus].second.Height);
 	m_matWorldTM = m_matScale * m_matTrans;
 	if (m_pmatParentWorldTM)
 		m_matWorldTM *= *m_pmatParentWorldTM;
@@ -67,27 +82,35 @@ void CButton::render(int nAlpha)
 		m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
 	m_pSprite->SetTransform(&m_matWorldTM);
-	m_pSprite->Draw(m_vecTexture[m_eStatus], &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(nAlpha, 255, 255, 255));
+	m_pSprite->Draw(m_mapTextureAndInfo[m_eStatus].first, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(nAlpha, 255, 255, 255));
 
 	//if (!m_pmatParentWorldTM)
 		m_pSprite->End();
 
 	for (auto && p : m_vecChild)
 	{
-		p->render(nAlpha);
+		p->Render(nAlpha);
 	}
 
 
 }
 
-bool CButton::IsCollide(int x, int y)
+bool CButton::IsMouseOn(int x, int y)
 {
-	if (!isActive)
-		return false;
-	return false;
-	// 본인 클릭 체크
-	// 만약 참이면 자식 클릭 체크
-	// 
+	RECT rc;
+	SetRect(&rc, m_matTrans._41, m_matTrans._42, m_matTrans._41 + GetWidth(), m_matTrans._42 + GetHeight());
+	return PtInRect(&rc, POINT{ x,y });
+}
+
+CButton* CButton::GetClickedChild(int x, int y)
+{
+	for (auto * p : m_vecChild)
+	{
+		if (p->IsMouseOn(x - m_matTrans._41, y - m_matTrans._42))
+			return p->GetClickedChild(x - m_matTrans._41, y - m_matTrans._42);
+	}
+
+	return this;
 }
 
 void CButton::AddChild(CButton* child)

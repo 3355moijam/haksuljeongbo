@@ -1,11 +1,13 @@
 ﻿#include "stdafx.h"
 #include "CMainUI.h"
+
+#include <iostream>
+
+
 #include "CButton.h"
 
-CMainUI::CMainUI(): m_pRootButton(nullptr), m_vPosition(0, 0)
+CMainUI::CMainUI(): m_nBeforeX(0), m_nBeforeY(0), m_isDrag(false)
 {
-	D3DXMatrixTranslation(&m_matWorld, m_vPosition.x, m_vPosition.y, 0);
-	
 	CButton* button = new CButton;
 	button->Load("data/UI", "panel-info.png");
 	button->SetParentWorld(&m_matWorld);
@@ -14,6 +16,13 @@ CMainUI::CMainUI(): m_pRootButton(nullptr), m_vPosition(0, 0)
 	button = new CButton;
 	button->Load("data/UI", "btn-main-menu.png");
 	button->SetPosition(381, 90);
+	button->SetEvent([](CUI* pUI)
+		{
+			CMainUI* pMainUI = dynamic_cast<CMainUI*>(pUI);
+			if (!pMainUI)
+				return;
+			pMainUI->m_pRootButton->SetActive(false);
+		});
 	m_pRootButton->AddChild(button);
 
 	button = new CButton;
@@ -21,6 +30,7 @@ CMainUI::CMainUI(): m_pRootButton(nullptr), m_vPosition(0, 0)
 	button->Load("data/UI", "btn-med-over.png", CButton::E_HOVER);
 	button->Load("data/UI", "btn-med-down.png", CButton::E_DOWN);
 	button->SetPosition(m_pRootButton->GetWidth() * 0.5f - button->GetWidth() * 0.5f, 300);
+	//button->SetEvent([]() { std::cout << "hello\n"; });
 	m_pRootButton->AddChild(button);
 
 	button = new CButton;
@@ -32,84 +42,101 @@ CMainUI::CMainUI(): m_pRootButton(nullptr), m_vPosition(0, 0)
 
 
 	m_pRootButton->SetActive(true);
-
 }
 
 CMainUI::~CMainUI()
 {
 }
 
-void CMainUI::Render(int nAlpha)
-{
-	if (m_pRootButton)
-		m_pRootButton->render(nAlpha);
-}
-
-void CMainUI::Move(int fDeltaX, int fDeltaY)
-{
-	m_vPosition.x += fDeltaX;
-	m_vPosition.y += fDeltaY;
-	D3DXMatrixTranslation(&m_matWorld, m_vPosition.x, m_vPosition.y, 0);
-}
-
-int CMainUI::GetWidth()
-{
-	return m_pRootButton->GetWidth();
-}
-
-int CMainUI::GetHeight()
-{
-	return m_pRootButton->GetHeight();
-}
-
-bool CMainUI::IsMouseOn(int x, int y)
-{
-	RECT rc;
-	SetRect(&rc, m_vPosition.x, m_vPosition.y, m_vPosition.x + m_pRootButton->GetWidth(), m_vPosition.y + m_pRootButton->GetHeight());
-	bool isClickSelf = PtInRect(&rc, POINT{ x, y });
-
-	//if(isClickSelf)
-		// 자기는 클릭, 자식이 없거나 클릭X면 자신이 target.아아아아
-
-	return isClickSelf;
-}
-
 void CMainUI::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	static int nBeforeX = 0;
-	static int nBeforeY = 0;
-	static bool isDrag = false;
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
 		{
-			// if target == this
-			if (IsMouseOn(LOWORD(lParam), HIWORD(lParam)))
+			if (!m_pRootButton->GetActive())
+				return;
+			
+			if(m_pFocused == m_pRootButton)
 			{
-				isDrag = true;
-				nBeforeX = LOWORD(lParam);
-				nBeforeY = HIWORD(lParam);
+				if (IsMouseOn(LOWORD(lParam), HIWORD(lParam)))
+				{
+					m_isDrag = true;
+					m_nBeforeX = LOWORD(lParam);
+					m_nBeforeY = HIWORD(lParam);
+				}
 			}
-			// else
-			// target.SetStatus(CButton::E_DOWN);
+			else if(m_pFocused)
+			{
+				m_pFocused->SetStatus(CButton::E_DOWN);
+			}
 		}
 		break;
 	case WM_MOUSEMOVE:
-		if (isDrag)
 		{
-			Move((int)LOWORD(lParam) - nBeforeX, (int)HIWORD(lParam) - nBeforeY);
-			nBeforeX = LOWORD(lParam);
-			nBeforeY = HIWORD(lParam);
+			if (!m_pRootButton->GetActive())
+				return;
+			
+			int nCurrentX = LOWORD(lParam);
+			int nCurrentY = HIWORD(lParam);
+			if (m_isDrag)
+			{
+				Move(nCurrentX - m_nBeforeX, nCurrentY - m_nBeforeY);
+				m_nBeforeX = nCurrentX;
+				m_nBeforeY = nCurrentY;
+			}
+			else
+			{
+				if (GetKeyState(VK_LBUTTON) & 0x8000)
+					break;
+				
+				CButton* pFocused = GetTarget(nCurrentX, nCurrentY);
+				if (m_pFocused != pFocused)
+				{
+					if(m_pFocused)
+					{
+						m_pFocused->SetStatus(CButton::E_DEFAULT);
+						m_pFocused = pFocused;
+						if(pFocused)
+							m_pFocused->SetStatus(CButton::E_HOVER);
+					}
+					else
+					{
+						m_pFocused = pFocused;
+						m_pFocused->SetStatus(CButton::E_HOVER);
+					}
+
+				}
+			}
 		}
-		// gettarget
 		break;
 	case WM_LBUTTONUP:
-		if(isDrag)
-			isDrag = false;
-		else
+		if (!m_pRootButton->GetActive())
+			return;
+
+		if(m_isDrag)
+			m_isDrag = false;
+		else if(m_pFocused)
 		{
-			//target.event();
-			//target.setStatus(CButton::E_DEFAULT);
+			m_pFocused->SetStatus(CButton::E_HOVER);
+
+
+			CButton* pFocused = GetTarget(LOWORD(lParam), HIWORD(lParam));
+			if(m_pFocused == pFocused)
+			{
+				// 이벤트 실행
+				m_pFocused->Event(this);
+			}
+			else if (m_pFocused != pFocused)
+			{
+				if (m_pFocused)
+				{
+					m_pFocused->SetStatus(CButton::E_DEFAULT);
+					m_pFocused = pFocused;
+					if (pFocused)
+						m_pFocused->SetStatus(CButton::E_HOVER);
+				}
+			}
 		}
 		break;
 	default:

@@ -9,7 +9,7 @@ CUIManager::~CUIManager()
 {
 }
 
-LPDIRECT3DTEXTURE9 CUIManager::GetTexture(string& sFullPath, D3DXIMAGE_INFO* pstInfo)
+void CUIManager::GetTexture(string& sFullPath, std::pair<LPDIRECT3DTEXTURE9, D3DXIMAGE_INFO>* pPair)
 {
 	if(m_mapTexture.find(sFullPath) == m_mapTexture.end())
 	{
@@ -31,8 +31,7 @@ LPDIRECT3DTEXTURE9 CUIManager::GetTexture(string& sFullPath, D3DXIMAGE_INFO* pst
 			&m_mapTexture[sFullPath].first
 		);
 	}
-	*pstInfo = m_mapTexture[sFullPath].second;
-	return m_mapTexture[sFullPath].first;
+	*pPair = m_mapTexture[sFullPath];
 }
 
 void CUIManager::Destroy()
