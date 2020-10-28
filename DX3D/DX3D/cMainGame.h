@@ -163,4 +163,14 @@ public:
 	void SetupOBB();
 	void OBBRender();
 	// <<
+
+	// >> font
+private:
+	LPD3DXFONT			m_pFont2;
+	ID3DXMesh*			m_p3DText;
+public:
+	void CreateFontW();
+	void TextRender();
+	
+	// <<
 };

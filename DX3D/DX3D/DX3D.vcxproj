@@ -150,6 +150,7 @@
     <ClInclude Include="cAseLoader.h" />
     <ClInclude Include="cAseLoader2.h" />
     <ClInclude Include="cFieldMap.h" />
+    <ClInclude Include="CFontManager.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="cFrameCounter.h" />
     <ClInclude Include="CFrustum.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="cAseLoader.cpp" />
     <ClCompile Include="cAseLoader2.cpp" />
     <ClCompile Include="cFieldMap.cpp" />
+    <ClCompile Include="CFontManager.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="cFrameCounter.cpp" />
     <ClCompile Include="CFrustum.cpp" />

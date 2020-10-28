@@ -168,6 +168,7 @@ struct ST_SPHERE
 #include "cTextureManager.h"
 #include "CTimeManager.h"
 #include "iMap.h"
+#include "CFontManager.h"
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")

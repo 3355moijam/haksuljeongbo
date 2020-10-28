@@ -28,13 +28,6 @@
 #include "cSphere.h"
 #include "CZealot.h"
 
-//#include "cCamera2.h"
-//#include "cCubePC.h"
-//#include "cGrid2.h"
-
-
-//LPDIRECT3D9			m_pD3D;
-//LPDIRECT3DDEVICE9		m_pD3DDevice;
 
 cMainGame::cMainGame()
 	: m_pCubePC(nullptr)
@@ -45,7 +38,7 @@ cMainGame::cMainGame()
 	  m_pMeshSphere(nullptr),
 	  m_stMtlTeapot({}), m_stMtlSphere({}), m_pObjMesh(nullptr), m_pcRay(nullptr), m_pFieldMap(nullptr),
 	  m_pObj_X(nullptr), m_pSkinnedMesh(nullptr), m_pFrustumCube(nullptr), m_pSphere(nullptr), m_stCullingMtl({}),
-	  m_pFrustum(nullptr), m_pHoldZealot(nullptr), m_pMoveZealot(nullptr)
+	  m_pFrustum(nullptr), m_pHoldZealot(nullptr), m_pMoveZealot(nullptr), m_pFont2(nullptr), m_p3DText(nullptr)
 /*, m_stMtlNone({}), m_stMtlPicked({}),
 	  m_stMtlPlane({})*/
 //, player()
@@ -54,6 +47,7 @@ cMainGame::cMainGame()
 
 cMainGame::~cMainGame()
 {
+	
 	SafeDelete(m_pCubePC);
 	SafeDelete(m_pCamera);
 	SafeDelete(m_pGrid);
@@ -77,11 +71,15 @@ cMainGame::~cMainGame()
 	SafeRelease(m_pMeshSphere);
 	SafeRelease(m_pObjMesh);
 	SafeDelete(m_pFieldMap);
+
+	SafeRelease(m_pFont);
+	SafeRelease(m_pFont2);
+	SafeRelease(m_p3DText);
+
 	for (auto * p : m_vecObjMtltex)
 	{
 		SafeRelease(p);
 	}
-	
 
 	for (auto * p : m_vecGroup)
 	{
@@ -127,6 +125,8 @@ cMainGame::~cMainGame()
 
 	SafeDelete(m_pHoldZealot);
 	SafeDelete(m_pMoveZealot);
+
+	g_pFontManager.Destroy();
 	
 	g_pObjectManager.Destroy();
 	
@@ -194,7 +194,8 @@ void cMainGame::setup()
 	
 
 	SetupOBB();
-	
+
+	CreateFontW();
 	//Setup_Obj();
 	//Load_Surface();
 	Set_Light();
@@ -371,7 +372,7 @@ void cMainGame::render()
 
 		//if (m_PointLight)
 		//	m_PointLight->render();
-
+		
 		//if (m_DirectionalLight)
 		//	m_DirectionalLight->render();
 
@@ -384,7 +385,8 @@ void cMainGame::render()
 
 		if (m_pFrustumCube)
 			m_pFrustumCube->render();
-		
+
+		TextRender();
 		SkinnedMesh_Render();
 
 		FrustumRender();
@@ -680,6 +682,81 @@ void cMainGame::OBBRender()
 		m_pHoldZealot->Render(c);
 	if (m_pMoveZealot)
 		m_pMoveZealot->Render(c);
+}
+
+void cMainGame::CreateFontW()
+{
+	D3DXFONT_DESC fd{};
+	fd.Height = 50;
+	fd.Width = 25;
+	fd.Weight = FW_MEDIUM;
+	fd.Italic = false;
+	fd.CharSet = DEFAULT_CHARSET;
+	fd.OutputPrecision = OUT_DEFAULT_PRECIS;
+	fd.PitchAndFamily = FF_DONTCARE;
+
+	//wcscpy_s(fd.FaceName, L"굴림체");
+	AddFontResource(L"data/font/umberto.ttf");
+	wcscpy_s(fd.FaceName, L"Umberto");
+
+	
+
+	D3DXCreateFontIndirect(g_pD3DDevice, &fd, &m_pFont2);
+
+
+
+	HDC hdc = CreateCompatibleDC(0);
+	LOGFONT lf{};
+	lf.lfHeight = 25;
+	lf.lfWidth = 12;
+	lf.lfWeight = 500;
+	lf.lfItalic = false;
+	lf.lfUnderline = false;
+	lf.lfStrikeOut = false;
+	lf.lfCharSet = DEFAULT_CHARSET;
+
+	wcscpy_s(lf.lfFaceName, L"Umberto");
+
+	HFONT hFont;
+	HFONT hOldFont;
+
+	hFont = CreateFontIndirect(&lf);
+	hOldFont = (HFONT)SelectObject(hdc, hFont);
+	D3DXCreateText(g_pD3DDevice, hdc, L"Direct3D", 0.001f, 0.01f, &m_p3DText, 0, 0);
+
+	SelectObject(hdc, hOldFont);
+	DeleteObject(hFont);
+	DeleteDC(hdc);
+}
+
+void cMainGame::TextRender()
+{
+	string sText("ABC abc 123 !@#$ 가나다라 ㅁㄴㅇㄹ");
+	RECT rc;
+	SetRect(&rc, 100, 100, 301, 200);
+
+	LPD3DXFONT pFont = g_pFontManager.GetFont(CFontManager::E_DEFAULT);
+	
+	pFont->DrawTextA
+	(
+		nullptr, 
+		sText.c_str(), 
+		sText.size(), 
+		&rc, 
+		DT_LEFT | DT_TOP | DT_NOCLIP, 
+		D3DCOLOR_XRGB(255, 255, 0)
+	);
+
+
+	D3DXMATRIXA16 matWorld, matS, matR, matT;
+	D3DXMatrixScaling(&matS, 1.0f, 1.0f, 5.0f);
+	D3DXMatrixRotationX(&matR, -D3DX_PI * 0.25f);
+	D3DXMatrixTranslation(&matT, -2.0f, 1.0f, 0.0f);
+	matWorld = matS * matR * matT;
+
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	m_p3DText->DrawSubset(0);
+	
 }
 
 //

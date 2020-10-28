@@ -49,6 +49,9 @@
     <Filter Include="Obilion">
       <UniqueIdentifier>{d7a9d7eb-8a45-4285-96d2-1068cda013e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{18e361d4-ea54-4d52-9c96-2a957de43406}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -222,6 +225,9 @@
     <ClInclude Include="CSkinnedMeshManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CFontManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -384,6 +390,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CSkinnedMeshManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
