@@ -29,7 +29,10 @@
 #include "cSphere.h"
 #include "CZealot.h"
 
-
+inline DWORD FtoDW(float f)
+{
+	return *((DWORD*)&f);
+}
 cMainGame::cMainGame()
 	: m_pCubePC(nullptr)
 	  , m_pCamera(nullptr)
@@ -207,6 +210,7 @@ void cMainGame::setup()
 	//CreateFontW();
 	//Setup_Obj();
 	//Load_Surface();
+	SetupParticle();
 	Set_Light();
 	//SetupUI();
 	//SetupPeakingObj();
@@ -282,6 +286,7 @@ void cMainGame::update()
 		p->update(p->GetKeyFrame(), NULL);
 	}
 
+	UpdateParticle();
 	
 	if (m_pSkinnedMesh)
 		m_pSkinnedMesh->update();
@@ -391,6 +396,9 @@ void cMainGame::render()
 		//	m_SpotLight->render();
 
 		//Obj_Render();
+
+		ParticleRender();
+
 		if(m_pMeshTeapot)
 			Mesh_Render();
 
@@ -833,6 +841,97 @@ void cMainGame::UIRender()
 	m_pSprite->Draw(m_pTextureUI, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	m_pSprite->End();
+}
+
+void cMainGame::SetupParticle()
+{
+	m_vecVertexParticle.resize(1000);
+	for (int i = 0; i < m_vecVertexParticle.size(); ++i)
+	{
+		float fRadius = rand() % 100 * 0.1f;
+		fRadius = 50.f;
+
+		m_vecVertexParticle[i].p = D3DXVECTOR3(0, 0, fRadius);
+		D3DXVECTOR3	vAngle = D3DXVECTOR3(
+			D3DXToRadian(rand() % 3600 * 0.1f), 
+			D3DXToRadian(rand() % 3600 * 0.1f), 
+			D3DXToRadian(rand() % 3600 * 0.1f));
+
+		D3DXMATRIX matRx, matRy, matRz, matWorld;
+
+		D3DXMatrixRotationX(&matRx, vAngle.x);
+		D3DXMatrixRotationY(&matRy, vAngle.y);
+		D3DXMatrixRotationZ(&matRz, vAngle.z);
+		matWorld = matRx * matRy * matRz;
+
+		D3DXVec3TransformCoord(&m_vecVertexParticle[i].p, &m_vecVertexParticle[i].p, &matWorld);
+		m_vecVertexParticle[i].c = D3DCOLOR_ARGB(255, 180, 70, 20);
+	}
+}
+
+void cMainGame::UpdateParticle()
+{
+	static int nAlpha = 0;
+	static int nDelta = 4;
+	nAlpha += nDelta;
+
+	if(nAlpha > 255)
+	{
+		nAlpha = 255;
+		nDelta *= -1;
+	}
+	if(nAlpha < 0)
+	{
+		nAlpha = 0;
+		nDelta *= -1;
+	}
+
+	for (int i = 0; i < m_vecVertexParticle.size(); ++i)
+	{
+		if (i % 2) continue;
+		m_vecVertexParticle[i].c = D3DCOLOR_ARGB(nAlpha, 180, 70, 20);
+	}
+}
+
+void cMainGame::ParticleRender()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMatrixIdentity(&matWorld);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSCALEENABLE, true);
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSIZE, FtoDW(5.0f));
+
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSCALE_A, FtoDW(0.0f));
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSCALE_B, FtoDW(0.0f));
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSCALE_C, FtoDW(1.0f));
+
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSIZE_MIN, FtoDW(0.0f));
+	g_pD3DDevice->SetRenderState(D3DRS_POINTSIZE_MAX, FtoDW(10.0f));
+
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+
+	g_pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
+	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
+	g_pD3DDevice->SetTexture(0, g_pTextureManager.GetTexture("data/particle/alpha_tex.tga"));
+	g_pD3DDevice->DrawPrimitiveUP(D3DPT_POINTLIST, m_vecVertexParticle.size(), &m_vecVertexParticle[0], sizeof ST_PC_VERTEX);
+
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
 }
 
 //

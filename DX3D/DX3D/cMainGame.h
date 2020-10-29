@@ -189,4 +189,15 @@ public:
 private:
 	CMainUI*				m_pMainUI;
 	// <<
+
+	// >> particle
+private:
+	vector<ST_PC_VERTEX>	m_vecVertexParticle;
+public:
+	void SetupParticle();
+	void UpdateParticle();
+	void ParticleRender();
+	
+	// <<
+	
 };
