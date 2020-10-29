@@ -30,7 +30,7 @@ CMainUI::CMainUI(): m_nBeforeX(0), m_nBeforeY(0), m_isDrag(false)
 	button->Load("data/UI", "btn-med-over.png", CButton::E_HOVER);
 	button->Load("data/UI", "btn-med-down.png", CButton::E_DOWN);
 	button->SetPosition(m_pRootButton->GetWidth() * 0.5f - button->GetWidth() * 0.5f, 300);
-	//button->SetEvent([]() { std::cout << "hello\n"; });
+	
 	m_pRootButton->AddChild(button);
 
 	button = new CButton;

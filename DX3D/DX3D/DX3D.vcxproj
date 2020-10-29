@@ -200,6 +200,7 @@
     <ClInclude Include="CTimeManager.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIManager.h" />
+    <ClInclude Include="CUITree.h" />
     <ClInclude Include="CZealot.h" />
     <ClInclude Include="DX3D.h" />
     <ClInclude Include="iMap.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="CTimeManager.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIManager.cpp" />
+    <ClCompile Include="CUITree.cpp" />
     <ClCompile Include="CZealot.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="iMap.cpp" />

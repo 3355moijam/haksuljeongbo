@@ -240,6 +240,9 @@
     <ClInclude Include="CUI.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="CUITree.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -417,6 +420,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CUITree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

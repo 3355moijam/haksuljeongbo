@@ -199,5 +199,30 @@ public:
 	void ParticleRender();
 	
 	// <<
+
+private:
+	LPDIRECT3DTEXTURE9		m_pTex0;
+	LPDIRECT3DTEXTURE9		m_pTex1;
+	LPDIRECT3DTEXTURE9		m_pTex2;
+	LPDIRECT3DTEXTURE9		m_pTex3;
+	vector<ST_PT_VERTEX>	m_vecVertex_Multi;
+
+	int						m_nType;
+public:
+	void SetupMultiTexture();
+	void UpdateMultiTexture();
+	void MultiTextureRender();
+
+	void MultiTextureRender1();
+	void MultiTextureRender2();
+	void MultiTextureRender3();
+	void MultiTextureRender4();
+	void MultiTextureRender5();
+	void MultiTextureRender6();
+	void MultiTextureRender7();
+	void MultiTextureRender8();
+	void MultiTextureRender9();
+	void MultiTextureRender0();
+	void MultiTextureRender_default();
 	
 };
