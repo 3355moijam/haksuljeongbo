@@ -10,6 +10,15 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include <Windows.h>
+#include <locale.h>
+#include <iostream>
+#include <vector>
+#include <string>
 
+using std::cout;
+using std::cin;
+using std::vector;
+using std::string;
 
 // TODO: reference additional headers your program requires here

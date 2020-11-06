@@ -28,3 +28,5 @@ using namespace std;
 // TODO: reference additional headers your program requires here
 // funtion library
 #include "FunctionLibrary.h"
+//#include "./class/Subject.h"
+//#include "./class/Observer.h"

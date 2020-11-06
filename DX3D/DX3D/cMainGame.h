@@ -136,13 +136,22 @@ private:
 	cFieldMap*			m_pFieldMap;
 	
 	// <<
+
 	// >> anim
 private:
 	CObj_X*				m_pObj_X;
 	CSkinnedMesh*		m_pSkinnedMesh;
+	LPD3DXEFFECT		m_pShader;
+	LPDIRECT3DTEXTURE9	m_pShaderTexture;
+	LPDIRECT3DTEXTURE9	m_pSpecularTexture;
+
 public:
 	void SkinnedMesh_Render();
+	bool LoadAsset();
+	LPD3DXEFFECT LoadShader(const char* szFilename);
+	LPDIRECT3DTEXTURE9 LoadTexture(const char * szFilename);
 	// <<
+	 
 	// >> frustum culling
 private:
 	CFrustumCube*		m_pFrustumCube;
@@ -208,6 +217,10 @@ private:
 	vector<ST_PT_VERTEX>	m_vecVertex_Multi;
 
 	int						m_nType;
+
+
+	
+
 public:
 	void SetupMultiTexture();
 	void UpdateMultiTexture();
@@ -224,5 +237,18 @@ public:
 	void MultiTextureRender9();
 	void MultiTextureRender0();
 	void MultiTextureRender_default();
+
+	void SetBillboard();
+
+private:
+	LPDIRECT3DTEXTURE9		m_pDiffuseMap1;
+	LPDIRECT3DTEXTURE9		m_pDiffuseMap2;
+	LPDIRECT3DTEXTURE9		m_pAlphaMap;
+public:
+	void MultiTextureRender99();
+
+	// >> fog
+	void SetupFog();
+	// <<
 	
 };

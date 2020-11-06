@@ -60,6 +60,18 @@
     <ClInclude Include="class\cDijkstra.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="class\ConsolePersonObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="class\Observer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="class\Subject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="class\ClockTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -101,7 +113,7 @@
     <ClCompile Include="class\cDijkstra.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="1015 two dot.cpp">
+    <ClCompile Include="fbx test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

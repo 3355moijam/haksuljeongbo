@@ -22,4 +22,5 @@ public:
 	void update();
 
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	const D3DXVECTOR3& GetPosition() const { return m_vEye; }
 };

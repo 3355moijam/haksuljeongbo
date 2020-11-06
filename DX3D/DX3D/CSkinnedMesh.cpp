@@ -132,14 +132,14 @@ void CSkinnedMesh::SetupBoneMatrixPtrs(LPD3DXFRAME pFrame)
 	if(pFrame && pFrame->pMeshContainer)
 	{
 		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pFrame->pMeshContainer;
-
+		
 		if(pBoneMesh->pSkinInfo)
 		{
 			LPD3DXSKININFO pSkinInfo = pBoneMesh->pSkinInfo;
 			DWORD dwNumBones = pSkinInfo->GetNumBones();
 			for (DWORD i = 0; i < dwNumBones; ++i)
 			{
-				ST_BONE* pBone = (ST_BONE*)D3DXFrameFind(m_pRoot, pSkinInfo->GetBoneName((i)));
+				ST_BONE* pBone = (ST_BONE*)D3DXFrameFind(m_pRoot, pSkinInfo->GetBoneName(i));
 
 				pBoneMesh->ppBoneMatrixPtrs[i] = &(pBone->CombinedTransformationMatrix);
 			}
