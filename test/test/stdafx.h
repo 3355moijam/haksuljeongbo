@@ -21,4 +21,6 @@ using std::cin;
 using std::vector;
 using std::string;
 
+#include "CEventManager.h"
+
 // TODO: reference additional headers your program requires here

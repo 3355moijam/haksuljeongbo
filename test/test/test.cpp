@@ -3,11 +3,18 @@
 
 #include "stdafx.h"
 
-//
-//
-//int main()
-//{
-//	
-//	return 0;
-//}
+#include "CDailyEffect.h"
+#include "CEventPublisher.h"
+#include "CObserver.h"
+
+int main()
+{
+	CPerson a("Àç¿í", 27);
+	CHappyBirthDay b;
+	a.AddAge();
+	a.AddAge();
+	a.AddAge();
+
+	return 0;
+}
 

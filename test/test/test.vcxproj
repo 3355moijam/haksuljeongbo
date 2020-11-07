@@ -145,14 +145,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CObservable.h" />
+    <ClInclude Include="CDailyEffect.h" />
+    <ClInclude Include="CDayState.h" />
+    <ClInclude Include="CEventManager.h" />
+    <ClInclude Include="CEventPublisher.h" />
     <ClInclude Include="CObserver.h" />
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CObservable.cpp" />
+    <ClCompile Include="CDailyEffect.cpp" />
+    <ClCompile Include="CDayState.cpp" />
+    <ClCompile Include="CEventManager.cpp" />
+    <ClCompile Include="CEventPublisher.cpp" />
     <ClCompile Include="CObserver.cpp" />
     <ClCompile Include="CSingleton.cpp" />
     <ClCompile Include="stdafx.cpp" />
