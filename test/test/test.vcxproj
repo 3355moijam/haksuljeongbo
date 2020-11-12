@@ -145,6 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAttackStrategy.h" />
     <ClInclude Include="CDailyEffect.h" />
     <ClInclude Include="CDayState.h" />
     <ClInclude Include="CEventManager.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAttackStrategy.cpp" />
     <ClCompile Include="CDailyEffect.cpp" />
     <ClCompile Include="CDayState.cpp" />
     <ClCompile Include="CEventManager.cpp" />
