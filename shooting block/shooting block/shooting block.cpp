@@ -131,8 +131,6 @@ cUI ui;
 cChar* chara;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	//static cUI ui;
-	//static cChar* chara;
     switch (message)
     {
 	case WM_CREATE:
