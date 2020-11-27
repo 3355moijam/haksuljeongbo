@@ -6,14 +6,18 @@
 #include "CDailyEffect.h"
 #include "CEventPublisher.h"
 #include "CObserver.h"
+#include "CTestSingleton.h"
 
 int main()
 {
-	CPerson a("Àç¿í", 27);
-	CHappyBirthDay b;
-	a.AddAge();
-	a.AddAge();
-	a.AddAge();
+	cout << CTestSingleton::GetInstance()->GetA() << endl;
+	CTestSingleton::GetInstance()->SetA(10);
+	cout << CTestSingleton::GetInstance()->GetA() << endl;
+
+	CTestSingleton k;
+	k.SetA(15);
+	cout << CTestSingleton::GetInstance()->GetA() << endl;
+	cout << k.GetA() << endl;
 
 	return 0;
 }
