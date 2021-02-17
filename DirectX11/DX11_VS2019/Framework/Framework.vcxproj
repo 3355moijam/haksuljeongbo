@@ -165,6 +165,12 @@ copy /Y "$(SolutionDir)Debug\Framework.pdb" "$(SolutionDir)UnitTest\"</Command>
   <ItemGroup>
     <ClInclude Include="Environment\Terrain.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\MeshCube.h" />
+    <ClInclude Include="Meshes\MeshCylinder.h" />
+    <ClInclude Include="Meshes\MeshGrid.h" />
+    <ClInclude Include="Meshes\MeshQuad.h" />
+    <ClInclude Include="Meshes\MeshSphere.h" />
     <ClInclude Include="Renders\Context.h" />
     <ClInclude Include="Renders\Shader.h" />
     <ClInclude Include="Renders\Texture.h" />
@@ -190,6 +196,12 @@ copy /Y "$(SolutionDir)Debug\Framework.pdb" "$(SolutionDir)UnitTest\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Environment\Terrain.cpp" />
+    <ClCompile Include="Meshes\Mesh.cpp" />
+    <ClCompile Include="Meshes\MeshCube.cpp" />
+    <ClCompile Include="Meshes\MeshCylinder.cpp" />
+    <ClCompile Include="Meshes\MeshGrid.cpp" />
+    <ClCompile Include="Meshes\MeshQuad.cpp" />
+    <ClCompile Include="Meshes\MeshSphere.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\Texture.cpp" />

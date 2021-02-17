@@ -12,11 +12,13 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="DrawTexture.h" />
     <ClInclude Include="DrawTerrain.h" />
+    <ClInclude Include="DrawMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawVertex.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="DrawTexture.cpp" />
     <ClCompile Include="DrawTerrain.cpp" />
+    <ClCompile Include="DrawMesh.cpp" />
   </ItemGroup>
 </Project>

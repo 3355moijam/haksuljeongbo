@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Main.h"
+
+#include "DrawMesh.h"
 #include "Systems/Window.h"
 #include "DrawVertex.h"
 #include "DrawTexture.h"
@@ -9,7 +11,8 @@ void Main::Initialize()
 {
 	//Push(new DrawVertex());
 	//Push(new DrawTexture());
-	Push(new DrawTerrain());
+	//Push(new DrawTerrain());
+	Push(new DrawMesh());
 }
 
 void Main::Ready()

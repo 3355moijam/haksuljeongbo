@@ -41,6 +41,8 @@ Context::Context()
 
 	//D3DXMatrixLookAtLH(&view, &position, &(position + forward), &up);
 	camera = new FreeCam();
+
+	lightDirection = Vector3(-1, -1, 1);
 }
 
 Context::~Context()
