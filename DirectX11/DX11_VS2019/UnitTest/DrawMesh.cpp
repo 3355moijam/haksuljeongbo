@@ -30,12 +30,10 @@ void DrawMesh::Initialize()
 		cylinder[i]->Scale(5, 5, 5);
 		cylinder[i]->Color(0, 1, 0);
 
-
 		sphere[i] = new MeshSphere(shader, 0.5f, 20, 20);
 		sphere[i]->Position(20 + (float)i * 10, 3.0f, -15.0f);
 		sphere[i]->Scale(5, 5, 5);
 		sphere[i]->Color(0, 0, 1);
-
 	}
 }
 
