@@ -156,6 +156,7 @@
     <ClInclude Include="cFrameCounter.h" />
     <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CFrustumCube.h" />
+    <ClInclude Include="CGimbalTest.h" />
     <ClInclude Include="cGroupNode.h" />
     <ClInclude Include="cBody.h" />
     <ClInclude Include="cCamera2.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="cFrameCounter.cpp" />
     <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CFrustumCube.cpp" />
+    <ClCompile Include="CGimbalTest.cpp" />
     <ClCompile Include="cGroupNode.cpp" />
     <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cCamera2.cpp" />

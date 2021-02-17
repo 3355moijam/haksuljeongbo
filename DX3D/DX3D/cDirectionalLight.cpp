@@ -10,11 +10,11 @@ cDirectionalLight::~cDirectionalLight()
 void cDirectionalLight::setup()
 {
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	light.Diffuse = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	light.Specular = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
+	light.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	light.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	light.Specular = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-	D3DXVECTOR3 vDir(1.0f, -1.0f, 0.0f);
+	D3DXVECTOR3 vDir(1.0f, -1.0f, 1.0f);
 	D3DXVec3Normalize(&vDir, &vDir);
 	light.Direction = vDir;
 	g_pD3DDevice->SetLight(0, &light);

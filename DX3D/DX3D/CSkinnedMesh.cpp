@@ -7,6 +7,8 @@ CSkinnedMesh::CSkinnedMesh(): m_pRoot(nullptr), m_pAnimController(nullptr), m_fB
                               m_fPassedBlendTime(0.0f),
                               m_isAnimBlend(false), m_dAnimPeriod(0), m_fAnimTime(0), m_isInputOn(true), m_vMin{}, m_vMax{}
 {
+
+	//D3DXMatrixScaling(&m_matWorldTM, 0.02, 0.02, 0.02);
 	D3DXMatrixIdentity(&m_matWorldTM);
 	
 	
@@ -37,11 +39,11 @@ void CSkinnedMesh::setup(char* szFolder, char* szFile)
 		&m_pRoot, 
 		&m_pAnimController
 	);
-
+	
 	SetupBoneMatrixPtrs(m_pRoot);
 }
 
-void CSkinnedMesh::update()
+void CSkinnedMesh::Update()
 {
 	if (m_isAnimBlend)
 	{
@@ -59,9 +61,31 @@ void CSkinnedMesh::update()
 			m_pAnimController->SetTrackWeight(1, 1.0f - fWeight);
 		}
 	}
+
+	//static D3DXMATRIXA16 mScale, mRotX, mRotY, mRotZ, mTrans;
+	//D3DXMatrixScaling(&mScale, 0.02, 0.02, 0.02);
+	//static float _x = 0, _y = 0, _z = 0;
+	//D3DXMatrixTranslation(&mTrans, -1, 0, 1);
+	//if (GetKeyState('Z') & 0x8000)
+	//{
+	//	D3DXMatrixRotationX(&mRotX, _x += 0.01);
+	//}
+	//if (GetKeyState('X') & 0x8000)
+	//{
+	//	D3DXMatrixRotationY(&mRotY, _y += 0.01);
+	//}
+	//if (GetKeyState('C') & 0x8000)
+	//{
+	//	D3DXMatrixRotationZ(&mRotZ, _z += 0.01);
+	//}
+	//m_pRoot->TransformationMatrix = mScale * mRotX * mRotY * mRotZ * mTrans;
+
+
+
+
 	
 	m_pAnimController->AdvanceTime(g_pTimeManager.GetElapsedTime(), NULL);
-	update(m_pRoot, NULL);
+	Update((ST_BONE*)m_pRoot, &m_matWorldTM);
 	UpdateSkinnedMesh(m_pRoot);
 
 	m_fAnimTime += g_pTimeManager.GetElapsedTime();
@@ -70,10 +94,15 @@ void CSkinnedMesh::update()
 		//m_isInputOn = true;
 		SetAnimationIndexBlend(IDLE);
 	}
-	
+
+
+
+
+
+
 }
 
-void CSkinnedMesh::update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
+void CSkinnedMesh::Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
 {
 	
 	if (pFrame == NULL)
@@ -88,13 +117,13 @@ void CSkinnedMesh::update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
 
 	if(pFrame->pFrameFirstChild)
 	{
-		update(pFrame->pFrameFirstChild, pFrame);
+		Update(pFrame->pFrameFirstChild, pFrame);
 		
 	}
 
 	if(pFrame->pFrameSibling)
 	{
-		update(pFrame->pFrameSibling, pParent);
+		Update(pFrame->pFrameSibling, pParent);
 	}
 }
 
@@ -110,7 +139,7 @@ void CSkinnedMesh::render(LPD3DXFRAME pFrame)
 		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
 		if(pBoneMesh->MeshData.pMesh)
 		{
-			g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
+			//g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
 			for (size_t i = 0; i < pBoneMesh->vecMtl.size(); ++i)
 			{
 				g_pD3DDevice->SetTexture(0, pBoneMesh->vecTexture[i]);
@@ -192,7 +221,7 @@ void CSkinnedMesh::UpdateSkinnedMesh(LPD3DXFRAME pFrame)
 void CSkinnedMesh::SetAnimationIndex(int nIndex)
 {
 	int num = m_pAnimController->GetNumAnimationSets();
-	if (nIndex > num) nIndex = nIndex % num;
+	if (nIndex >= num) nIndex = nIndex % num;
 
 	LPD3DXANIMATIONSET pAnimSet = NULL;
 	m_pAnimController->GetAnimationSet(nIndex, &pAnimSet);
@@ -210,7 +239,7 @@ void CSkinnedMesh::SetAnimationIndexBlend(int nIndex)
 	m_fPassedBlendTime = 0.0f;
 
 	int num = m_pAnimController->GetNumAnimationSets();
-	if (nIndex > num) nIndex = nIndex % num;
+	if (nIndex >= num) nIndex = nIndex % num;
 
 	LPD3DXANIMATIONSET pPrevAnimSet = NULL;
 	LPD3DXANIMATIONSET pNextAnimSet = NULL;

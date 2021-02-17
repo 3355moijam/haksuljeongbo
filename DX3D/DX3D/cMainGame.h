@@ -6,6 +6,7 @@
 //#include "cCube.h"
 //#include "cGrid.h"
 
+class CGimbalTest;
 class CMainUI;
 class CZealot;
 class CFrustum;
@@ -250,5 +251,12 @@ public:
 	// >> fog
 	void SetupFog();
 	// <<
-	
+
+private:
+	vector<CObj_X*>			m_vecX;
+	void RenderX();
+
+	// >> gimbal test
+private:
+	CGimbalTest*			m_pGimbalTest;
 };

@@ -178,28 +178,59 @@ void RenderScene()
 	// projection
 	D3DXMATRIXA16	matProjection;
 	D3DXMatrixPerspectiveFovLH(&matProjection, FOV, ASPECT_RATIO, NEAR_PLANE, FAR_PLANE);
-
+	
 	// world
 	D3DXMATRIXA16	matWorld;
 	D3DXMatrixIdentity(&matWorld);
-	static float RotY = 0;
-	RotY += 0.4f * PI / 180.0f;
-	if (RotY > 2 * PI)
-		RotY -= 2 * PI;
-	D3DXMatrixRotationY(&matWorld, RotY);
+	//static float RotY = 0;
+	//RotY += 0.4f * PI / 180.0f;
+	//if (RotY > 2 * PI)
+	//	RotY -= 2 * PI;
+	//D3DXMatrixRotationY(&matWorld, RotY);
+	//D3DXMatrixScaling(&matWorld, 0.1f, 0.1f, 0.1f);
 
-	g_pShader->SetMatrix("gWorldMatrix", &matWorld);
-	g_pShader->SetMatrix("gViewMatrix", &matView);
-	g_pShader->SetMatrix("gProjectionMatrix", &matProjection);
-	//g_pShader->SetValue("gColor", &D3DXVECTOR4(0.9686f, 0.4078f, 0.3961f, 1.0f), sizeof D3DXVECTOR4);
+	//g_pShader->SetMatrix("gWorldMatrix", &matWorld);
+	//g_pShader->SetMatrix("gViewMatrix", &matView);
+	//g_pShader->SetMatrix("gProjectionMatrix", &matProjection);
+	////g_pShader->SetValue("gColor", &D3DXVECTOR4(0.9686f, 0.4078f, 0.3961f, 1.0f), sizeof D3DXVECTOR4);
 
-	D3DXCOLOR	color(1.0f , 0.95f, 0.55f, 1);
-	g_pShader->SetValue("gColor", &color, sizeof color);
+	//D3DXCOLOR	color(1.0f , 0.95f, 0.55f, 1);
+	//g_pShader->SetValue("gColor", &color, sizeof color);
 
-	g_pShader->SetTexture("DiffuseMap_Tex", g_pShaderTexture);
-
+	//g_pShader->SetTexture("DiffuseMap_Tex", g_pShaderTexture);
 	
-
+	g_pShader->SetTexture("nebTexture_Tex", g_pShaderTexture);
+	D3DXMATRIXA16 worldinvt, wvp, viewinv, viewinvtrans, worldview, nebxf;
+	D3DXMatrixInverse(&worldinvt, 0, &matWorld);
+	D3DXMatrixTranspose(&worldinvt, &worldinvt);
+	wvp = matWorld * matView * matProjection;
+	D3DXMatrixInverse(&viewinv,0, &matView);
+	D3DXMatrixTranspose(&viewinvtrans, &viewinv);
+	worldview = matWorld * matView;
+	g_pShader->SetMatrix("WorldITXf", &worldinvt);
+	g_pShader->SetMatrix("WvpXf", &wvp);
+	g_pShader->SetMatrix("WorldXf", &matWorld);
+	g_pShader->SetMatrix("ViewITXf", &viewinvtrans);
+	g_pShader->SetMatrix("ViewIXf", &viewinv);
+	g_pShader->SetMatrix("WorldViewXf", &worldview);
+	nebxf = matWorld;
+	static float f = .0f;
+	f += 1.f;
+	nebxf._11 += f;
+	g_pShader->SetMatrix("NebXf", &nebxf);
+	//f -= 0.002f;
+	//if (f < .001f) f = 0.1f;
+	g_pShader->SetFloat("Scale", 0.001);
+	
+	//float4x4 WorldITXf        	 : WorldInverseTranspose < string UIWidget = "None"; > ;
+	//float4x4 WvpXf       	 : WorldViewProjection < string UIWidget = "None"; > ;
+	//float4x4 WorldXf        	 : World < string UIWidget = "None"; > ;
+	//float4x4 ViewITXf       		: ViewInverseTranspose < string UIWidget = "None"; > ;
+	//float4x4 ViewIXf        	 : ViewInverse < string UIWidget = "None"; > ;
+	//float4x4 WorldViewXf	 : WorldView < string UIWidget = "None"; > ;
+	gpD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	gpD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	gpD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	UINT	numPasses = 0;
 	g_pShader->Begin(&numPasses, NULL);
 	{
@@ -301,11 +332,11 @@ bool InitD3D(HWND hWnd)
 bool LoadAssets()
 {
 	// 텍스처 로딩
-	g_pShaderTexture = LoadTexture("Earth.jpg");
+	g_pShaderTexture = LoadTexture("NebX.dds");
 	if (!g_pShaderTexture)
 		return false;
 	// 쉐이더 로딩
-	g_pShader = LoadShader("TextureMapping.fx");
+	g_pShader = LoadShader("Nebula.fx");
 	if (!g_pShader) return false;
 
 	// 모델 로딩

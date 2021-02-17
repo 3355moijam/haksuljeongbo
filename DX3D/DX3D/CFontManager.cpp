@@ -44,7 +44,7 @@ LPD3DXFONT CFontManager::GetFont(eFontType e)
 		AddFontResource(L"data/font/umberto.ttf");
 		wcscpy_s(fd.FaceName, L"Umberto");
 	}
-
+	
 	D3DXCreateFontIndirect(g_pD3DDevice, &fd, &m_mapFont[e]);
 	return m_mapFont[e];
 }
@@ -55,4 +55,6 @@ void CFontManager::Destroy()
 	{
 		SafeRelease(it.second);
 	}
+	m_mapFont.clear();
+	RemoveFontResource(L"data/font/umberto.ttf");
 }

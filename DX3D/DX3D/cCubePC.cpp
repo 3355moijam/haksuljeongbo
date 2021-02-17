@@ -3,7 +3,7 @@
 
 cCubePC::cCubePC():
 	m_vDirection(0,0,1),
-	m_vPosition(0,0,0),
+	m_vPosition(0,0.5,1),
 	m_fRotY(0.0f)
 {
 	D3DXMatrixIdentity(&m_matWorld);
@@ -179,6 +179,9 @@ void cCubePC::update()
 
 void cCubePC::render()
 {
+	D3DMATERIAL9	stMtl{};
+	//stMtl.Ambient = D3DXCOLOR(1.0)
+	g_pD3DDevice->SetMaterial(&stMtl);
 	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, false);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
 	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);

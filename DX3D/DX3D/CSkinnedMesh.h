@@ -21,8 +21,8 @@ protected:
 	enum AnimSet { ATK01, ATK02, ATK03, RUN, IDLE };
 public:
 	void setup(char* szFolder, char* szFile);
-	void update();
-	void update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent);
+	void Update();
+	void Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent);
 	void render(LPD3DXFRAME pFrame);
 	void SetupBoneMatrixPtrs(LPD3DXFRAME pFrame);
 	void UpdateSkinnedMesh(LPD3DXFRAME pFrame);

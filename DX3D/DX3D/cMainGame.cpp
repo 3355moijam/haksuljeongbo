@@ -1,6 +1,9 @@
 ﻿#include "stdafx.h"
 #include "cMainGame.h"
 
+#include <array>
+
+
 
 #include "cAseLoader.h"
 #include "cAseLoader2.h"
@@ -14,6 +17,7 @@
 #include "cFrame.h"
 #include "CFrustum.h"
 #include "CFrustumCube.h"
+#include "CGimbalTest.h"
 #include "cPointLight.h"
 #include "cSpotLight.h"
 #include "cObjectLoader.h"
@@ -33,23 +37,56 @@ inline DWORD FtoDW(float f)
 {
 	return *((DWORD*)&f);
 }
-cMainGame::cMainGame()
-	: m_pCubePC(nullptr)
-	  , m_pCamera(nullptr)
-	  , m_pGrid(nullptr), m_pCubeMan(nullptr), m_pTexture(nullptr), m_PointLight(nullptr), m_DirectionalLight(nullptr),
-	  m_SpotLight(nullptr), m_pRoute(nullptr), m_pShort(nullptr), m_pRouteMan(nullptr), m_pShortCutMan(nullptr),
-	  m_pCubeObj(nullptr), m_pMap(nullptr), m_pRootFrame(nullptr), m_pFont(nullptr), m_pMeshTeapot(nullptr),
-	  m_pMeshSphere(nullptr),
-	  m_stMtlTeapot({}), m_stMtlSphere({}), m_pObjMesh(nullptr), m_pcRay(nullptr), m_pFieldMap(nullptr),
-	  m_pObj_X(nullptr), m_pSkinnedMesh(nullptr), m_pShader(nullptr), m_pShaderTexture(nullptr),
-	  m_pSpecularTexture(nullptr),
-	  m_pFrustumCube(nullptr), m_pSphere(nullptr),
-	  m_stCullingMtl({}),
-	  m_pFrustum(nullptr), m_pHoldZealot(nullptr), m_pMoveZealot(nullptr), m_pFont2(nullptr), m_p3DText(nullptr),
-	  m_pSprite(nullptr),
-	  m_stImageInfo({}),
-	  m_pTextureUI(nullptr), m_pMainUI(nullptr), m_pTex0(nullptr), m_pTex1(nullptr), m_pTex2(nullptr), m_pTex3(nullptr),
-	  m_nType(-1), m_pDiffuseMap1(nullptr), m_pDiffuseMap2(nullptr), m_pAlphaMap(nullptr)
+cMainGame::cMainGame() :
+	m_pCubePC(nullptr),
+	m_pCamera(nullptr),
+	m_pGrid(nullptr),
+	m_pCubeMan(nullptr),
+	m_pTexture(nullptr),
+	m_PointLight(nullptr),
+	m_DirectionalLight(nullptr),
+	m_SpotLight(nullptr),
+	m_pRoute(nullptr),
+	m_pShort(nullptr),
+	m_pRouteMan(nullptr),
+	m_pShortCutMan(nullptr),
+	m_pCubeObj(nullptr),
+	m_pMap(nullptr),
+	m_pRootFrame(nullptr),
+	m_pFont(nullptr),
+	m_pMeshTeapot(nullptr),
+	m_pMeshSphere(nullptr),
+	m_stMtlTeapot({}),
+	m_stMtlSphere({}),
+	m_pObjMesh(nullptr),
+	m_pcRay(nullptr),
+	m_pFieldMap(nullptr),
+	m_pObj_X(nullptr),
+	m_pSkinnedMesh(nullptr),
+	m_pShader(nullptr),
+	m_pShaderTexture(nullptr),
+	m_pSpecularTexture(nullptr),
+	m_pFrustumCube(nullptr),
+	m_pSphere(nullptr),
+	m_stCullingMtl({}),
+	m_pFrustum(nullptr),
+	m_pHoldZealot(nullptr),
+	m_pMoveZealot(nullptr),
+	m_pFont2(nullptr),
+	m_p3DText(nullptr),
+	m_pSprite(nullptr),
+	m_stImageInfo({}),
+	m_pTextureUI(nullptr),
+	m_pMainUI(nullptr),
+	m_pTex0(nullptr),
+	m_pTex1(nullptr),
+	m_pTex2(nullptr),
+	m_pTex3(nullptr),
+	m_nType(-1),
+	m_pDiffuseMap1(nullptr),
+	m_pDiffuseMap2(nullptr),
+	m_pAlphaMap(nullptr),
+	m_pGimbalTest(nullptr)
 /*, m_stMtlNone({}), m_stMtlPicked({}),
 	  m_stMtlPlane({})*/
 //, player()
@@ -58,7 +95,7 @@ cMainGame::cMainGame()
 
 cMainGame::~cMainGame()
 {
-	
+	SafeDelete(m_pGimbalTest);
 	SafeDelete(m_pCubePC);
 	SafeDelete(m_pCamera);
 	SafeDelete(m_pGrid);
@@ -91,6 +128,11 @@ cMainGame::~cMainGame()
 	for (auto * p : m_vecObjMtltex)
 	{
 		SafeRelease(p);
+	}
+
+	for (auto * x : m_vecX)
+	{
+		SafeDelete(x);
 	}
 
 	for (auto * p : m_vecGroup)
@@ -191,15 +233,17 @@ void cMainGame::setup()
 	//}
 	
 	
-	m_pCubeMan = new cCubeMan;
-	m_pCubeMan->setup();
+	//m_pCubeMan = new cCubeMan;
+	//m_pCubeMan->setup();
 
 	m_pCamera = new cCamera2;
-	m_pCamera->setup(&m_pCubeMan->getPosition());
+	m_pCamera->setup(nullptr);
 
 	m_pGrid = new cGrid2;
 	m_pGrid->setup(15, 1);
 
+	//m_pGimbalTest = new CGimbalTest;
+	
 	//SetupFrustum();
 	//m_pRoute = new cGuideline;
 	//m_pRoute->setup(D3DCOLOR_XRGB(0, 255, 0));
@@ -219,7 +263,7 @@ void cMainGame::setup()
 	//m_pCubeObj = new cCubeObj;
 	//m_pCubeObj->setup();
 
-	m_pMainUI = new CMainUI;
+	//m_pMainUI = new CMainUI;
 
 	//SetupOBB();
 
@@ -229,7 +273,7 @@ void cMainGame::setup()
 	//Load_Surface();
 	//SetupParticle();
 	Set_Light();
-	SetupFog();
+	//SetupFog();
 
 	//SetupUI();
 	//SetupPeakingObj();
@@ -245,11 +289,82 @@ void cMainGame::setup()
 	
 	//m_pObj_X = new CObj_X;
 	//m_pObj_X->open("zealot.X", "data/Zealot");
-	//m_pObj_X->open("bigship1.x", "data");
+	//m_pObj_X->open("gear1.x", "data/model");
 
-	m_pSkinnedMesh = new CSkinnedMesh;
-	m_pSkinnedMesh->setup("data/Zealot", "zealot.X");
-	LoadAsset();
+	CObj_X* p;
+	//p = new CObj_X; p->open("gear1.x", "data/model", 0.1); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("gear2.x", "data/model", 0.1); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("bearing.x", "data/model", 0.5); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("IronPlan.x", "data/model", 0.5); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("1.x", "data/model", 0.5); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("2.x", "data/model", 0.5); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("3.x", "data/model", 0.5); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("MixMch1.x", "data/model", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("MixMch2.x", "data/model", 0.01); m_vecX.push_back(p);
+	
+	//p = new CObj_X; p->open("모래돌_벽_타일.x"				, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌_체크타일.x"				, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌_타일_계단 일반.x"		, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌타일.x"					, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌타일1.x"					, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래타일1.x"					, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래타일2.x"					, "data/model/타일", 0.0021); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래타일3.x"					, "data/model/타일", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("물타일.x"						, "data/model/타일", 0.01); m_vecX.push_back(p);
+
+
+	//p = new CObj_X; p->open("야자수몸통.x"				, "data/model/타일/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("조약돌2.x"					, "data/model/타일/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("조약돌3.x"					, "data/model/타일/장식용", 0.01); m_vecX.push_back(p);
+
+	//p = new CObj_X; p->open("모래더미.x"					, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌_더미.x"					, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("선인장1.x"						, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("선인장2.x"						, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("야자수1.x"						, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("야자수2.x"						, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("파라오관.x"					, "data/model/오브젝트", 0.01); m_vecX.push_back(p);
+
+
+	//p = new CObj_X; p->open("돌 항아리.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래 기둥.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래_윗부분.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래기둥_꺽임.x"					, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌 버튼.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌 탁자.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌_원기둥.x"					, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래돌_하수구4방향.x"				, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("모래타일위.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("사막왕좌.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("황금선반.x"						, "data/model/오브젝트/장식용", 0.01); m_vecX.push_back(p);
+
+
+	//p = new CObj_X; p->open("1단계 조합기 버튼 스위치.x"				, "data/model", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("2단계 조합기 버튼 스위치.x"				, "data/model", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("부품 자판기 스위치.x"						, "data/model", 0.01); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("testBox.X"						, "data/model", 0.012); m_vecX.push_back(p);
+
+	//p = new CObj_X; p->open("arm_left.X"						, "data/model", 0.03); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("arm_right.x"						, "data/model", 0.075); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("body.x"							, "data/model", 0.12); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("leg1.X"							, "data/model", 0.04); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("leg2.X"							, "data/model", 0.04); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("leg3.x"							, "data/model", 0.04); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("영웅의증표.x"						, "data/model", 0.05); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("최후의 수단.X"						, "data/model", 0.012); m_vecX.push_back(p);
+
+	//p = new CObj_X; p->open("모래타일3_1.x"					, "data/model/타일", 10); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("굵은 모래 바닥.x"				, "data/model/타일", 0.021); m_vecX.push_back(p);
+	//p = new CObj_X; p->open("tornado.x"						, "data/model", 0.1); m_vecX.push_back(p);
+	p = new CObj_X; p->open("medusa_skill_3.X"				, "data/model", 0.1); m_vecX.push_back(p);
+	
+	//m_pSkinnedMesh = new CSkinnedMesh;
+	//m_pSkinnedMesh->setup("data/Zealot", "zealot.X");
+	//m_pSkinnedMesh = new CSkinnedMesh("data/Zealot", "MTA_CV.X");
+	//m_pSkinnedMesh->setup("data/Zealot", "MTA_CV.X");
+
+	//LoadAsset();
+	
 	
 	//m_pFrustumCube = new CFrustumCube;
 	
@@ -269,8 +384,9 @@ void cMainGame::update()
 	//player.update();
 	//camera.update(cube);
 	
-	//if(m_pCubePC)
-	//	m_pCubePC->update();
+	if(m_pCubePC)
+		m_pCubePC->update();
+	
 	if (m_pCubeMan)
 		m_pCubeMan->update(m_pFieldMap);
 	
@@ -280,8 +396,8 @@ void cMainGame::update()
 	//if (m_PointLight)
 	//	m_PointLight->update();
 
-	if (m_DirectionalLight)
-		m_DirectionalLight->update();
+	//if (m_DirectionalLight)
+	//	m_DirectionalLight->update();
 
 	//if (m_SpotLight)
 	//	m_SpotLight->update();
@@ -310,7 +426,7 @@ void cMainGame::update()
 
 	g_pTimeManager.update();
 	if (m_pSkinnedMesh)
-		m_pSkinnedMesh->update();
+		m_pSkinnedMesh->Update();
 
 	if (m_pFrustum)
 		m_pFrustum->Update();
@@ -402,9 +518,11 @@ void cMainGame::render()
 		//if (m_pCubeObj)
 		//	m_pCubeObj->render();
 		
-		//if (m_pCubePC)
-		//	m_pCubePC->render();
+		if (m_pCubePC)
+			m_pCubePC->render();
 
+		RenderX();
+		
 		//Draw_Texture();
 
 		//if (m_PointLight)
@@ -418,6 +536,10 @@ void cMainGame::render()
 
 		//Obj_Render();
 		//MultiTextureRender();
+
+		if (m_pGimbalTest)
+			m_pGimbalTest->Render();
+		
 		MultiTextureRender99();
 		
 		ParticleRender();
@@ -449,6 +571,8 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		m_pCamera->WndProc(hWnd, message, wParam, lParam);
 	if (m_pMainUI)
 		m_pMainUI->WndProc(hWnd, message, wParam, lParam);
+	if (m_pGimbalTest)
+		m_pGimbalTest->WndProc(hWnd, message, wParam, lParam);
 	
 	switch (message)
 	{
@@ -514,14 +638,14 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void cMainGame::Set_Light()
 {
-	//m_PointLight = new cPointLight;
-	//m_PointLight->setup();
+	m_PointLight = new cPointLight;
+	m_PointLight->setup();
 
 	m_DirectionalLight = new cDirectionalLight;
 	m_DirectionalLight->setup();
 
-	//m_SpotLight = new cSpotLight;
-	//m_SpotLight->setup();
+	m_SpotLight = new cSpotLight;
+	m_SpotLight->setup();
 }
 
 void cMainGame::Setup_Obj()
@@ -719,7 +843,7 @@ bool cMainGame::LoadAsset()
 	if (!m_pShader) return false;
 	m_pShaderTexture = LoadTexture("data/Zealot/Zealot_Diffuse.bmp");
 	if (!m_pShaderTexture) return false;
-	m_pSpecularTexture = LoadTexture("data/Zealot/yellow.png");
+	m_pSpecularTexture = LoadTexture("data/Zealot/white.png");
 	if (!m_pSpecularTexture) return false;
 	return true;
 }
@@ -1232,6 +1356,14 @@ void cMainGame::SetupFog()
 	g_pD3DDevice->SetRenderState(D3DRS_FOGSTART, FtoDW(10.0f));
 	g_pD3DDevice->SetRenderState(D3DRS_FOGEND, FtoDW(200.f));
 	g_pD3DDevice->SetRenderState(D3DRS_RANGEFOGENABLE, true);
+}
+
+void cMainGame::RenderX()
+{
+	for (auto && x : m_vecX)
+	{
+		x->render();
+	}
 }
 
 void cMainGame::MultiTextureRender1()
