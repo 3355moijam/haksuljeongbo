@@ -12,6 +12,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{BEF9DB72-339C-4B32-B346-4155AE6E6898}"
 	ProjectSection(SolutionItems) = preProject
+		..\_Shaders\000_Header.fx = ..\_Shaders\000_Header.fx
 		..\_Shaders\001_Vertex.fx = ..\_Shaders\001_Vertex.fx
 		..\_Shaders\001_Vertex.hlsl = ..\_Shaders\001_Vertex.hlsl
 		..\_Shaders\002_Rect.fx = ..\_Shaders\002_Rect.fx
@@ -20,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{BE
 		..\_Shaders\005_Texture.fx = ..\_Shaders\005_Texture.fx
 		..\_Shaders\006_Terrain.fx = ..\_Shaders\006_Terrain.fx
 		..\_Shaders\007_Mesh.fx = ..\_Shaders\007_Mesh.fx
+		..\_Shaders\008_Texture.fx = ..\_Shaders\008_Texture.fx
 	EndProjectSection
 EndProject
 Global

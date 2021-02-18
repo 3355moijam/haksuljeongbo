@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "DrawTexture.h"
 
+#include "Viewer/FreeCam.h"
+
 void DrawTexture::Initialize()
 {
 	Context::Get()->GetCamera()->Position(0, 0, -3);
-	
-	shader = new Shader(L"005_Texture.fx");
+	((FreeCam*)Context::Get()->GetCamera())->Speed(40, 2);
+	//((FreeCam*)Context::Get()->GetCamera())->Position(0, 0, -3);
+	shader = new Shader(L"008_Texture.fx");
+	texture = new Texture(L"Bricks/Bricks.png");
 	{
 		vector<VertexTexture> vertices(4);
 		vertices[0].Position = Vector3(-0.5f, -0.5f, 0.0f);
@@ -13,10 +17,10 @@ void DrawTexture::Initialize()
 		vertices[2].Position = Vector3( 0.5f, -0.5f, 0.0f);
 		vertices[3].Position = Vector3( 0.5f,  0.5f, 0.0f);
 
-		vertices[0].Uv = Vector2(0, 1);
+		vertices[0].Uv = Vector2(0, 2);
 		vertices[1].Uv = Vector2(0, 0);
-		vertices[2].Uv = Vector2(1, 1);
-		vertices[3].Uv = Vector2(1, 0);
+		vertices[2].Uv = Vector2(2, 2);
+		vertices[3].Uv = Vector2(2, 0);
 		
 		D3D11_BUFFER_DESC desc{};
 		//ZeroMemory(&desc, sizeof D3D11_BUFFER_DESC);
@@ -50,9 +54,9 @@ void DrawTexture::Initialize()
 		//(
 		//	D3D::GetDevice(), L"../../_Textures/Box.png", NULL, NULL, &srv, NULL
 		//);
-		texture = new Texture(L"Box.png");
+		
 
-		shader->AsSRV("Map")->SetResource(texture->SRV());
+		//shader->AsSRV("Map")->SetResource(texture->SRV());
 		// <<
 	}
 	
@@ -77,11 +81,27 @@ void DrawTexture::Update()
 	Matrix projection = Context::Get()->Projection();
 	shader->AsMatrix("Projection")->SetMatrix(projection);
 
+	shader->AsSRV("DiffuseMap")->SetResource(texture->SRV());
+
+	static Vector2 uv(1, 1);
+	ImGui::SliderFloat2("UV", (float*)&uv, 0, 1);
+	shader->AsVector("Uv")->SetFloatVector(uv);
+
+	static UINT address = 0;
+	ImGui::InputInt("Address", (int*)&address);
+	address %= 4;
+	shader->AsScalar("Address")->SetInt(address);
+
+	static UINT filter = 0;
+	ImGui::InputInt("Filter", (int*)&filter);
+	filter %= 2;
+	shader->AsScalar("Filter")->SetInt(filter);
+	
 }
 
 void DrawTexture::Render()
 {
-	UINT stride = sizeof Vertex;
+	UINT stride = sizeof VertexTexture;
 	UINT offset = 0;
 	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
@@ -89,7 +109,7 @@ void DrawTexture::Render()
 
 	//static bool b = true;
 	//ImGui::Checkbox("Wireframe", &b);
-	shader->DrawIndexed(0, 0 , 6);
+	shader->DrawIndexed(0, 2 , 6);
 		
 	//// rect 2
 	//{
