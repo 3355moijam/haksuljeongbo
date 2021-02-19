@@ -23,7 +23,7 @@ float4 PS(VertexOutput input) : SV_Target0
 {
     float4 diffuse = Color;
     float3 normal = normalize(input.Normal); 
-    float3 light = -LightDirection;
+    float3 light = LightDirection;
     float NdotL = saturate(dot(normal, -light));
 
     return diffuse * NdotL; 

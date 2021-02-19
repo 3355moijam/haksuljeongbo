@@ -23,12 +23,12 @@ Texture2D NormalMap;
 
 SamplerState Sampler;
 
-// SamplerState LinearSampler
-// {
-//     Filter = MIN_MAG_MIP_LINEAR;
-//     AdderssU = WRAP;
-//     AcdressV = WRAP;
-// };
+SamplerState LinearSampler
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = WRAP;
+    AddressV = WRAP;
+};
 
 struct Vertex
 {

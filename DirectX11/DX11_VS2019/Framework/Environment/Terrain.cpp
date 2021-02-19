@@ -1,7 +1,7 @@
 #include "Framework.h"
 #include "Terrain.h"
 
-Terrain::Terrain(Shader* shader, wstring heightMap):
+Terrain::Terrain(Shader* shader, wstring heightMap) :
 	shader(shader),
 	heightMap(nullptr),
 	width(0),
@@ -10,7 +10,9 @@ Terrain::Terrain(Shader* shader, wstring heightMap):
 	vertexCount(0),
 	vertexBuffer(nullptr),
 	indexCount(0),
-	indexBuffer(nullptr)
+	indexBuffer(nullptr),
+	baseMap(nullptr),
+	spacing(3, 3)
 {
 	this->heightMap = new Texture(heightMap);
 
@@ -18,6 +20,8 @@ Terrain::Terrain(Shader* shader, wstring heightMap):
 	CreateIndexData();
 	CreateNormalData();
 	CreateBuffer();
+
+	sBaseMap = shader->AsSRV("BaseMap");
 }
 
 Terrain::~Terrain()
@@ -48,6 +52,9 @@ void Terrain::CreateVertexData()
 			vertices[index].Position.x = (float)x;
 			vertices[index].Position.y = heights[pixel].r * 255.0f / 10.0f;
 			vertices[index].Position.z = (float)z;
+
+			vertices[index].Uv.x = ((float)x / (float)width) * spacing.x;
+			vertices[index].Uv.y = ((float)(height - 1 - z) / (float)height) * spacing.y;
 		}
 	}
 }
@@ -149,4 +156,56 @@ void Terrain::Render()
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	shader->DrawIndexed(0, pass, indexCount);
+}
+
+void Terrain::BaseMap(wstring file)
+{
+	SafeDelete(baseMap);
+	baseMap = new Texture(file);
+	sBaseMap->SetResource(baseMap->SRV());
+}
+
+float Terrain::GetHeight(Vector3& position)
+{
+	UINT x = (UINT)position.x;
+	UINT z = (UINT)position.z;
+
+	if (x < 0 || x > width)
+		return -1.0f;
+	if (z < 0 || z > height)
+		return -1.0f;
+
+	UINT index[4];
+	index[0] = width * (z + 0) + (x + 0);
+	index[1] = width * (z + 1) + (x + 0);
+	index[2] = width * (z + 0) + (x + 1);
+	index[3] = width * (z + 1) + (x + 1);
+
+	Vector3 v[4];
+	for (int i = 0; i < 4; i++)
+	{
+		v[i] = vertices[index[i]].Position;
+	}
+
+	float ddx = (position.x - v[0].x) / 1.0f;
+	float ddz = (position.z - v[0].z) / 1.0f;
+	// >> 1.0f´Â Ä­ Å©±â
+
+	Vector3 temp;
+	if (ddx + ddz <= 1)
+	{
+		// ÁÂÇÏ´Ü
+		temp = v[0] + (v[2] - v[0]) * ddx + (v[1] - v[0]) * ddz;
+	}
+	else
+	{
+		// ¿ì»ó´Ü
+		ddx = 1 - ddx;
+		ddz = 1 - ddz;
+
+		temp = v[3] + (v[1] - v[3]) * ddx + (v[2] - v[3]) * ddz;
+	}
+
+	return temp.y;
+
 }

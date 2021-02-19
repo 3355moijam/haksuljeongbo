@@ -10,8 +10,8 @@
 void Main::Initialize()
 {
 	//Push(new DrawVertex());
-	Push(new DrawTexture());
-	//Push(new DrawTerrain());
+	//Push(new DrawTexture());
+	Push(new DrawTerrain());
 	//Push(new DrawMesh());
 }
 

@@ -18,6 +18,7 @@ private:
 	Shader* shader;
 	
 	class Terrain* terrain;
-	
+	MeshSphere* sphere;
+	Shader*		sphereShader;
 };
 
