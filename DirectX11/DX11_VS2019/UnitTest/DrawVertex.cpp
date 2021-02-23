@@ -11,9 +11,9 @@ void DrawVertex::Initialize()
 		vertexCount = (width + 1) * (height + 1);
 		vertices.resize(vertexCount);
 
-		for (int z = 0; z <= height; ++z)
+		for (UINT z = 0; z <= height; ++z)
 		{
-			for (int x = 0; x <= width; ++x)
+			for (UINT x = 0; x <= width; ++x)
 			{
 				UINT index = (width + 1) * z + x;
 				vertices[index].Position.x = (float)x;

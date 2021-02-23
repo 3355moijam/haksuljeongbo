@@ -44,7 +44,7 @@ void DrawTerrain::Update()
 	else if (Keyboard::Get()->Press(VK_LEFT))
 		position.x -= 30.0f * Time::Delta();
 
-	position.y = terrain->GetHeight(position) + 0.5f;
+	position.y = terrain->GetPickedHeight(position) + 0.5f;
 	sphere->Position(position);
 	
 	terrain->Update();

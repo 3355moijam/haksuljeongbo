@@ -40,5 +40,6 @@ public:
 
 	void BaseMap(wstring file);
 	float GetHeight(Vector3& position);
+	float GetPickedHeight(Vector3& position);
 };
 

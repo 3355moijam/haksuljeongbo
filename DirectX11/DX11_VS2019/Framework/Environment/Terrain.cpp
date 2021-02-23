@@ -209,3 +209,46 @@ float Terrain::GetHeight(Vector3& position)
 	return temp.y;
 
 }
+
+float Terrain::GetPickedHeight(Vector3& position)
+{
+	UINT x = (UINT)position.x;
+	UINT z = (UINT)position.z;
+
+	if (x < 0 || x > width)
+		return -1.0f;
+	if (z < 0 || z > height)
+		return -1.0f;
+
+	UINT index[4];
+	index[0] = width * (z + 0) + (x + 0);
+	index[1] = width * (z + 1) + (x + 0);
+	index[2] = width * (z + 0) + (x + 1);
+	index[3] = width * (z + 1) + (x + 1);
+
+	Vector3 p[4];
+	for (int i = 0; i < 4; i++)
+	{
+		p[i] = vertices[index[i]].Position;
+	}
+
+	float u, v, distance;
+	Vector3 start(position.x, 1000, position.z);
+	Vector3 direction(0, -1, 0);
+
+	Vector3 result(-1, -1, -1);
+	// 좌하단
+	if (D3DXIntersectTri(&p[0], &p[1], &p[2], &start, &direction, &u, &v, &distance) == TRUE)
+	{
+		result = p[0] + (p[1] - p[0]) * u + (p[2] - p[0]) * v;
+	}
+
+	// : 우상단
+	if (D3DXIntersectTri(&p[3], &p[1], &p[2], &start, &direction, &u, &v, &distance) == TRUE)
+	{
+		result = p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
+	}
+
+	return result.y;
+
+}
