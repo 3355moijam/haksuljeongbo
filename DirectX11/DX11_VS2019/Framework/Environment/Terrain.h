@@ -18,16 +18,22 @@ private:
 	UINT vertexCount;
 	//TerrainVertex* vertices;
 	vector<TerrainVertex> vertices;
-	ID3D11Buffer* vertexBuffer;
+	//TerrainVertex* vertices;
+	//ID3D11Buffer* vertexBuffer;
+	VertexBuffer* vertexBuffer;
 
 	UINT indexCount;
 	//UINT* indices;
 	vector<UINT> indices;
-	ID3D11Buffer* indexBuffer;
+	//UINT* indices;
+	//ID3D11Buffer* indexBuffer;
+	IndexBuffer* indexBuffer;
 
 	Texture* baseMap;
 	ID3DX11EffectShaderResourceVariable* sBaseMap;
 	Vector2 spacing;
+
+	Matrix world;
 private:
 	void CreateVertexData();
 	void CreateIndexData();
@@ -41,5 +47,7 @@ public:
 	void BaseMap(wstring file);
 	float GetHeight(Vector3& position);
 	float GetPickedHeight(Vector3& position);
+	Vector3 GetPickedPosition();
+
 };
 

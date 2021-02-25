@@ -6,13 +6,14 @@ Terrain::Terrain(Shader* shader, wstring heightMap) :
 	heightMap(nullptr),
 	width(0),
 	height(0),
-	pass(0),
+	pass(1),
 	vertexCount(0),
 	vertexBuffer(nullptr),
 	indexCount(0),
 	indexBuffer(nullptr),
 	baseMap(nullptr),
-	spacing(3, 3)
+	spacing(3, 3),
+	world(g_matIdentity)
 {
 	this->heightMap = new Texture(heightMap);
 
@@ -27,9 +28,11 @@ Terrain::Terrain(Shader* shader, wstring heightMap) :
 Terrain::~Terrain()
 {
 	SafeDelete(heightMap);
+	//SafeDeleteArray(vertices);
+	//SafeDeleteArray(indices);
 
-	SafeRelease(vertexBuffer);
-	SafeRelease(indexBuffer);
+	SafeDelete(vertexBuffer);
+	SafeDelete(indexBuffer);
 }
 
 void Terrain::CreateVertexData()
@@ -42,6 +45,7 @@ void Terrain::CreateVertexData()
 
 	vertexCount = width * height;
 	vertices.resize(vertexCount);
+	//vertices = new TerrainVertex[vertexCount];
 
 	for (UINT z = 0; z < height; ++z)
 	{
@@ -63,6 +67,7 @@ void Terrain::CreateIndexData()
 {
 	indexCount = (width - 1) * (height - 1) * 6;
 	indices.resize(indexCount);
+	//indices = new UINT[indexCount];
 
 	UINT index = 0;
 	for (UINT z = 0; z < height - 1; ++z)
@@ -113,35 +118,19 @@ void Terrain::CreateNormalData()
 
 void Terrain::CreateBuffer()
 {
-	D3D11_BUFFER_DESC desc{};
-	//ZeroMemory(&desc, sizeof D3D11_BUFFER_DESC);
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.ByteWidth = sizeof TerrainVertex * vertexCount;
-	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	// Create Vertex Buffer
+	vertexBuffer = new VertexBuffer(&vertices[0], vertexCount, sizeof TerrainVertex);
 
-	D3D11_SUBRESOURCE_DATA subResource{};
-	subResource.pSysMem = &vertices[0];
-
-	Check(D3D::GetDevice()->CreateBuffer(&desc, &subResource, &vertexBuffer));
+	// Create Index Buffer
+	indexBuffer = new IndexBuffer(&indices[0], indexCount);
 
 
-
-	D3D11_BUFFER_DESC desc_index{};
-	ZeroMemory(&desc_index, sizeof D3D11_BUFFER_DESC);
-	desc_index.Usage = D3D11_USAGE_DEFAULT;
-	desc_index.ByteWidth = sizeof UINT * indexCount;
-	desc_index.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-	D3D11_SUBRESOURCE_DATA subResource_index{};
-	subResource_index.pSysMem = &indices[0];
-
-	Check(D3D::GetDevice()->CreateBuffer(&desc_index, &subResource_index, &indexBuffer));
 }
 
 void Terrain::Update()
 {
-	Matrix world;
-	world = g_matIdentity;
+	
+	//world = g_matIdentity;
 	shader->AsMatrix("World")->SetMatrix(world);
 	shader->AsMatrix("View")->SetMatrix(Context::Get()->View());
 	shader->AsMatrix("Projection")->SetMatrix(Context::Get()->Projection());
@@ -149,10 +138,9 @@ void Terrain::Update()
 
 void Terrain::Render()
 {
-	UINT stride = sizeof TerrainVertex;
-	UINT offset = 0;
-	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	vertexBuffer->Render();
+	indexBuffer->Render();
+
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	shader->DrawIndexed(0, pass, indexCount);
@@ -251,4 +239,53 @@ float Terrain::GetPickedHeight(Vector3& position)
 
 	return result.y;
 
+}
+
+Vector3 Terrain::GetPickedPosition()
+{
+	Vector3 start, direction;
+	Matrix V = Context::Get()->View();
+	Matrix P = Context::Get()->Projection();
+
+	//Context::Get()->GetViewport()->GetRay(&start, &direction, world, V, P);
+	Vector3 mouse = Mouse::Get()->GetPosition();
+	Vector3 n, f;
+
+	mouse.z = 0.0f;
+	Context::Get()->GetViewport()->Unproject(&n, mouse, world, V, P);
+
+	mouse.z = 1.0f;
+	Context::Get()->GetViewport()->Unproject(&f, mouse, world, V, P);
+
+	direction = f - n;
+	start = n;
+
+	for (UINT z = 0; z < height - 1; z++)
+	{
+		for (UINT x = 0; x < width - 1; x++)
+		{
+			UINT index[4];
+			index[0] = width * (z + 0) + (x + 0);
+			index[1] = width * (z + 1) + (x + 0);
+			index[2] = width * (z + 0) + (x + 1);
+			index[3] = width * (z + 1) + (x + 1);
+
+			Vector3 p[4];
+			for (int i = 0; i < 4; i++)
+			{
+				p[i] = vertices[index[i]].Position;
+			}
+
+			float u, v, distance;
+			if (D3DXIntersectTri(&p[0], &p[1], &p[2], &start, &direction, &u, &v, &distance) == TRUE)
+			{
+				return p[0] + (p[1] - p[0]) * u + (p[2] - p[0]) * v;
+			}
+			if (D3DXIntersectTri(&p[3], &p[1], &p[2], &start, &direction, &u, &v, &distance) == TRUE)
+			{
+				return p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
+			}
+		}
+	}
+	return Vector3(-1,-1,-1);
 }

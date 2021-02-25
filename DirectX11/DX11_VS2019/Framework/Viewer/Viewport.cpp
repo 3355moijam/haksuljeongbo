@@ -78,13 +78,13 @@ void Viewport::Project(OUT D3DXVECTOR3 * position, D3DXVECTOR3 & source, D3DXMAT
 
 void Viewport::Unproject(OUT D3DXVECTOR3 * position, D3DXVECTOR3 & source, D3DXMATRIX & W, D3DXMATRIX & V, D3DXMATRIX & P)
 {
-	D3DXMATRIX matrix = W * V * P;
-	D3DXMatrixInverse(&matrix, NULL, &matrix);
-
 	D3DXVECTOR3 temp = source;
 	position->x = ((temp.x - x) / width) * 2.0f - 1.0f;
 	position->y = (((temp.y - y) / height) * 2.0f - 1.0f) * -1.0f;
 	position->z = (temp.z - minDepth) / (maxDepth - minDepth);
+
+	D3DXMATRIX matrix = W * V * P;
+	D3DXMatrixInverse(&matrix, NULL, &matrix);
 
 	D3DXVec3TransformCoord(position, position, &matrix);
 }

@@ -1,6 +1,6 @@
 
 
-cbuffer CB_Perframe
+cbuffer CB_PerFrame
 {
     matrix View;
     matrix ViewInverse;
@@ -125,8 +125,10 @@ float4 WorldPosition(float4 position)
 
 float4 ViewProjection(float4 position)
 {
-    position = mul(position, View);
-    return mul(position, Projection);
+    //position = mul(position, View);
+    //return mul(position, Projection);
+    return mul(position, VP);
+
 }
 
 float3 WorldNormal(float3 normal)

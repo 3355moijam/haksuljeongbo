@@ -56,6 +56,9 @@ float4 PS(VertexOutput input) : SV_Target0
     float NdotL = saturate(dot(normal, -LightDirection));
     return diffuse * NdotL;
 }
+
+
+
 float4 PS_Address(VertexOutput input) : SV_Target0
 {
     [branch] // 최적화를 위한 키워드. 검색 필요.

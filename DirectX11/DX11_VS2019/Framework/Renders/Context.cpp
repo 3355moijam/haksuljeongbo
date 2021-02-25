@@ -43,6 +43,9 @@ Context::Context()
 	camera = new FreeCam();
 
 	lightDirection = Vector3(-1, -1, 1);
+	lightAmbient = Color(0, 0, 0, 1);
+	lightSpecular = Color(1, 1, 1, 1);
+	lightPosition = Vector3(0, 0, 0);
 }
 
 Context::~Context()

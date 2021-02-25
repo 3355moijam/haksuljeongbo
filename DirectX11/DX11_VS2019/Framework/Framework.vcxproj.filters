@@ -27,6 +27,9 @@
     <Filter Include="Meshes">
       <UniqueIdentifier>{1072398b-db77-4cac-8897-af1ddc85ce74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{7677628c-cd6a-4810-bbbc-10d66f696c3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renders\Context.h">
@@ -119,6 +122,18 @@
     <ClInclude Include="Meshes\MeshCylinder.h">
       <Filter>Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="Buffers\ConstantBuffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers\IndexBuffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers\VertexBuffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\PerFrame.h">
+      <Filter>Renders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Context.cpp">
@@ -201,6 +216,18 @@
     </ClCompile>
     <ClCompile Include="Meshes\MeshSphere.cpp">
       <Filter>Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers\ConstantBuffer.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers\IndexBuffer.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers\VertexBuffer.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\PerFrame.cpp">
+      <Filter>Renders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

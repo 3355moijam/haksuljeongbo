@@ -73,6 +73,10 @@ const Matrix g_matIdentity(
 #include "Systems/Time.h"
 #include "Systems/Gui.h"
 
+#include "Buffers/VertexBuffer.h"
+#include "Buffers/IndexBuffer.h"
+#include "Buffers/ConstantBuffer.h"
+
 #include "Viewer/Viewport.h"
 #include "Viewer/Projection.h"
 #include "Viewer/Perspective.h"

@@ -21,7 +21,11 @@ public:
 	class Perspective* GetPerspective() { return perspective; }
 	class Viewport* GetViewport() { return viewport; }
 	class Camera* GetCamera() { return camera; }
+
 	Vector3& LightDirection() { return lightDirection; }
+	Color& LightAmbient() { return lightAmbient; }
+	Color& LightSpecular() { return lightSpecular; }
+	Vector3& LightPosition() { return lightPosition; }
 private:
 	static Context* instance;
 
@@ -32,5 +36,9 @@ private:
 
 	D3DXVECTOR3 position;
 	D3DXMATRIX view;
+
 	Vector3 lightDirection;
+	Color lightAmbient;
+	Color lightSpecular;
+	Vector3 lightPosition;
 };
