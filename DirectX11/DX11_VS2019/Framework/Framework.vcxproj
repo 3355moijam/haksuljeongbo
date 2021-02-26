@@ -176,8 +176,10 @@ copy /Y "$(SolutionDir)Debug\Framework.pdb" "$(SolutionDir)UnitTest\"</Command>
     <ClInclude Include="Meshes\MeshSphere.h" />
     <ClInclude Include="Renders\Context.h" />
     <ClInclude Include="Renders\PerFrame.h" />
+    <ClInclude Include="Renders\Renderer.h" />
     <ClInclude Include="Renders\Shader.h" />
     <ClInclude Include="Renders\Texture.h" />
+    <ClInclude Include="Renders\Transform.h" />
     <ClInclude Include="Renders\VertexLayouts.h" />
     <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Gui.h" />
@@ -211,8 +213,10 @@ copy /Y "$(SolutionDir)Debug\Framework.pdb" "$(SolutionDir)UnitTest\"</Command>
     <ClCompile Include="Meshes\MeshSphere.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
     <ClCompile Include="Renders\PerFrame.cpp" />
+    <ClCompile Include="Renders\Renderer.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\Texture.cpp" />
+    <ClCompile Include="Renders\Transform.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Gui.cpp" />
     <ClCompile Include="Systems\Keyboard.cpp" />

@@ -86,7 +86,10 @@ const Matrix g_matIdentity(
 #include "Renders/Shader.h"
 #include "Renders/Texture.h"
 #include "Renders/VertexLayouts.h"
-#include "Renders/Context.h"		
+#include "Renders/Context.h"
+#include "Renders/PerFrame.h"
+#include "Renders/Transform.h"
+#include "Renders/Renderer.h"
 
 #include "Utilities/Math.h"
 #include "Utilities/String.h"
