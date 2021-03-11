@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{BE
 	ProjectSection(SolutionItems) = preProject
 		..\_Shaders\000_Header.fx = ..\_Shaders\000_Header.fx
 		..\_Shaders\000_Light.fx = ..\_Shaders\000_Light.fx
+		..\_Shaders\000_Terrain.fx = ..\_Shaders\000_Terrain.fx
 		..\_Shaders\001_Vertex.fx = ..\_Shaders\001_Vertex.fx
 		..\_Shaders\001_Vertex.hlsl = ..\_Shaders\001_Vertex.hlsl
 		..\_Shaders\002_Rect.fx = ..\_Shaders\002_Rect.fx
@@ -25,7 +26,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{BE
 		..\_Shaders\008_Texture.fx = ..\_Shaders\008_Texture.fx
 		..\_Shaders\009_Terrain.fx = ..\_Shaders\009_Terrain.fx
 		..\_Shaders\010_Terrain.fx = ..\_Shaders\010_Terrain.fx
+		..\_Shaders\011_Terrain.fx = ..\_Shaders\011_Terrain.fx
+		..\_Shaders\012_Terrain.fx = ..\_Shaders\012_Terrain.fx
+		..\_Shaders\013_Terrain_Splatting.fx = ..\_Shaders\013_Terrain_Splatting.fx
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelExport", "ModelExport\ModelExport.vcxproj", "{58E28B89-B79B-4FDB-ADA1-A83659031244}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,14 @@ Global
 		{346173B7-7557-4F6C-ACDF-7C18B326BB80}.Release|x64.Build.0 = Release|x64
 		{346173B7-7557-4F6C-ACDF-7C18B326BB80}.Release|x86.ActiveCfg = Release|Win32
 		{346173B7-7557-4F6C-ACDF-7C18B326BB80}.Release|x86.Build.0 = Release|Win32
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Debug|x64.ActiveCfg = Debug|x64
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Debug|x64.Build.0 = Debug|x64
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Debug|x86.ActiveCfg = Debug|Win32
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Debug|x86.Build.0 = Debug|Win32
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Release|x64.ActiveCfg = Release|x64
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Release|x64.Build.0 = Release|x64
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Release|x86.ActiveCfg = Release|Win32
+		{58E28B89-B79B-4FDB-ADA1-A83659031244}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

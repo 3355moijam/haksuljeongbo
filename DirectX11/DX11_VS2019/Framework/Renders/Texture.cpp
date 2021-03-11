@@ -120,7 +120,7 @@ D3D11_TEXTURE2D_DESC Texture::ReadPixels(ID3D11Texture2D * src, DXGI_FORMAT read
 			pixels->push_back(D3DXCOLOR(a, b, g, r));
 		}
 	}
-
+	
 	SafeDeleteArray(colors);
 	SafeRelease(src);
 	SafeRelease(texture);

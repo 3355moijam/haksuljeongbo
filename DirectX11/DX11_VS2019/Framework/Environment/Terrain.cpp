@@ -2,20 +2,16 @@
 #include "Terrain.h"
 
 Terrain::Terrain(Shader* shader, wstring heightMap) :
-	shader(shader),
-	heightMap(nullptr),
+	Renderer(shader),
+	heightMap(new Texture(heightMap)),
 	width(0),
 	height(0),
-	pass(1),
-	vertexCount(0),
-	vertexBuffer(nullptr),
-	indexCount(0),
-	indexBuffer(nullptr),
 	baseMap(nullptr),
-	spacing(3, 3),
-	world(g_matIdentity)
+	layerMap(nullptr),
+	alphaMap(nullptr),
+	spacing(3, 3)
 {
-	this->heightMap = new Texture(heightMap);
+	//this->heightMap = new Texture(heightMap);
 
 	CreateVertexData();
 	CreateIndexData();
@@ -23,6 +19,14 @@ Terrain::Terrain(Shader* shader, wstring heightMap) :
 	CreateBuffer();
 
 	sBaseMap = shader->AsSRV("BaseMap");
+	sLayerMap = shader->AsSRV("LayerMap");
+	sAlphaMap = shader->AsSRV("AlphaMap");
+
+	brushBuffer = new ConstantBuffer(&brushDesc, sizeof BrushDesc);
+	sBrushBuffer = shader->AsConstantBuffer("CB_TerrainBrush");
+
+	lineColorBuffer = new ConstantBuffer(&lineColorDesc, sizeof LineColorDesc);
+	sLineColorBuffer = shader->AsConstantBuffer("CB_GridLine");
 }
 
 Terrain::~Terrain()
@@ -31,8 +35,9 @@ Terrain::~Terrain()
 	//SafeDeleteArray(vertices);
 	//SafeDeleteArray(indices);
 
-	SafeDelete(vertexBuffer);
-	SafeDelete(indexBuffer);
+	//SafeDelete(vertexBuffer);
+	//SafeDelete(indexBuffer);
+	SafeDelete(brushBuffer);
 }
 
 void Terrain::CreateVertexData()
@@ -57,8 +62,8 @@ void Terrain::CreateVertexData()
 			vertices[index].Position.y = heights[pixel].r * 255.0f / 10.0f;
 			vertices[index].Position.z = (float)z;
 
-			vertices[index].Uv.x = ((float)x / (float)width) * spacing.x;
-			vertices[index].Uv.y = ((float)(height - 1 - z) / (float)height) * spacing.y;
+			vertices[index].Uv.x = ((float)x / (float)width);// *spacing.x;
+			vertices[index].Uv.y = ((float)(height - 1 - z) / (float)height);// *spacing.y;
 		}
 	}
 }
@@ -119,7 +124,7 @@ void Terrain::CreateNormalData()
 void Terrain::CreateBuffer()
 {
 	// Create Vertex Buffer
-	vertexBuffer = new VertexBuffer(&vertices[0], vertexCount, sizeof TerrainVertex);
+	vertexBuffer = new VertexBuffer(&vertices[0], vertexCount, sizeof TerrainVertex, 0, true);
 
 	// Create Index Buffer
 	indexBuffer = new IndexBuffer(&indices[0], indexCount);
@@ -129,21 +134,47 @@ void Terrain::CreateBuffer()
 
 void Terrain::Update()
 {
-	
-	//world = g_matIdentity;
-	shader->AsMatrix("World")->SetMatrix(world);
-	shader->AsMatrix("View")->SetMatrix(Context::Get()->View());
-	shader->AsMatrix("Projection")->SetMatrix(Context::Get()->Projection());
+	Super::Update();
+
+	ImGui::InputInt("Brush Type", (int*)&brushDesc.Type);
+	brushDesc.Type %= 3;
+
+	ImGui::ColorEdit3("Brush Color", (float*)&brushDesc);
+
+	ImGui::InputInt("Brush Range", (int*)&brushDesc.Range);
+
+	if (brushDesc.Type > 0)
+	{
+		Vector3 position = GetPickedPosition();
+		brushDesc.Location = position;
+		if (Mouse::Get()->Press(0))
+		{
+			RaiseHeight(position, brushDesc.Type, brushDesc.Range);
+		}
+	}
+
+	ImGui::Separator();
+	ImGui::ColorEdit3("LineColor", (float*)&lineColorDesc.Color);
+	ImGui::InputFloat("Thickness", &lineColorDesc.Thickness, 0.1f);
+	ImGui::InputFloat("Size", &lineColorDesc.Size, 1.0f);
 }
 
 void Terrain::Render()
 {
-	vertexBuffer->Render();
-	indexBuffer->Render();
+	Super::Render();
+	if (sBrushBuffer != NULL)
+	{
+		brushBuffer->Apply();
+		sBrushBuffer->SetConstantBuffer(brushBuffer->Buffer());
+	}
 
-	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	if (sLineColorBuffer != NULL)
+	{
+		lineColorBuffer->Apply();
+		sLineColorBuffer->SetConstantBuffer(lineColorBuffer->Buffer());
+	}
 
-	shader->DrawIndexed(0, pass, indexCount);
+	shader->DrawIndexed(0, Pass(), indexCount);
 }
 
 void Terrain::BaseMap(wstring file)
@@ -151,6 +182,19 @@ void Terrain::BaseMap(wstring file)
 	SafeDelete(baseMap);
 	baseMap = new Texture(file);
 	sBaseMap->SetResource(baseMap->SRV());
+}
+
+void Terrain::LayerMap(wstring layer, wstring alpha)
+{
+	SafeDelete(layerMap);
+	SafeDelete(alphaMap);
+
+	layerMap = new Texture(layer);
+	alphaMap = new Texture(alpha);
+
+	sLayerMap->SetResource(layerMap->SRV());
+	sAlphaMap->SetResource(alphaMap->SRV());
+
 }
 
 float Terrain::GetHeight(Vector3& position)
@@ -251,6 +295,8 @@ Vector3 Terrain::GetPickedPosition()
 	Vector3 mouse = Mouse::Get()->GetPosition();
 	Vector3 n, f;
 
+	Matrix world = GetTransform()->World();
+
 	mouse.z = 0.0f;
 	Context::Get()->GetViewport()->Unproject(&n, mouse, world, V, P);
 
@@ -288,4 +334,39 @@ Vector3 Terrain::GetPickedPosition()
 		}
 	}
 	return Vector3(-1,-1,-1);
+}
+
+void Terrain::RaiseHeight(Vector3& position, UINT type, UINT range)
+{
+	D3D11_BOX box;
+	box.left	= (UINT)position.x - range;
+	box.right	= (UINT)position.x + range;
+	box.top		= (UINT)position.z + range;
+	box.bottom	= (UINT)position.z - range;
+
+	if (box.left < 0) box.left = 0;
+	if (box.right >= width) box.right = width;
+	if (box.top >= height) box.top = height;
+	if (box.bottom < 0) box.bottom = 0;
+
+	for (UINT z = box.bottom; z <= box.top; ++z)
+	{
+		for (UINT x = box.left; x <= box.right; ++x)
+		{
+			UINT index = width * z + x;
+			vertices[index].Position.y += 5.0f * Time::Delta();
+		}
+	}
+	CreateNormalData();
+	{
+		D3D::GetDC()->UpdateSubresource(vertexBuffer->Buffer(), 0, NULL, &vertices[0], sizeof TerrainVertex * vertexCount, 0); 
+	}
+
+	{
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		D3D::GetDC()->Map(vertexBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+		memcpy(subResource.pData, &vertices[0], sizeof TerrainVertex * vertexCount);
+
+		D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
+	}
 }
