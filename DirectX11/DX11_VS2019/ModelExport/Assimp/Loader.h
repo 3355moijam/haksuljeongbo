@@ -7,12 +7,16 @@ public:
 
 	void ReadFile(wstring file);
 	void ExportMaterial(wstring savePath, bool bOverwrite = true);
+	void ExportMesh(wstring savePath, bool bOverwrite = true);
 
 private:
 	void ReadMaterial();
 	void WriteMaterial(wstring savePath, bool bOverwrie);
 	string WriteTexture(string savePath, string file);
 
+	void ReadBoneData(aiNode* node, int index, int parent);
+	void ReadMeshData(aiNode* node, int bone);
+	void WriteMeshData(wstring savePath, bool bOverwrite);
 
 private:
 	wstring file;

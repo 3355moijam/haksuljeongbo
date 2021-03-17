@@ -30,6 +30,9 @@
     <Filter Include="Buffers">
       <UniqueIdentifier>{7677628c-cd6a-4810-bbbc-10d66f696c3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{14dcbbf5-5cfc-44d6-b1d9-c6afea1c87df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renders\Context.h">
@@ -140,6 +143,9 @@
     <ClInclude Include="Renders\Renderer.h">
       <Filter>Renders</Filter>
     </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Context.cpp">
@@ -240,6 +246,9 @@
     </ClCompile>
     <ClCompile Include="Renders\Renderer.cpp">
       <Filter>Renders</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -39,6 +39,13 @@ void Loader::ExportMaterial(wstring savePath, bool bOverwrite)
 	WriteMaterial(savePath, bOverwrite);
 }
 
+void Loader::ExportMesh(wstring savePath, bool bOverwrite)
+{
+	savePath = L"../../_Models/" + savePath + L".mesh";
+	ReadBoneData(scene->mRootNode, -1, -1);
+	WriteMeshData(savePath, bOverwrite);
+}
+
 void Loader::ReadMaterial()
 {
 	for (size_t i = 0; i < scene->mNumMaterials; i++)
@@ -210,4 +217,135 @@ string Loader::WriteTexture(string savePath, string file)
 	}
 
 	return Path::GetFileName(path);
+}
+
+void Loader::ReadBoneData(aiNode* node, int index, int parent)
+{
+	AsBone* bone = new AsBone();
+	bone->index = index;
+	bone->Parent = parent;
+	bone->Name = node->mName.C_Str();
+
+	Matrix transform(node->mTransformation[0]);
+	D3DXMatrixTranspose(&bone->Transform, &transform);
+
+	Matrix temp;
+	if (parent == -1)
+		temp = g_matIdentity;
+	else
+		temp = bones[parent]->Transform;
+
+	bone->Transform = bone->Transform * temp;
+	bones.push_back(bone);
+
+	ReadMeshData(node, index);
+
+	for (size_t i = 0; i < node->mNumChildren; i++)
+	{
+		ReadBoneData(node->mChildren[i], bones.size(), index);
+	}
+}
+
+void Loader::ReadMeshData(aiNode* node, int bone)
+{
+	if (node->mNumMeshes < 1) return;
+
+	AsMesh* asMesh = new AsMesh();
+	asMesh->Name = node->mName.C_Str();
+	asMesh->BoneIndex = bone;
+
+	for (size_t i = 0; i < node->mNumMeshes; i++)
+	{
+		UINT index = node->mMeshes[i];
+		aiMesh* mesh = scene->mMeshes[index];
+
+		UINT startVertex = asMesh->Vertices.size();
+		UINT startIndex = asMesh->Indices.size();
+
+		for (size_t m = 0; m < mesh->mNumVertices; m++)
+		{
+			Model::ModelVertex vertex;
+			memcpy(&vertex.Position, &mesh->mVertices[m], sizeof Vector3);
+			memcpy(&vertex.Uv, &mesh->mTextureCoords[0][m], sizeof Vector2);
+			memcpy(&vertex.Normal, &mesh->mNormals[m], sizeof Vector3);
+
+			asMesh->Vertices.push_back(vertex);
+		}
+
+		for (size_t f = 0; f < mesh->mNumFaces; f++)
+		{
+			aiFace& face = mesh->mFaces[f];
+
+			for (size_t k = 0; k < face.mNumIndices; k++)
+			{
+				asMesh->Indices.push_back(face.mIndices[k]);
+				asMesh->Indices.back() += startVertex;
+			}
+		}
+
+		AsMeshPart* meshPart = new AsMeshPart();
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		meshPart->Name = mesh->mName.C_Str();
+		meshPart->MaterialName = material->GetName().C_Str();
+		meshPart->StartVertex = startVertex;
+		meshPart->StartIndex = startIndex;
+		meshPart->VertexCount = mesh->mNumVertices;
+		meshPart->IndexCount = mesh->mNumFaces * mesh->mFaces->mNumIndices;
+
+		asMesh->MeshParts.push_back(meshPart);
+	}
+}
+
+void Loader::WriteMeshData(wstring savePath, bool bOverwrite)
+{
+	if (bOverwrite == false)
+	{
+		if (Path::ExistFile(savePath) == true)
+			return;
+	}
+
+	Path::CreateFolders(Path::GetDirectoryName(savePath));
+	BinaryWriter* w = new BinaryWriter();
+	w->Open(savePath);
+
+	w->UInt(bones.size());
+	for (AsBone* bone : bones)
+	{
+		w->Int(bone->index);
+		w->String(bone->Name);
+		w->Int(bone->Parent);
+		w->Matrix(bone->Transform);
+		SafeDelete(bone);
+	}
+
+	w->UInt(meshes.size());
+	for (AsMesh* meshData : meshes)
+	{
+		w->String(meshData->Name);
+		w->Int(meshData->BoneIndex);
+
+		w->Int(meshData->Vertices.size());
+		w->Byte(&meshData->Vertices[0], sizeof Model::ModelVertex * meshData->Vertices.size());
+		w->UInt(meshData->Indices.size());
+		w->Byte(&meshData->Indices[0], sizeof UINT * meshData->Indices.size());
+
+		w->UInt(meshData->MeshParts.size());
+		for (AsMeshPart* part : meshData->MeshParts)
+		{
+			w->String(part->Name);
+			w->String(part->MaterialName);
+
+			w->UInt(part->StartVertex);
+			w->UInt(part->VertexCount);
+
+			SafeDelete(part);
+		}
+		SafeDelete(meshData);
+		
+	}
+
+	w->Close();
+	SafeDelete(w);
+
+
 }

@@ -101,3 +101,5 @@ const Matrix g_matIdentity(
 #include "Meshes/MeshCube.h"
 #include "Meshes/MeshCylinder.h"
 #include "Meshes/MeshSphere.h"
+
+#include "Model/Model.h"

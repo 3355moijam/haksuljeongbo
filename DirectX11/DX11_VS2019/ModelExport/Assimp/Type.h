@@ -13,3 +13,36 @@ struct AsMaterial
 	string SpecularFile;
 	string NormalFile;
 };
+
+struct AsBone
+{
+	int index;
+	string Name;
+	int Parent;
+	Matrix Transform;
+
+};
+
+struct AsMeshPart
+{
+	string Name;
+	string MaterialName;
+
+	UINT StartVertex;
+	UINT VertexCount;
+
+	UINT StartIndex;
+	UINT IndexCount;
+};
+
+struct AsMesh
+{
+	string Name;
+	int BoneIndex;
+
+	aiMesh* Mesh;
+
+	vector<Model::ModelVertex> Vertices;
+	vector<UINT> Indices;
+	vector<AsMeshPart*> MeshParts;
+};
