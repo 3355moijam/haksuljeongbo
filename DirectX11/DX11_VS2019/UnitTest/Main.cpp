@@ -6,13 +6,16 @@
 #include "DrawVertex.h"
 #include "DrawTexture.h"
 #include "DrawTerrain.h"
-
+//#include "ModelExport/Export.h"
+//#include "RenderModel.h"
 void Main::Initialize()
 {
 	//Push(new DrawVertex());
 	//Push(new DrawTexture());
-	Push(new DrawTerrain());
+	//Push(new DrawTerrain());
 	//Push(new DrawMesh());
+	//Push(new Export());
+	//Push(new RenderModel());
 }
 
 void Main::Ready()

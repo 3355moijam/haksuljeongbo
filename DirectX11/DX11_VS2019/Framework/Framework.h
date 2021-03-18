@@ -90,6 +90,7 @@ const Matrix g_matIdentity(
 #include "Renders/PerFrame.h"
 #include "Renders/Transform.h"
 #include "Renders/Renderer.h"
+#include "Renders/Material.h"
 
 #include "Utilities/Math.h"
 #include "Utilities/String.h"
